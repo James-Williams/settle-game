@@ -12,7 +12,7 @@
     <polygon v-if="type.sides[2] == 'c'" points="000,100 100,100 050,050" style="fill:brown;" />
     <polygon v-if="type.sides[3] == 'c'" points="000,100 000,000 050,050" style="fill:brown;" />
 
-    <polygon v-if="type.cloiser" points="36,36 50,30 64,36 64,64 36,64" style="fill:brown;" />
+    <polygon v-if="type.cloister" points="36,36 50,30 64,36 64,64 36,64" style="fill:brown;" />
 
     <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
   </svg>

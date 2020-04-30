@@ -4,7 +4,7 @@
       <Tile v-for="(tile, idx) in tiles" :type="tile" :key="idx"/>
     </div>
     <div>
-      <Grid :tiles="grid"/>
+      <Grid v-for="(grid, idx) in grids" :tiles="grid" :key="idx"/>
     </div>
   </div>
 </template>
@@ -20,15 +20,33 @@ export default {
       tiles: [
         { 'sides': [ 'r', 'g', 'r', 'g' ] },
         { 'sides': [ 'c', 'c', 'r', 'r' ] },
-        { 'sides': [ 'g', 'g', 'r', 'g' ], cloiser: 1 },
+        { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
         { blank: 1 },
         { 'sides': [ 'g', 'c', 'c', 'g' ] }
       ],
-      grid: {
-        [String([-1, 0])]: { 'sides': [ 'g', 'c', 'g', 'g' ] },
-        [String([0, 0])]: { 'sides': [ 'c', 'g', 'g', 'c' ] },
-        [String([0, 1])]: { 'sides': [ 'g', 'g', 'c', 'g' ] }
-      }
+      grids: [
+        {
+          [String([0, 0])]: { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
+          [String([1, 0])]: { 'sides': [ 'g', 'c', 'c', 'g' ] },
+          [String([2, 0])]: { 'sides': [ 'g', 'r', 'r', 'c' ] },
+          [String([3, 0])]: { 'sides': [ 'r', 'g', 'r', 'r' ] },
+
+          [String([0, -1])]: { 'sides': [ 'r', 'r', 'g', 'g' ] },
+          [String([1, -1])]: { 'sides': [ 'c', 'c', 'c', 'r' ] },
+          [String([3, -1])]: { 'sides': [ 'r', 'g', 'g', 'g' ], cloister: 1 },
+
+          [String([1, -2])]: { 'sides': [ 'c', 'c', 'r', 'r' ] },
+          [String([3, -2])]: { 'sides': [ 'g', 'r', 'g', 'r' ] },
+
+          [String([3, -2])]: { 'sides': [ 'g', 'g', 'g', 'g' ], cloister: 1 }
+
+        },
+        {
+          [String([-1, 0])]: { 'sides': [ 'g', 'c', 'g', 'g' ] },
+          [String([0, 0])]: { 'sides': [ 'c', 'g', 'g', 'c' ] },
+          [String([0, 1])]: { 'sides': [ 'g', 'g', 'c', 'g' ] }
+        }
+      ]
     }
   },
   components: {

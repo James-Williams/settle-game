@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="grid">
     <div v-for="y in rangeY" :key="y">
       <Tile v-for="x in rangeX" :type="getTile(x, y)" :key="x"/>
     </div>
@@ -54,8 +54,9 @@ export default {
 }
 </script>
 
-<style scoped>
-div {
+<style scoped lang="scss">
+.grid {
   background: grey;
+  padding: 25px;
 }
 </style>
