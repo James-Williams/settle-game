@@ -34,11 +34,92 @@ export default {
       bonus: 1
     },
 
+    { label: 'Triple city',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'c', 'g', 'c' ]
+      }
+    },
+
+    { label: 'Bonus triple city',
+      count: 1,
+      tile: {
+        sides: [ 'c', 'c', 'g', 'c' ],
+        bonus: 1
+      }
+    },
+
+    { label: 'Bonus full city',
+      count: 1,
+      tile: {
+        sides: [ 'c', 'c', 'c', 'c' ],
+        bonus: 1
+      }
+    },
+
+    { label: 'Corner city',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'c', 'g', 'g' ]
+      }
+    },
+
+    { label: 'Bonus corner city',
+      count: 2,
+      tile: {
+        sides: [ 'c', 'c', 'g', 'g' ],
+        bonus: 1
+      }
+    },
+
+    { label: 'Disconected double city',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'g', 'c', 'g' ]
+      }
+    },
+
+    { label: 'Disconected side city',
+      count: 2,
+      tile: {
+        sides: [ 'c', 'c', 'g', 'g' ]
+      }
+    },
+
     { label: 'Cloister with road',
       count: 2,
       tile: {
         sides: [ 'g', 'g', 'r', 'g' ],
         cloister: 1
+      }
+    },
+
+    { label: 'Triple city with road',
+      count: 1,
+      tile: {
+        sides: [ 'c', 'c', 'r', 'c' ]
+      }
+    },
+
+    { label: 'Bonus triple city with road',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'c', 'r', 'c' ],
+        bonus: 1
+      }
+    },
+
+    { label: 'Straight road',
+      count: 8,
+      tile: {
+        sides: [ 'g', 'r', 'g', 'r' ]
+      }
+    },
+
+    { label: 'Straight road with city',
+      count: 4,
+      tile: {
+        sides: [ 'c', 'r', 'g', 'r' ]
       }
     },
 
@@ -54,6 +135,27 @@ export default {
       tile: {
         sides: [ 'c', 'c', 'r', 'r' ],
         bonus: 1
+      }
+    },
+
+    { label: 'Corner road',
+      count: 9,
+      tile: {
+        sides: [ 'g', 'g', 'r', 'r' ]
+      }
+    },
+
+    { label: 'Corner road with left city',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'g', 'r', 'r' ]
+      }
+    },
+
+    { label: 'Corner road with right city',
+      count: 3,
+      tile: {
+        sides: [ 'c', 'r', 'r', 'g' ]
       }
     },
 
