@@ -58,5 +58,6 @@ export default {
 .grid {
   background: grey;
   padding: 25px;
+  white-space: nowrap;
 }
 </style>

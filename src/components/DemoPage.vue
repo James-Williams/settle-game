@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div>
+    <div class="showcase">
       <Tile v-for="(tile, idx) in tiles" :type="tile" :key="idx"/>
     </div>
     <div>
@@ -14,16 +14,12 @@
 import Tile from './Tile'
 import Grid from './Grid'
 
+import TileLibrary from '@/TileLibrary'
+
 export default {
   data () {
     return {
-      tiles: [
-        { 'sides': [ 'r', 'g', 'r', 'g' ] },
-        { 'sides': [ 'c', 'c', 'r', 'r' ] },
-        { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
-        { blank: 1 },
-        { 'sides': [ 'g', 'c', 'c', 'g' ] }
-      ],
+      tiles: TileLibrary.uniqueTiles(),
       grids: [
         {
           [String([0, 0])]: { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
@@ -60,6 +56,12 @@ export default {
 .page {
   div {
     margin-bottom: 15px;
+  }
+}
+.showcase {
+  svg {
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 }
 </style>
