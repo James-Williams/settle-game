@@ -45,7 +45,7 @@ export default {
     getTile (x, y) {
       const tile = this.tiles[String([x, y])]
       if (tile) return tile
-      else return { blank: 1 }
+      else return { blank: 1, selectable: 1 }
     }
   },
   components: {

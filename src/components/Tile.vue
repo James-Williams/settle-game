@@ -1,5 +1,5 @@
 <template>
-  <svg v-if="type.blank" width="100" height="100"/>
+  <svg v-if="type.blank" :class="{blank: true, selectable: type.selectable}" width="100" height="100"/>
   <svg v-else width="100" height="100" style="background: green">
 
     <rect v-if="type.sides[0] == 'r'" x="42" y="00" width="16" height="50" style="stroke:none;fill:white"/>
@@ -28,5 +28,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+svg.selectable:hover {
+    box-shadow:inset 0px 0px 0px 5px red
+}
 </style>
