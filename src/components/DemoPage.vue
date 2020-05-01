@@ -43,7 +43,8 @@ export default {
     },
     place (pos) {
       if (this.pickedTile) {
-        var grid = {...this.grids[0], [String(pos)]: this.pickedTile}
+        const newTile = JSON.parse(JSON.stringify(this.pickedTile))
+        var grid = {...this.grids[0], [String(pos)]: newTile}
         this.grids = {...this.grids, 0: grid}
       }
     }

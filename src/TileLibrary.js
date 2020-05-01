@@ -1,7 +1,9 @@
 
 export default {
   uniqueTiles () {
-    return this.packed.map((x) => x.tile)
+    return this.packed.map(
+      (x) => JSON.parse(JSON.stringify(x.tile))
+    )
   },
   packed: [
     { label: 'Cloister',

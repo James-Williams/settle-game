@@ -28,11 +28,18 @@ export default {
   methods: {
     clicked (tile) {
       if (this.selected === tile) {
-        this.selected = null
+        this.rotate(this.selected)
       } else {
         this.selected = tile
       }
       this.$emit('selected', this.selected)
+    },
+    rotate (tile) {
+      const ss = []
+      for (var i = 0; i < tile.sides.length; i++) {
+        ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
+      }
+      tile.sides = ss
     }
   },
   components: {
