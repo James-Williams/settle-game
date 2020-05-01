@@ -1,10 +1,8 @@
 <template>
   <div class="page">
-    <div class="showcase">
-      <Tile v-for="(tile, idx) in tiles" :type="tile" :key="idx"/>
-    </div>
+    <TilePicker />
     <div>
-      <Grid v-for="(grid, idx) in grids" :tiles="grid" :key="idx"/>
+      <Grid v-for="(grid, idx) in grids" :tiles="grid" :key="idx" />
     </div>
   </div>
 </template>
@@ -12,14 +10,12 @@
 <script>
 
 import Tile from './Tile'
+import TilePicker from './TilePicker'
 import Grid from './Grid'
-
-import TileLibrary from '@/TileLibrary'
 
 export default {
   data () {
     return {
-      tiles: TileLibrary.uniqueTiles(),
       grids: [
         {
           [String([0, 0])]: { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
@@ -47,6 +43,7 @@ export default {
   },
   components: {
     Tile,
+    TilePicker,
     Grid
   }
 }
@@ -56,12 +53,6 @@ export default {
 .page {
   div {
     margin-bottom: 15px;
-  }
-}
-.showcase {
-  svg {
-    margin-right: 10px;
-    margin-bottom: 10px;
   }
 }
 </style>
