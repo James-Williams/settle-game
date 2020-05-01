@@ -8,10 +8,10 @@
       <rect v-if="type.sides[2] == 'r'" x="42" y="50" width="16" height="50" style="stroke:none;fill:white"/>
       <rect v-if="type.sides[3] == 'r'" x="00" y="42" width="50" height="16" style="stroke:none;fill:white"/>
 
-      <polygon v-if="type.sides[0] == 'c'" points="000,000 100,000 070,030 030,030" style="fill:brown;" />-->
-      <polygon v-if="type.sides[1] == 'c'" points="100,000 100,100 070,070 070,030" style="fill:brown;" />
-      <polygon v-if="type.sides[2] == 'c'" points="000,100 100,100 070,070 030,070" style="fill:brown;" />
-      <polygon v-if="type.sides[3] == 'c'" points="000,100 000,000 030,030 030,070" style="fill:brown;" />
+      <polygon v-if="type.sides[0] === 'c'" :points="cityPoints(0)" style="fill:brown;" />
+      <polygon v-if="type.sides[1] === 'c'" :points="cityPoints(1)" style="fill:brown;" />
+      <polygon v-if="type.sides[2] === 'c'" :points="cityPoints(2)" style="fill:brown;" />
+      <polygon v-if="type.sides[3] === 'c'" :points="cityPoints(3)" style="fill:brown;" />
 
       <polygon v-if="fillMiddle" points="30,30 30,70 70,70 70,30" style="fill:brown;" />
 
@@ -30,12 +30,22 @@ export default {
       type: Object
     }
   },
+  methods: {
+    cityPoints (pos) {
+      const a = this.type.split ? 35 : 30
+      const b = this.type.split ? 65 : 70
+      if (pos === 0) return '000,000 100,000 ' + b + ',030 ' + a + ',030'
+      if (pos === 1) return '100,000 100,100 070,' + b + ' 070,' + a
+      if (pos === 2) return '000,100 100,100 ' + b + ',070 ' + a + ',070'
+      if (pos === 3) return '000,100 000,000 030,' + a + ' 030,' + b
+    }
+  },
   computed: {
     fillMiddle () {
       const sides = this.type.sides
       return !this.type.split && (
-        (sides[0] == 'c' && sides[2] == 'c') ||
-        (sides[1] == 'c' && sides[3] == 'c')
+        (sides[0] === 'c' && sides[2] === 'c') ||
+        (sides[1] === 'c' && sides[3] === 'c')
       )
     }
   }
