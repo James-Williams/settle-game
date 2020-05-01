@@ -1,8 +1,8 @@
 <template>
   <div class="page">
-    <TilePicker />
+    <TilePicker @selected="clickTile"/>
     <div>
-      <Grid v-for="(grid, idx) in grids" :tiles="grid" :key="idx" />
+      <Grid v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
     </div>
   </div>
 </template>
@@ -16,6 +16,7 @@ import Grid from './Grid'
 export default {
   data () {
     return {
+      pickedTile: null,
       grids: [
         {
           [String([0, 0])]: { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
@@ -39,6 +40,17 @@ export default {
           [String([0, 1])]: { 'sides': [ 'g', 'g', 'c', 'g' ] }
         }
       ]
+    }
+  },
+  methods: {
+    clickTile (tile) {
+      this.pickedTile = tile
+    },
+    place (pos) {
+      if (this.pickedTile) {
+        var grid = {...this.grids[0], [String(pos)]: this.pickedTile}
+        this.grids = {...this.grids, 0: grid}
+      }
     }
   },
   components: {

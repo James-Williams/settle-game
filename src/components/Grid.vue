@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div v-for="y in rangeY" :key="y">
-      <Tile v-for="x in rangeX" :type="getTile(x, y)" :key="x"/>
+      <Tile @clicked="$emit('clicked', [x, y])" v-for="x in rangeX" :type="getTile(x, y)" :key="x"/>
     </div>
   </div>
 </template>
