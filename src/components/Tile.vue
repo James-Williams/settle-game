@@ -17,6 +17,8 @@
 
       <polygon v-if="type.cloister" points="36,36 50,30 64,36 64,64 36,64" style="fill:brown;" />
 
+      <circle v-if="type.bonus" cx="82" cy="18" r="10" style="fill:blue" />
+
       <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
     </svg>
     <div @click="$emit('clicked')" v-if="type.selectable" class="selectable" />

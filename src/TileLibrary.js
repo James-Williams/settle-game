@@ -31,9 +31,9 @@ export default {
     { label: 'Bonus bridge city',
       count: 2,
       tile: {
-        sides: [ 'g', 'c', 'g', 'c' ]
-      },
-      bonus: 1
+        sides: [ 'g', 'c', 'g', 'c' ],
+        bonus: 1
+      }
     },
 
     { label: 'Triple city',
