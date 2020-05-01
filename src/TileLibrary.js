@@ -74,17 +74,19 @@ export default {
       }
     },
 
-    { label: 'Disconected double city',
+    { label: 'Split double city',
       count: 3,
       tile: {
-        sides: [ 'c', 'g', 'c', 'g' ]
+        sides: [ 'c', 'g', 'c', 'g' ],
+        split: 1
       }
     },
 
-    { label: 'Disconected side city',
+    { label: 'Split side city',
       count: 2,
       tile: {
-        sides: [ 'c', 'c', 'g', 'g' ]
+        sides: [ 'c', 'c', 'g', 'g' ],
+        split: 1
       }
     },
 

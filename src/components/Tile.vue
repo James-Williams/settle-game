@@ -8,10 +8,12 @@
       <rect v-if="type.sides[2] == 'r'" x="42" y="50" width="16" height="50" style="stroke:none;fill:white"/>
       <rect v-if="type.sides[3] == 'r'" x="00" y="42" width="50" height="16" style="stroke:none;fill:white"/>
 
-      <polygon v-if="type.sides[0] == 'c'" points="000,000 100,000 050,050" style="fill:brown;" />-->
-      <polygon v-if="type.sides[1] == 'c'" points="100,000 100,100 050,050" style="fill:brown;" />
-      <polygon v-if="type.sides[2] == 'c'" points="000,100 100,100 050,050" style="fill:brown;" />
-      <polygon v-if="type.sides[3] == 'c'" points="000,100 000,000 050,050" style="fill:brown;" />
+      <polygon v-if="type.sides[0] == 'c'" points="000,000 100,000 070,030 030,030" style="fill:brown;" />-->
+      <polygon v-if="type.sides[1] == 'c'" points="100,000 100,100 070,070 070,030" style="fill:brown;" />
+      <polygon v-if="type.sides[2] == 'c'" points="000,100 100,100 070,070 030,070" style="fill:brown;" />
+      <polygon v-if="type.sides[3] == 'c'" points="000,100 000,000 030,030 030,070" style="fill:brown;" />
+
+      <polygon v-if="fillMiddle" points="30,30 30,70 70,70 70,30" style="fill:brown;" />
 
       <polygon v-if="type.cloister" points="36,36 50,30 64,36 64,64 36,64" style="fill:brown;" />
 
@@ -26,6 +28,15 @@ export default {
   props: {
     type: {
       type: Object
+    }
+  },
+  computed: {
+    fillMiddle () {
+      const sides = this.type.sides
+      return !this.type.split && (
+        (sides[0] == 'c' && sides[2] == 'c') ||
+        (sides[1] == 'c' && sides[3] == 'c')
+      )
     }
   }
 }
