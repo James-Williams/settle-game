@@ -18,7 +18,7 @@ export default {
     return {
       pickedTile: null,
       grids: [
-        {[String([0, 0])]: { blank: 1, selectable: 1 }},
+        {[String([0, 0])]: { blank: 1 }},
         {
           [String([0, 0])]: { 'sides': [ 'g', 'g', 'r', 'g' ], cloister: 1 },
           [String([1, 0])]: { 'sides': [ 'g', 'c', 'c', 'g' ] },

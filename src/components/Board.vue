@@ -17,7 +17,8 @@ export default {
       type: Object
     },
     selectable: {
-      type: Object
+      type: Object,
+      default: {}
     }
   },
   computed: {
