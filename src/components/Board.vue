@@ -3,7 +3,7 @@
     <div v-for="y in rangeY" :key="y">
       <div class="tile" v-for="x in rangeX" :key="x">
         <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" />
-        <div v-if="getTile(x, y).selectable" @click="$emit('clicked', [x, y])" class="selectable" />
+        <div v-if="isSelectable(x, y)" @click="$emit('clicked', [x, y])" class="selectable" />
       </div>
     </div>
   </div>
@@ -15,6 +15,9 @@ import Tile from './Tile'
 export default {
   props: {
     tiles: {
+      type: Object
+    },
+    selectable: {
       type: Object
     }
   },
@@ -46,10 +49,13 @@ export default {
     }
   },
   methods: {
+    isSelectable (x, y) {
+      return String([x, y]) in this.selectable
+    },
     getTile (x, y) {
       const tile = this.tiles[String([x, y])]
       if (tile) return tile
-      else return { blank: 1, selectable: 1 }
+      else return { blank: 1 }
     }
   },
   components: {

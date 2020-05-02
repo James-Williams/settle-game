@@ -2,7 +2,7 @@
   <div class="page">
     <Tile @clicked="rotate(pickedTile)" :type="pickedTile" />
     <div>
-      <Board @clicked="place" :tiles="grid" />
+      <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
     </div>
   </div>
 </template>
@@ -23,15 +23,21 @@ export default {
       pickedTile: {
         sides: [ 'g', 'g', 'g', 'g' ]
       },
-      tiles: TileLibrary.uniqueTiles().map(function (x) { return {...x, selectable: 1} }),
-      grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ], selectable: 1 } }
+      okSlots: {},
+      tiles: TileLibrary.uniqueTiles(),
+      grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
     }
   },
   methods: {
     randomizePick () {
       const idx = Math.floor(Math.random() * this.tiles.length)
-      console.log(idx)
       this.pickedTile = this.tiles[idx]
+
+      const okSlots = {}
+      Moves.findSlots(new Grid(this.grid), this.pickedTile).forEach((slot) => {
+        okSlots[String(slot)] = slot
+      })
+      this.okSlots = okSlots
     },
     rotate (tile) {
       const ss = []
