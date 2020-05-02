@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <Tile @clicked="rotate(pickedTile)" :type="pickedTile" />
+    <Tile @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
     <div>
       <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
     </div>
@@ -29,15 +29,17 @@ export default {
     }
   },
   methods: {
-    randomizePick () {
-      const idx = Math.floor(Math.random() * this.tiles.length)
-      this.pickedTile = this.tiles[idx]
-
+    updateOkSlots () {
       const okSlots = {}
       Moves.findSlots(new Grid(this.grid), this.pickedTile).forEach((slot) => {
         okSlots[String(slot)] = slot
       })
       this.okSlots = okSlots
+    },
+    randomizePick () {
+      const idx = Math.floor(Math.random() * this.tiles.length)
+      this.pickedTile = this.tiles[idx]
+      this.updateOkSlots()
     },
     rotate (tile) {
       const ss = []
@@ -45,6 +47,7 @@ export default {
         ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
       }
       tile.sides = ss
+      this.updateOkSlots()
     },
     place (pos) {
       if (this.pickedTile) {

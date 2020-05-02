@@ -21,6 +21,7 @@
 
       <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
     </svg>
+    <div @click="$emit('clicked')" v-if="selectable" class="selectable" />
   </div>
 </template>
 
@@ -29,6 +30,10 @@ export default {
   props: {
     type: {
       type: Object
+    },
+    selectable: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -54,4 +59,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.tile {
+  display: inline-block;
+  position: relative;
+}
+.selectable {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.selectable:hover {
+    box-shadow:inset 0px 0px 0px 5px blue;
+}
 </style>

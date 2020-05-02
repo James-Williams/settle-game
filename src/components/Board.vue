@@ -2,8 +2,7 @@
   <div class="grid">
     <div v-for="y in rangeY" :key="y">
       <div class="tile" v-for="x in rangeX" :key="x">
-        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" />
-        <div v-if="isSelectable(x, y)" @click="$emit('clicked', [x, y])" class="selectable" />
+        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" :selectable="isSelectable(x, y)"/>
       </div>
     </div>
   </div>
@@ -73,15 +72,5 @@ export default {
 .tile {
   position: relative;
   display: inline-block;
-}
-.selectable {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-.selectable:hover {
-    box-shadow:inset 0px 0px 0px 5px blue;
 }
 </style>
