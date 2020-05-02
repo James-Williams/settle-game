@@ -21,7 +21,7 @@ export default {
         sides: [ 'g', 'g', 'g', 'g' ]
       },
       tiles: TileLibrary.uniqueTiles().map(function (x) { return {...x, selectable: 1} }),
-      grid: { [String([0, 0])]: { sides: ['c', 'r', 'g', 'r' ], selectable: 1 } }
+      grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ], selectable: 1 } }
     }
   },
   methods: {
@@ -40,6 +40,7 @@ export default {
     place (pos) {
       if (this.pickedTile) {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
+
         var grid = {...this.grid, [String(pos)]: newTile}
         this.grid = grid
       }

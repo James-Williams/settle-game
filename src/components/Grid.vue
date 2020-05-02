@@ -20,6 +20,7 @@ export default {
       return Object.keys(this.tiles)
         .map((x) => x.split(',').map((x) => parseInt(x)))
     },
+    // TODO - Use Grid Object!
     minX () { return Math.min(...this.keys.map((x) => x[0])) },
     maxX () { return Math.max(...this.keys.map((x) => x[0])) },
     minY () { return Math.min(...this.keys.map((x) => x[1])) },
