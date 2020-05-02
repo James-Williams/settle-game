@@ -2,7 +2,7 @@
   <div class="page">
     <TilePicker @selected="clickTile"/>
     <div>
-      <Grid v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
+      <Board v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
     </div>
   </div>
 </template>
@@ -11,7 +11,7 @@
 
 import Tile from './Tile'
 import TilePicker from './TilePicker'
-import Grid from './Grid'
+import Board from './Board'
 
 export default {
   data () {
@@ -52,7 +52,7 @@ export default {
   components: {
     Tile,
     TilePicker,
-    Grid
+    Board
   }
 }
 </script>

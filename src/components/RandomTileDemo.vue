@@ -2,7 +2,7 @@
   <div class="page">
     <Tile @clicked="rotate(pickedTile)" :type="pickedTile" />
     <div>
-      <Grid @clicked="place" :tiles="grid" />
+      <Board @clicked="place" :tiles="grid" />
     </div>
   </div>
 </template>
@@ -12,7 +12,10 @@
 import Tile from './Tile'
 import TileLibrary from '@/TileLibrary'
 import TilePicker from './TilePicker'
-import Grid from './Grid'
+import Board from './Board'
+
+import Grid from '@/Grid'
+import Moves from '@/Moves'
 
 export default {
   data () {
@@ -40,11 +43,18 @@ export default {
     place (pos) {
       if (this.pickedTile) {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
-
-        var grid = {...this.grid, [String(pos)]: newTile}
-        this.grid = grid
+        if (!(String(pos) in this.grid)) {
+          const okSlots = {}
+          Moves.findSlots(new Grid(this.grid), newTile).forEach((slot) => {
+            okSlots[String(slot)] = slot
+          })
+          if (String(pos) in okSlots) {
+            let grid = {...this.grid, [String(pos)]: newTile}
+            this.grid = grid
+            this.randomizePick()
+          }
+        }
       }
-      this.randomizePick()
     }
   },
   created () {
@@ -53,7 +63,7 @@ export default {
   components: {
     Tile,
     TilePicker,
-    Grid
+    Board
   }
 }
 </script>

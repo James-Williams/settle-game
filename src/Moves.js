@@ -1,6 +1,5 @@
 
 export default class {
-
   static DIRECTIONS = [
     [0, 1],
     [1, 0],
@@ -18,16 +17,15 @@ export default class {
   }
 
   static findSlots (grid, tile) {
-
     const slots = {}
 
-    for (let x = grid.minX() -1; x <= grid.maxX()+1; x++) {
-      for (let y = grid.minY() -1; y <= grid.maxY()+1; y++) {
+    for (let x = grid.minX() - 1; x <= grid.maxX() + 1; x++) {
+      for (let y = grid.minY() - 1; y <= grid.maxY() + 1; y++) {
         const pos = [x, y]
         if (!grid.get(pos)) {
           let ok = true
           let any = false
-          this.DIRECTIONS.forEach( (d) => {
+          this.DIRECTIONS.forEach((d) => {
             const t = grid.get([pos[0] + d[0], pos[1] + d[1]])
             if (t) {
               if (this.canJoin(tile, t, d)) {
@@ -47,5 +45,4 @@ export default class {
     return Object.keys(slots)
       .map((x) => x.split(',').map((x) => parseInt(x)))
   }
-
 }

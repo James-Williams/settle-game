@@ -1,6 +1,6 @@
 
 export default class {
-  constructor(tiles) {
+  constructor (tiles) {
     this.tiles = {}
     Object.keys(tiles).forEach((k) => {
       this.tiles[k] = tiles[k]
@@ -17,8 +17,8 @@ export default class {
   minY () { return Math.min(...this.keys().map((x) => x[1])) }
   maxY () { return Math.max(...this.keys().map((x) => x[1])) }
 
-  get(pos) {
-    if (pos.length != 2) throw new Error('Invalid grid position')
+  get (pos) {
+    if (pos.length !== 2) throw new Error('Invalid grid position')
 
     if (String(pos) in this.tiles) {
       return JSON.parse(JSON.stringify(this.tiles[String(pos)]))
