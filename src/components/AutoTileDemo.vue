@@ -1,11 +1,11 @@
 <template>
   <div class="page">
-    <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
+    <Tile v-if="this.pickedTile" :type="pickedTile" />
     <div>
       <strong>Remaining: {{ this.tiles.length }}</strong>
     </div>
     <div>
-      <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
+      <Board @clicked="place" :tiles="grid"/>
     </div>
   </div>
 </template>
@@ -47,6 +47,36 @@ export default {
         this.pickedIdx = idx
         this.pickedTile = this.tiles[idx]
         this.updateOkSlots()
+
+        // Auto-place tile and repeat
+        const randRot = Math.floor(Math.random() * 4)
+        for (let i = 0; i < randRot; i++) this.rotate(this.pickedTile)
+
+        let bestPos = null
+        let bestCount = 0
+        let bestRot = 0
+        for (let rot = 0; rot < 4; rot++) {
+          const ks = Object.keys(this.okSlots)
+          if (ks.length > 0) {
+            const i = Math.floor(Math.random() * ks.length)
+            const pos = this.okSlots[ks[i]]
+            let count = 0
+            Moves.DIRECTIONS.forEach((dir) => {
+              const ofst = [pos[0] + dir[0], pos[1] + dir[1]]
+              if (String(ofst) in this.grid) count++
+            })
+            if (count > bestCount) {
+              bestCount = count
+              bestPos = pos
+              bestRot = rot
+            }
+          }
+          this.rotate(this.pickedTile)
+        }
+        for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
+        console.log(bestRot)
+        console.log(bestPos)
+        window.setTimeout(() => this.place(bestPos), 550)
       }
     },
     rotate (tile) {

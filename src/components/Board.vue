@@ -18,7 +18,7 @@ export default {
     },
     selectable: {
       type: Object,
-      default: {}
+      default: () => { return {} }
     }
   },
   computed: {
@@ -67,7 +67,6 @@ export default {
 <style scoped lang="scss">
 .grid {
   background: grey;
-  padding: 25px;
   white-space: nowrap;
 }
 .tile {
