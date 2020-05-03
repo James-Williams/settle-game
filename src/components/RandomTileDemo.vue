@@ -1,6 +1,9 @@
 <template>
   <div class="page">
-    <Tile @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
+    <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
+    <div>
+      <strong>Remaining: {{ this.tiles.length }}</strong>
+    </div>
     <div>
       <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
     </div>
@@ -20,9 +23,8 @@ import Moves from '@/Moves'
 export default {
   data () {
     return {
-      pickedTile: {
-        sides: [ 'g', 'g', 'g', 'g' ]
-      },
+      pickedTile: null,
+      pickedIdx: null,
       okSlots: {},
       tiles: TileLibrary.uniqueTiles(),
       grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
@@ -37,9 +39,15 @@ export default {
       this.okSlots = okSlots
     },
     randomizePick () {
-      const idx = Math.floor(Math.random() * this.tiles.length)
-      this.pickedTile = this.tiles[idx]
-      this.updateOkSlots()
+      if (this.tiles.length == 0) {
+        this.pickedTile = null
+        this.pickedIdx = null
+      } else {
+        const idx = Math.floor(Math.random() * this.tiles.length)
+        this.pickedIdx = idx
+        this.pickedTile = this.tiles[idx]
+        this.updateOkSlots()
+      }
     },
     rotate (tile) {
       const ss = []
@@ -52,6 +60,9 @@ export default {
     place (pos) {
       if (this.pickedTile) {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
+
+        this.tiles.splice(this.pickedIdx, 1)
+
         if (!(String(pos) in this.grid)) {
           const okSlots = {}
           Moves.findSlots(new Grid(this.grid), newTile).forEach((slot) => {
