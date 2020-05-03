@@ -5,6 +5,15 @@ export default {
       (x) => JSON.parse(JSON.stringify(x.tile))
     )
   },
+  allTiles () {
+    const tiles = []
+    this.packed.forEach((p) => {
+      for (let i = 0; i < p.count; i++) {
+        tiles.push(JSON.parse(JSON.stringify(p.tile)))
+      }
+    })
+    return tiles
+  },
   packed: [
     { label: 'Cloister',
       count: 4,

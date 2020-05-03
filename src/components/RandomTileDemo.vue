@@ -26,7 +26,7 @@ export default {
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
-      tiles: TileLibrary.uniqueTiles(),
+      tiles: TileLibrary.allTiles(),
       grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
     }
   },
