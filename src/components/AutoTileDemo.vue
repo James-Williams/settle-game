@@ -53,29 +53,42 @@ export default {
         for (let i = 0; i < randRot; i++) this.rotate(this.pickedTile)
 
         let bestPos = null
-        let bestCount = 0
+        let bestScore = 0
         let bestRot = 0
         for (let rot = 0; rot < 4; rot++) {
           const ks = Object.keys(this.okSlots)
           if (ks.length > 0) {
+            // TODO - Try all slots ;):)
             const i = Math.floor(Math.random() * ks.length)
             const pos = this.okSlots[ks[i]]
-            let count = 0
-            Moves.DIRECTIONS.forEach((dir) => {
+            let score = 0
+            for (let dx = 0; dx < 4; dx++) {
+              const dir = Moves.DIRECTIONS[dx]
               const ofst = [pos[0] + dir[0], pos[1] + dir[1]]
-              if (String(ofst) in this.grid) count++
-            })
-            if (count > bestCount) {
-              bestCount = count
+              if (String(ofst) in this.grid) {
+                const otherTile = this.grid[String(ofst)]
+                const type = otherTile.sides[dx]
+                if (type === 'c') {
+                  score += 4
+                } else if (type === 'r') {
+                  score += 2
+                } else {
+                  score += 1
+                }
+              }
+            }
+            if (score > bestScore) {
+              bestScore = score
               bestPos = pos
               bestRot = rot
             }
           }
           this.rotate(this.pickedTile)
         }
+
+        // Move to desired rotation for 'bestPos'
         for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
-        console.log(bestRot)
-        console.log(bestPos)
+
         window.setTimeout(() => this.place(bestPos), 75)
       }
     },
