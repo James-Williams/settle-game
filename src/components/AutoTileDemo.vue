@@ -5,7 +5,7 @@
       <strong>Remaining: {{ this.tiles.length }}</strong>
     </div>
     <div>
-      <Board @clicked="place" :tiles="grid"/>
+      <Board @clicked="place" :tiles="grid" :halfSize="true"/>
     </div>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
         for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
         console.log(bestRot)
         console.log(bestPos)
-        window.setTimeout(() => this.place(bestPos), 550)
+        window.setTimeout(() => this.place(bestPos), 75)
       }
     },
     rotate (tile) {

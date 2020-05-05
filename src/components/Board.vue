@@ -2,7 +2,7 @@
   <div class="grid">
     <div v-for="y in rangeY" :key="y">
       <div class="tile" v-for="x in rangeX" :key="x">
-        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" :selectable="isSelectable(x, y)"/>
+        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :halfSize="halfSize"/>
       </div>
     </div>
   </div>
@@ -19,6 +19,10 @@ export default {
     selectable: {
       type: Object,
       default: () => { return {} }
+    },
+    halfSize: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

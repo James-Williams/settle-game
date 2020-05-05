@@ -1,7 +1,7 @@
 <template>
-  <div class="tile">
-    <svg v-if="type.blank" @click="$emit('clicked')" class="blank" width="100" height="100"/>
-    <svg v-else @click="$emit('clicked')" width="100" height="100" style="background: green">
+  <div :class="{tile: true, halfSize: halfSize}">
+    <svg v-if="type.blank" @click="$emit('clicked')" class="blank"/>
+    <svg v-else @click="$emit('clicked')" style="background: green">
 
       <rect v-if="type.sides[0] == 'r'" x="42" y="00" width="16" height="50" style="stroke:none;fill:white"/>
       <rect v-if="type.sides[1] == 'r'" x="50" y="42" width="50" height="16" style="stroke:none;fill:white"/>
@@ -34,6 +34,10 @@ export default {
     selectable: {
       type: Boolean,
       default: false
+    },
+    halfSize: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -62,6 +66,22 @@ export default {
 .tile {
   display: inline-block;
   position: relative;
+  width: 100px;
+  height: 100px;
+  svg {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 0;
+  }
+}
+.tile.halfSize {
+  width: 50px;
+  height: 50px;
+  svg {
+    transform: scale(0.5) translate(-50px, -50px);
+  }
 }
 .selectable {
   position: absolute;
