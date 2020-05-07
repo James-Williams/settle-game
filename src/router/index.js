@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import DemoPage from '@/components/DemoPage'
 import AutoTileDemo from '@/components/AutoTileDemo'
-import RandomTileDemo from '@/components/RandomTileDemo'
+import PlaceDemo from '@/components/PlaceDemo'
 
 Vue.use(Router)
 
@@ -14,8 +14,8 @@ export default new Router({
       component: DemoPage
     },
     {
-      path: '/random',
-      component: RandomTileDemo
+      path: '/place',
+      component: PlaceDemo
     },
     {
       path: '/auto',

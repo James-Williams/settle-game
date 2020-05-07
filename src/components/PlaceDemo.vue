@@ -2,7 +2,7 @@
   <div class="page">
     <div>
       <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
-      <strong>Remaining: {{ this.tiles.length }}</strong>
+      <div><strong>Remaining: {{ this.tiles.length }}</strong></div>
     </div>
     <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
   </div>
