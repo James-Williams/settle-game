@@ -60,29 +60,29 @@ export default {
         for (let rot = 0; rot < 4; rot++) {
           const ks = Object.keys(this.okSlots)
           if (ks.length > 0) {
-            // TODO - Try all slots ;):)
-            const i = Math.floor(Math.random() * ks.length)
-            const pos = this.okSlots[ks[i]]
-            let score = 0
-            for (let dx = 0; dx < 4; dx++) {
-              const dir = Moves.DIRECTIONS[dx]
-              const ofst = [pos[0] + dir[0], pos[1] + dir[1]]
-              if (String(ofst) in this.grid) {
-                const otherTile = this.grid[String(ofst)]
-                const type = otherTile.sides[dx]
-                if (type === 'c') {
-                  score += 4
-                } else if (type === 'r') {
-                  score += 2
-                } else {
-                  score += 1
+            for (let i = 0; i< ks.length; i++) {
+              const pos = this.okSlots[ks[i]]
+              let score = 0
+              for (let dx = 0; dx < 4; dx++) {
+                const dir = Moves.DIRECTIONS[dx]
+                const ofst = [pos[0] + dir[0], pos[1] + dir[1]]
+                if (String(ofst) in this.grid) {
+                  const otherTile = this.grid[String(ofst)]
+                  const type = otherTile.sides[dx]
+                  if (type === 'c') {
+                    score += 4
+                  } else if (type === 'r') {
+                    score += 2
+                  } else {
+                    score += 1
+                  }
                 }
               }
-            }
-            if (score > bestScore) {
-              bestScore = score
-              bestPos = pos
-              bestRot = rot
+              if (score > bestScore) {
+                bestScore = score
+                bestPos = pos
+                bestRot = rot
+              }
             }
           }
           this.rotate(this.pickedTile)
