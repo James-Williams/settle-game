@@ -60,7 +60,7 @@ export default {
         for (let rot = 0; rot < 4; rot++) {
           const ks = Object.keys(this.okSlots)
           if (ks.length > 0) {
-            for (let i = 0; i< ks.length; i++) {
+            for (let i = 0; i < ks.length; i++) {
               const pos = this.okSlots[ks[i]]
               let score = 0
               for (let dx = 0; dx < 4; dx++) {
