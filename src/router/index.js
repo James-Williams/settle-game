@@ -11,15 +11,23 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/demo/place/'
+    },
+    {
+      path: '/demo/pick/',
       component: DemoPage
     },
     {
-      path: '/place',
+      path: '/demo/place/',
       component: PlaceDemo
     },
     {
-      path: '/auto',
+      path: '/demo/auto/',
       component: AutoTileDemo
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })
