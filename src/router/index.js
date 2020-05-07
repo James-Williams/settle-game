@@ -19,14 +19,14 @@ export default new Router({
       component: AutoTileDemo
     },
     {
-      label: 'Placing Demo',
-      path: '/demo/place/',
-      component: PlaceDemo
-    },
-    {
       label: 'Picker Demo',
       path: '/demo/pick/',
       component: PickerDemo
+    },
+    {
+      label: 'Placing Demo',
+      path: '/demo/place/',
+      component: PlaceDemo
     },
     {
       path: '*',
