@@ -1,12 +1,10 @@
 <template>
   <div class="page">
-    <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
     <div>
+      <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
       <strong>Remaining: {{ this.tiles.length }}</strong>
     </div>
-    <div>
-      <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
-    </div>
+    <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
   </div>
 </template>
 
@@ -93,5 +91,6 @@ export default {
   div {
     margin-bottom: 15px;
   }
+  height: 100%;
 }
 </style>

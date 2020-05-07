@@ -20,5 +20,6 @@ export default {
   margin-top: 15px;
   box-sizing: content-box;
   line-height: 0;
+  height: 100vh;
 }
 </style>

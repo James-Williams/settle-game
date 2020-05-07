@@ -72,6 +72,9 @@ export default {
 .grid {
   background: grey;
   white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  height: 100%;
 }
 .tile {
   position: relative;
