@@ -1,7 +1,7 @@
 <template>
   <div class="showcase">
     <div class="item" v-for="(tile, idx) in tiles" :key="idx">
-      <Tile @clicked="clicked(tile)" :type="tile" :key="idx"/>
+      <Tile @clicked="clicked(tile)" :type="tile" :key="idx" :halfSize="true"/>
       <div @click="clicked(tile)" v-if="tile === selected" class="selected"></div>
     </div>
   </div>

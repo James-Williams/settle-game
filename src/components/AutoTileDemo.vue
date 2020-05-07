@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <Header />
     <Tile v-if="this.pickedTile" :type="pickedTile" />
     <div>
       <strong>Remaining: {{ this.tiles.length }}</strong>
@@ -16,6 +17,7 @@ import Tile from './Tile'
 import TileLibrary from '@/TileLibrary'
 import TilePicker from './TilePicker'
 import Board from './Board'
+import Header from './Header'
 
 import Grid from '@/Grid'
 import Moves from '@/Moves'
@@ -126,7 +128,8 @@ export default {
   components: {
     Tile,
     TilePicker,
-    Board
+    Board,
+    Header
   }
 }
 </script>

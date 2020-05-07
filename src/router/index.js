@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DemoPage from '@/components/DemoPage'
+import PickerDemo from '@/components/PickerDemo'
 import AutoTileDemo from '@/components/AutoTileDemo'
 import PlaceDemo from '@/components/PlaceDemo'
 
@@ -14,16 +14,19 @@ export default new Router({
       redirect: '/demo/place/'
     },
     {
-      path: '/demo/pick/',
-      component: DemoPage
+      label: 'Auto Map Demo',
+      path: '/demo/auto/',
+      component: AutoTileDemo
     },
     {
+      label: 'Placing Demo',
       path: '/demo/place/',
       component: PlaceDemo
     },
     {
-      path: '/demo/auto/',
-      component: AutoTileDemo
+      label: 'Picker Demo',
+      path: '/demo/pick/',
+      component: PickerDemo
     },
     {
       path: '*',

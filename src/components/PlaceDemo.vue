@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <Header />
     <div>
       <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
       <div><strong>Remaining: {{ this.tiles.length }}</strong></div>
@@ -14,6 +15,7 @@ import Tile from './Tile'
 import TileLibrary from '@/TileLibrary'
 import TilePicker from './TilePicker'
 import Board from './Board'
+import Header from './Header'
 
 import Grid from '@/Grid'
 import Moves from '@/Moves'
@@ -79,6 +81,7 @@ export default {
     this.randomizePick()
   },
   components: {
+    Header,
     Tile,
     TilePicker,
     Board
