@@ -1,7 +1,7 @@
 <template>
   <div class="showcase">
     <div class="item" v-for="(tile, idx) in tiles" :key="idx">
-      <Tile @clicked="clicked(tile)" :type="tile" :key="idx" :halfSize="true"/>
+      <Tile @clicked="clicked(tile)" :type="tile" :key="idx" :halfSize="true" :selectable="true" :meeple="tile.meeple" />
       <div @click="clicked(tile)" v-if="tile === selected" class="selected"></div>
     </div>
   </div>
@@ -15,14 +15,14 @@ import TileLibrary from '@/TileLibrary'
 
 export default {
   data () {
-    var ts = []
-    TileLibrary.uniqueTiles().forEach((x) => {
-      x.selectable = 1
-      ts.push(x)
-    })
     return {
-      selected: null,
-      tiles: ts
+      selected: null
+    }
+  },
+  props: {
+    tiles: {
+      type: Array,
+      default: TileLibrary.uniqueTiles()
     }
   },
   methods: {
