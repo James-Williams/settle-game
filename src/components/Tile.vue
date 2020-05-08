@@ -17,6 +17,10 @@
 
       <polygon v-if="type.cloister" points="36,36 50,30 64,36 64,64 36,64" style="fill:brown;" />
 
+      <polygon :points="meeplePoints" :style="meepleStyle"/>
+      <polygon :points="meeplePoints" :style="meepleStyleMirrorX"/>
+      <path d="M-.03,.15 a.05,.05 0 1,0 .06,0" :style="meepleStyle" />
+
       <circle v-if="type.bonus" cx="82" cy="18" r="10" style="fill:blue" />
 
       <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
@@ -51,6 +55,25 @@ export default {
     }
   },
   computed: {
+    meepleTranslate() {
+      return 'translate(50px, 50px)'
+    },
+    meeplePoints () {
+      return '0,-.05 .05,-.15 .15,-.15 .07,.01 .07,.06 .15,.10 .15,.13 .05,.15   0,.15'
+    },
+    meepleStyle () {
+      return {
+        fill: 'red',
+        transform: 'scale(100, -100) ' + this.meepleTranslate,
+        'transform-origin': 'center'
+      }
+    },
+    meepleStyleMirrorX () {
+      return {
+        ...this.meepleStyle,
+        transform: 'scale(-100, -100) ' + this.meepleTranslate
+      }
+    },
     fillMiddle () {
       const sides = this.type.sides
       return !this.type.split && (
