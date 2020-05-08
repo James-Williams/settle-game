@@ -18,44 +18,44 @@ export default {
       tiles: [
         {
           sides: ['r', 'r', 'r', 'r'],
-          meeple: {color: 'black', position: [-1, 0]}
+          meeple: { color: 'black', position: [-1, 0] }
         },
         {
           sides: ['c', 'r', 'r', 'r'],
-          meeple: {color: 'orange', position: [0, 1] }
+          meeple: { color: 'orange', position: [0, 1] }
         },
         {
           sides: ['r', 'r', 'r', 'r'],
-          meeple: {color: 'red', position: [1, 0] }
+          meeple: { color: 'red', position: [1, 0] }
         },
         {
           sides: ['g', 'g', 'g', 'g'],
           cloister: true,
-          meeple: {color: 'blue', position: [0, 0] }
+          meeple: { color: 'blue', position: [0, 0] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [0, 1] }
+          meeple: { color: 'blue', position: [0, 1] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [1, 0] }
+          meeple: { color: 'blue', position: [1, 0] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [0, -1] }
+          meeple: { color: 'blue', position: [0, -1] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [-1, 0] }
+          meeple: { color: 'blue', position: [-1, 0] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [-1, -1] }
+          meeple: { color: 'blue', position: [-1, -1] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: {color: 'blue', position: [-1, 1] }
+          meeple: { color: 'blue', position: [-1, 1] }
         }
       ]
     }
