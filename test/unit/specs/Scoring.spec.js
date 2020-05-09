@@ -134,6 +134,61 @@ describe('tileGraph', () => {
         }
       })
   })
+
+  it('Graph for full road', () => {
+    const fullRoad = {
+      sides: ['r', 'r', 'r', 'r'],
+    }
+
+    expect(Scoring.tileGraph(fullRoad))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ String([0,-1]), String([0,1]) ]),
+          [String([-1,0])]: new Set([ String([0,-1]), String([0,1]) ]),
+          [String([0, 1])]: new Set([ String([-1,0]), String([1,0]) ]),
+          [String([0,-1])]: new Set([ String([-1,0]), String([1,0]) ]),
+          [String([-1,-1])]: new Set(),
+          [String([-1, 1])]: new Set(),
+          [String([ 1,-1])]: new Set(),
+          [String([ 1, 1])]: new Set()
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'r', ofst: [1,0] },
+          [String([-1,0])]: { type: 'r', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'r', ofst: [0,1] },
+          [String([0,-1])]: { type: 'r', ofst: [0,-1] },
+          [String([-1,-1])]: { type: 'g', ofst:[-1,-1] },
+          [String([-1, 1])]: { type: 'g', ofst:[-1, 1] },
+          [String([ 1,-1])]: { type: 'g', ofst:[ 1,-1] },
+          [String([ 1, 1])]: { type: 'g', ofst:[ 1, 1] }
+        }
+      })
+  })
+
+  it('Graph for cloister', () => {
+    const cloister = {
+      sides: ['g', 'g', 'g', 'g'],
+      cloister:true
+    }
+
+    expect(Scoring.tileGraph(cloister))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ String([0,-1]), String([0,1]) ]),
+          [String([-1,0])]: new Set([ String([0,-1]), String([0,1]) ]),
+          [String([0, 1])]: new Set([ String([-1,0]), String([1,0]) ]),
+          [String([0,-1])]: new Set([ String([-1,0]), String([1,0]) ]),
+          [String([0,0])]: new Set(),
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'g', ofst: [1,0] },
+          [String([-1,0])]: { type: 'g', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'g', ofst: [0,1] },
+          [String([0,-1])]: { type: 'g', ofst: [0,-1] },
+          [String([0,0])]: { type: 'cloister', ofst:[0, 0] },
+        }
+      })
+  })
 })
 
 describe('freeSlots', () => {
@@ -258,7 +313,7 @@ describe('meepleSlots', () => {
 
     expect(Scoring.meepleSlots(roadCloister).sort())
       .toEqual([
-        [0,1], [0,-1], [-1,0], [1,0], [0,0]
+        [0,1], [0,-1], [-1,0], [1,0], [0,0], [-1,-1], [1,-1]
       ].sort())
   })
 })

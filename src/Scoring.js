@@ -2,8 +2,7 @@
 import Moves from '@/Moves'
 
 export default class {
-
-  static gridGraph(grid) {
+  static gridGraph (grid) {
     const adj = {}
     const nodes = {}
 
@@ -20,7 +19,7 @@ export default class {
         const eastKey = [pos[0] + dir[0], pos[1] + dir[1]]
         const eastTile = grid.get(eastKey)
         if (eastTile) {
-          // Todo - Fix for farm connections
+          // TODO - Fix for farm connections
           const adjDir = [-1 * dir[0], -1 * dir[1]]
           const nodeKey = String(pos) + ',' + String(dir)
           const adjKey = String(eastKey) + ',' + String(adjDir)
@@ -32,7 +31,7 @@ export default class {
     return { nodes: nodes, adj: adj }
   }
 
-  static partitionGraph(graph) {
+  static partitionGraph (graph) {
     const partitions = {}
     const membership = {}
     let nextPartition = 0
@@ -68,7 +67,7 @@ export default class {
     return { partitions: partitions, membership: membership }
   }
 
-  static globalTileGraph(tile, position) {
+  static globalTileGraph (tile, position) {
     const tg = this.tileGraph(tile)
     const nodes = {}
     const adj = {}
@@ -107,15 +106,30 @@ export default class {
 
       nodes[String(vec)] = { type: side, ofst: vec }
       if (tile.meeple && String(vec) === String(tile.meeple.position)) {
-      nodes[String(vec)].meeple = {...tile.meeple}
+        nodes[String(vec)].meeple = {...tile.meeple}
       }
+
+      if (side === 'r') {
+        const ds = (vec[0]) ? [[0, -1], [0, 1]] : [[-1, 0], [1, 0]]
+        ds.forEach((d) => {
+          const v = [ vec[0] + d[0], vec[1] + d[1] ]
+          const k = String(v)
+          nodes[k] = { type: 'g', ofst: v }
+          adj[k] = new Set()
+        })
+      }
+    }
+
+    if (tile.cloister) {
+      const k = String([0, 0])
+      nodes[k] = { type: 'cloister', ofst: [0, 0] }
+      adj[k] = new Set()
     }
 
     return { adj: adj, nodes: nodes }
   }
 
   static freeSlots (grid, pos) {
-
     const graph = this.gridGraph(grid)
     const part = this.partitionGraph(graph)
     const meepleMap = {}
@@ -146,33 +160,8 @@ export default class {
     return slots
   }
 
-  // TODO - Replace this with a call to tileGraph with Object.keys
   static meepleSlots (tile) {
-    const res = []
-
-    if (tile.cloister) {
-      return [ ...Moves.DIRECTIONS, [0, 0] ]
-    }
-
-    for (let i = 0; i < 4; i++) {
-      const prevI = (i === 0) ? 3 : (i - 1)
-      const prevSide = tile.sides[prevI]
-      const side = tile.sides[i]
-      const vec = Moves.DIRECTIONS[i]
-      if (side === 'g' || side === 'c') {
-        res.push(vec)
-      }
-      if (side === 'r') {
-        res.push(vec)
-        if (vec[0] === 0) {
-          if (prevSide !== 'r') res.push([vec[1] * -1, vec[1]])
-          res.push([vec[1] * 1, vec[1]])
-        } else if (vec[1] === 0) {
-          res.push([vec[0], vec[0] * -1])
-          if (prevSide !== 'r') res.push([vec[0], vec[0] * 1])
-        }
-      }
-    }
-    return res
+    return Object.keys(this.tileGraph(tile).nodes)
+      .map((x) => x.split(',').map((y) => parseInt(y)))
   }
 }
