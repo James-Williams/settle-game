@@ -21,6 +21,7 @@ import Header from './Header'
 
 import Grid from '@/Grid'
 import Moves from '@/Moves'
+import Scoring from '@/Scoring'
 
 export default {
   data () {
@@ -91,7 +92,16 @@ export default {
         // Move to desired rotation for 'bestPos'
         for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
 
+        this.randomMeeple()
+
         window.setTimeout(() => this.place(bestPos), 75)
+      }
+    },
+    randomMeeple () {
+      if (Math.random() > 0.5) {
+        const slots = Scoring.meepleSlots(this.pickedTile)
+        const pick = Math.floor(Math.random() * slots.length)
+        this.pickedTile.meeple = { color: 'orange', position: slots[pick] }
       }
     },
     rotate (tile) {
