@@ -189,6 +189,35 @@ describe('tileGraph', () => {
         }
       })
   })
+
+  it('Graph for cloister with road', () => {
+    const cloister = {
+      sides: ['g', 'g', 'g', 'r'],
+      cloister:true
+    }
+
+    expect(Scoring.tileGraph(cloister))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ String([0,-1]), String([0,1]) ]),
+          [String([-1,0])]: new Set(),
+          [String([0, 1])]: new Set([ String([1,0]),String([-1,1]) ]),
+          [String([0,-1])]: new Set([ String([1,0]), String([-1,-1]) ]),
+          [String([0,0])]: new Set(),
+          [String([-1,-1])]: new Set([ String([0,-1]) ]),
+          [String([-1,1])]: new Set([ String([0, 1]) ])
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'g', ofst: [1,0] },
+          [String([-1,0])]: { type: 'r', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'g', ofst: [0,1] },
+          [String([0,-1])]: { type: 'g', ofst: [0,-1] },
+          [String([0,0])]: { type: 'cloister', ofst:[0, 0] },
+          [String([-1,-1])]: { type: 'g', ofst:[-1, -1] },
+          [String([-1,1])]: { type: 'g', ofst:[-1, 1] },
+        }
+      })
+  })
 })
 
 describe('freeSlots', () => {

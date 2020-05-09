@@ -117,6 +117,22 @@ export default class {
           nodes[k] = { type: 'g', ofst: v }
           adj[k] = new Set()
         })
+        if (tile.sides[prevIdx] === 'g') {
+          const d = ds[0]
+          const v = [ vec[0] + d[0], vec[1] + d[1] ]
+          const w = Moves.DIRECTIONS[prevIdx]
+          adj[String(v)].add(String(w))
+          if (!(String(w) in adj)) adj[String(w)] = new Set()
+          adj[String(w)].add(String(v))
+        }
+        if (tile.sides[nextIdx] === 'g') {
+          const d = ds[1]
+          const v = [ vec[0] + d[0], vec[1] + d[1] ]
+          const w = Moves.DIRECTIONS[nextIdx]
+          adj[String(v)].add(String(w))
+          if (!(String(w) in adj)) adj[String(w)] = new Set()
+          adj[String(w)].add(String(v))
+        }
       }
     }
 
