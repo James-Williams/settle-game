@@ -53,6 +53,35 @@ describe('partitionGraph', () => {
         }
       })
   })
+  it('should be transitive', () => {
+    const graph = {
+      nodes: {
+        0: {a:'b'},
+        1: {c:'d'},
+        2: {1:2},
+        3: {3:4}
+      },
+      adj: {
+        0: new Set(['3']),
+        1: new Set(['2','3']),
+        2: new Set(['1']),
+        3: new Set(['1','0']),
+      }
+    }
+
+    expect(Scoring.partitionGraph(graph))
+      .toEqual({
+        partitions: {
+          0: new Set(['3', '0', '1', '2']),
+        },
+        membership: {
+          0: '0',
+          1: '0',
+          2: '0',
+          3: '0'
+        }
+      })
+  })
 })
 
 describe('globalTileGraph', () => {

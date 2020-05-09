@@ -38,21 +38,31 @@ export default class {
     let nextPartition = 0
 
     Object.keys(graph.nodes).forEach((nodeKey) => {
-      let p = null
-      graph.adj[nodeKey].forEach((adjKey) => {
-        if (adjKey in membership) {
-          if (p !== null && p !== membership[adjKey]) {
-            throw new Error('Clashing partitions')
+      if (!(nodeKey in membership)) {
+        const c = new Set([nodeKey])
+        let q = Array.from(graph.adj[nodeKey])
+        while (q.length > 0) {
+          const k = q.shift()
+          if (!c.has(k)) {
+            c.add(k)
+            q = q.concat(Array.from(graph.adj[k]))
           }
-          p = membership[adjKey]
         }
-      })
-      if (p === null) {
-        p = nextPartition++
-        partitions[p] = new Set()
+        let p = null
+        Array.from(c).forEach((nodeKey) => {
+          if (nodeKey in membership) {
+            p = membership[nodeKey]
+          }
+        })
+        if (p === null) {
+          p = String(nextPartition++)
+          partitions[p] = new Set()
+        }
+        Array.from(c).forEach((nodeKey) => {
+          partitions[p].add(nodeKey)
+          membership[nodeKey] = p
+        })
       }
-      partitions[p].add(nodeKey)
-      membership[nodeKey] = String(p)
     })
 
     return { partitions: partitions, membership: membership }
@@ -105,8 +115,35 @@ export default class {
   }
 
   static freeSlots (grid, pos) {
-    const tile = grid.get(pos)
-    return this.meepleSlots(tile)
+
+    const graph = this.gridGraph(grid)
+    const part = this.partitionGraph(graph)
+    const meepleMap = {}
+
+    Object.keys(part.partitions).forEach((id) => {
+      meepleMap[id] = []
+      Array.from(part.partitions[id].values()).forEach((nodeId) => {
+        const node = graph.nodes[nodeId]
+        if (node.meeple) {
+          meepleMap[id].push(node.meeple)
+        }
+      })
+    })
+
+    const slotKeys = this.meepleSlots(grid.get(pos))
+      .map((x) => pos.concat(x))
+      .map(String)
+
+    const slots = []
+    slotKeys.forEach((slotKey) => {
+      const par = part.membership[slotKey]
+      if (meepleMap[par].length === 0) {
+        const slot = graph.nodes[slotKey].ofst
+        slots.push(slot)
+      }
+    })
+
+    return slots
   }
 
   // TODO - Replace this with a call to tileGraph with Object.keys
