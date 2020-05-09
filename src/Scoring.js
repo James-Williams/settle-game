@@ -102,7 +102,8 @@ export default class {
       if (tile.sides[nextIdx] === side) {
         set.add(String(Moves.DIRECTIONS[nextIdx]))
       }
-      adj[String(vec)] = set
+      if (!(String(vec) in adj)) adj[String(vec)] = new Set()
+      set.forEach((x) => adj[String(vec)].add(x))
 
       nodes[String(vec)] = { type: side, ofst: vec }
       if (tile.meeple && String(vec) === String(tile.meeple.position)) {
