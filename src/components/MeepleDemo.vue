@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <Header />
-    <TilePicker @selected="clickTile" :tiles="demoTiles" />
+    <TilePicker :tiles="demoTiles" />
     <Tile v-if="this.pickedTile" :type="pickedTile" />
     <div>
       <strong>Remaining: {{ this.tiles.length }}</strong>

@@ -44,7 +44,10 @@ export default class {
           const k = q.shift()
           if (!c.has(k)) {
             c.add(k)
-            q = q.concat(Array.from(graph.adj[k]))
+            // TODO - Only bad graphs have no adj[k]
+            if (graph.adj[k]) {
+              q = q.concat(Array.from(graph.adj[k]))
+            }
           }
         }
         let p = null
@@ -191,7 +194,8 @@ export default class {
       meepleMap[id] = []
       Array.from(part.partitions[id].values()).forEach((nodeId) => {
         const node = graph.nodes[nodeId]
-        if (node.meeple) {
+        // TODO - Only bad graphs have !node
+        if (node && node.meeple) {
           meepleMap[id].push(node.meeple)
         }
       })
