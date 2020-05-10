@@ -95,13 +95,21 @@ export default {
         window.setTimeout(() => this.place(bestPos), 75)
       }
     },
+    randomColor() {
+      const colors = [ 'orange', 'blue', 'red', 'black' ] 
+      const idx = Math.floor(Math.random() * colors.length)
+      return colors[idx]
+    },
     randomMeeple (pos) {
       const grid = new Grid(this.grid)
       if (Math.random() > 0.5) {
         const slots = Scoring.freeSlots(grid, pos)
         const pick = Math.floor(Math.random() * slots.length)
         const key = String(pos)
-        this.grid[key].meeple = { color: 'orange', position: slots[pick] }
+        this.grid[key].meeple = {
+          color: this.randomColor(),
+          position: slots[pick]
+        }
       }
     },
     rotate (tile) {
