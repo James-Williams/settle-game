@@ -96,12 +96,31 @@ export default class {
       const side = tile.sides[i]
       const vec = Moves.DIRECTIONS[i]
       const set = new Set()
-      if (tile.sides[prevIdx] === side) {
-        set.add(String(Moves.DIRECTIONS[prevIdx]))
+
+      // Neighbours
+      if (!(side === 'c') || !tile.split) {
+        if (tile.sides[prevIdx] === side) {
+          set.add(String(Moves.DIRECTIONS[prevIdx]))
+        }
+        if (tile.sides[nextIdx] === side) {
+          set.add(String(Moves.DIRECTIONS[nextIdx]))
+        }
       }
-      if (tile.sides[nextIdx] === side) {
-        set.add(String(Moves.DIRECTIONS[nextIdx]))
+
+      // Opposites
+      const oppositeIdx = (i + 2) % 4
+      if (tile.sides[oppositeIdx] === side && tile.sides[nextIdx] !== side) {
+        if (tile.split) {
+          if (side === 'g') {
+            set.add(String(Moves.DIRECTIONS[oppositeIdx]))
+          }
+        } else {
+          if (side === 'c') {
+            set.add(String(Moves.DIRECTIONS[oppositeIdx]))
+          }
+        }
       }
+
       if (!(String(vec) in adj)) adj[String(vec)] = new Set()
       set.forEach((x) => adj[String(vec)].add(x))
 

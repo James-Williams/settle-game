@@ -165,6 +165,102 @@ describe('tileGraph', () => {
       })
   })
 
+  it('Graph for split corner city', () => {
+    const cornerCity = {
+      sides: ['c', 'c', 'g', 'g'],
+      split: true
+    }
+
+    expect(Scoring.tileGraph(cornerCity))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ ]),
+          [String([-1,0])]: new Set([ String([0,-1]) ]),
+          [String([0, 1])]: new Set([ ]),
+          [String([0,-1])]: new Set([ String([-1,0]) ]),
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'c', ofst: [1,0] },
+          [String([0, 1])]: { type: 'c', ofst: [0,1] },
+          [String([-1,0])]: { type: 'g', ofst: [-1,0] },
+          [String([0,-1])]: { type: 'g', ofst: [0,-1] },
+        }
+      })
+  })
+
+  it('Graph for split city', () => {
+    const cornerCity = {
+      sides: ['c', 'g', 'c', 'g'],
+      split: true
+    }
+
+    expect(Scoring.tileGraph(cornerCity))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ String([-1,0]) ]),
+          [String([-1,0])]: new Set([ String([ 1,0]) ]),
+          [String([0, 1])]: new Set([ ]),
+          [String([0,-1])]: new Set([ ]),
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'g', ofst: [1,0] },
+          [String([-1,0])]: { type: 'g', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'c', ofst: [0,1] },
+          [String([0,-1])]: { type: 'c', ofst: [0,-1] },
+        }
+      })
+  })
+
+  it('Graph for bridge city', () => {
+    const cornerCity = {
+      sides: ['c', 'g', 'c', 'g']
+    }
+
+    expect(Scoring.tileGraph(cornerCity))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ ]),
+          [String([-1,0])]: new Set([ ]),
+          [String([0, 1])]: new Set([ String([0,-1]) ]),
+          [String([0,-1])]: new Set([ String([0, 1]) ]),
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'g', ofst: [1,0] },
+          [String([-1,0])]: { type: 'g', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'c', ofst: [0,1] },
+          [String([0,-1])]: { type: 'c', ofst: [0,-1] },
+        }
+      })
+  })
+
+  it('Graph for corner road corner city', () => {
+    const cornerRoad = {
+      sides: ['c', 'r', 'r', 'c'],
+    }
+
+    expect(Scoring.tileGraph(cornerRoad))
+      .toEqual({
+        adj: {
+          [String([ 1,0])]: new Set([ String([0,-1]) ]),
+          [String([-1,0])]: new Set([ String([0,1]) ]),
+          [String([0, 1])]: new Set([ String([-1,0]) ]),
+          [String([0,-1])]: new Set([ String([1,0]) ]),
+          [String([-1,-1])]: new Set([ String([1,1]) ]),
+          [String([ 1,-1])]: new Set(),
+          [String([ 1, 1])]: new Set([ String([-1,-1]) ]),
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'r', ofst: [1,0] },
+          [String([-1,0])]: { type: 'c', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'c', ofst: [0,1] },
+          [String([0,-1])]: { type: 'r', ofst: [0,-1] },
+          [String([-1,-1])]: { type: 'g', ofst:[-1,-1] },
+          [String([ 1,-1])]: { type: 'g', ofst:[ 1,-1] },
+          [String([ 1, 1])]: { type: 'g', ofst:[ 1, 1] }
+        }
+      })
+  })
+
   it('Graph for cloister', () => {
     const cloister = {
       sides: ['g', 'g', 'g', 'g'],
