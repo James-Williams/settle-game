@@ -93,6 +93,7 @@ export default class {
     for (let i = 0; i < 4; i++) {
       const prevIdx = (i === 0) ? 3 : i - 1
       const nextIdx = (i === 3) ? 0 : i + 1
+      const oppositeIdx = (i + 2) % 4
       const side = tile.sides[i]
       const vec = Moves.DIRECTIONS[i]
       const set = new Set()
@@ -108,7 +109,6 @@ export default class {
       }
 
       // Opposites
-      const oppositeIdx = (i + 2) % 4
       if (tile.sides[oppositeIdx] === side && tile.sides[nextIdx] !== side) {
         if (tile.split) {
           if (side === 'g') {
@@ -119,6 +119,23 @@ export default class {
             set.add(String(Moves.DIRECTIONS[oppositeIdx]))
           }
         }
+      }
+
+      // Corner Road
+      if (side === 'r' &&
+          tile.sides[nextIdx] === 'r' &&
+          tile.sides[oppositeIdx] !== 'r' &&
+          tile.sides[prevIdx] !== 'r') {
+
+        const ds = (vec[0]) ? [[0, -1], [0, 1]] : [[-1, 0], [1, 0]]
+        const d = ds[1] // TODO - Modify this
+        const v = [vec[0] + d[0], vec[1] + d[1]]
+        const w = [-1 * v[0], -1 * v[1]]
+
+        if (!(String(v) in adj)) adj[String(v)] = new Set()
+        adj[String(v)].add(String(w))
+        if (!(String(w) in adj)) adj[String(w)] = new Set()
+        adj[String(w)].add(String(v))
       }
 
       if (!(String(vec) in adj)) adj[String(vec)] = new Set()
@@ -135,7 +152,7 @@ export default class {
           const v = [ vec[0] + d[0], vec[1] + d[1] ]
           const k = String(v)
           nodes[k] = { type: 'g', ofst: v }
-          adj[k] = new Set()
+          if (!(String(k) in adj)) adj[String(k)] = new Set()
         })
         if (tile.sides[prevIdx] === 'g') {
           const d = ds[0]
