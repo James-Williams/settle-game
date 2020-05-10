@@ -130,8 +130,8 @@ export default class {
           tile.sides[oppositeIdx] !== 'r' &&
           tile.sides[prevIdx] !== 'r') {
 
-        const ds = (vec[0]) ? [[0, -1], [0, 1]] : [[-1, 0], [1, 0]]
-        const d = ds[1] // TODO - Modify this
+        const m = ((i % 2) === 1) ? 1 : -1
+        const d = (vec[0]) ? [0, m * vec[0]] : [m * vec[1], 0]
         const v = [vec[0] + d[0], vec[1] + d[1]]
         const w = [-1 * v[0], -1 * v[1]]
 
