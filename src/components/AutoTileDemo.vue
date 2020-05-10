@@ -92,16 +92,16 @@ export default {
         // Move to desired rotation for 'bestPos'
         for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
 
-        this.randomMeeple()
-
         window.setTimeout(() => this.place(bestPos), 75)
       }
     },
-    randomMeeple () {
+    randomMeeple (pos) {
+      const grid = new Grid(this.grid)
       if (Math.random() > 0.5) {
-        const slots = Scoring.meepleSlots(this.pickedTile)
+        const slots = Scoring.freeSlots(grid, pos)
         const pick = Math.floor(Math.random() * slots.length)
-        this.pickedTile.meeple = { color: 'orange', position: slots[pick] }
+        const key = String(pos)
+        this.grid[key].meeple = { color: 'orange', position: slots[pick] }
       }
     },
     rotate (tile) {
@@ -126,6 +126,9 @@ export default {
           if (String(pos) in okSlots) {
             let grid = {...this.grid, [String(pos)]: newTile}
             this.grid = grid
+
+            this.randomMeeple(pos)
+
             this.randomizePick()
           }
         }

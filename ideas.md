@@ -1,5 +1,4 @@
 
-
 == Future Ideas ==
 
 * Improving mobile experience
@@ -28,3 +27,11 @@
   * Tree eval usig IDS
   * Heuristic based
   * ML based
+
+* History
+  * Go back move-by-move
+  * Store everything as immutable
+
+* Optimisation
+  * Create graphs etc. iteratively
+  * Ecapsulate all related state in the Grid object
