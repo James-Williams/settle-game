@@ -95,8 +95,8 @@ export default {
         window.setTimeout(() => this.place(bestPos), 75)
       }
     },
-    randomColor() {
-      const colors = [ 'orange', 'blue', 'red', 'black' ] 
+    randomColor () {
+      const colors = [ 'orange', 'blue', 'red', 'black' ]
       const idx = Math.floor(Math.random() * colors.length)
       return colors[idx]
     },
