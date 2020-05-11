@@ -2,12 +2,14 @@
   <div>
     <Header />
     <div class="options">
-      <input type="checkbox" v-model="showGraph">
-        <label>Show Graph</label>
-      </input>
-        <input type="checkbox" v-model="hideBonus">
-        <label>Hide Bonus Tiles</label>
-      </input>
+      <input type="checkbox" v-model="showGraph" />
+      <label>Show Graph</label>
+      <input type="checkbox" v-model="hideBonus" />
+      <label>Hide Bonus Tiles</label>
+      <input type="checkbox" v-model="rotate90" />
+      <label>Rotate 90&deg;</label>
+      <input type="checkbox" v-model="rotate180" />
+      <label>Rotate 180&deg;</label>
     </div>
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
@@ -32,20 +34,36 @@ import Header from '../Header'
 
 import TileLibrary from '@/TileLibrary'
 import Scoring from '@/Scoring'
+import Moves from '@/Moves'
 
 export default {
   data () {
     return {
       allTiles: TileLibrary.uniqueTiles(),
       showGraph: false,
-      hideBonus: true
+      hideBonus: true,
+      rotate90: false,
+      rotate180: false
     }
   },
   computed: {
     tiles () {
-      return this.allTiles.filter((tile) => {
+      let tiles = this.allTiles.filter((tile) => {
         return !this.hideBonus || !tile.bonus
       })
+      if (this.rotate90) {
+        tiles = tiles.map((x) => Moves.rotateTile(
+          JSON.parse(JSON.stringify(x))
+        ))
+      }
+      if (this.rotate180) {
+        tiles = tiles.map((x) => Moves.rotateTile(
+          Moves.rotateTile(
+            JSON.parse(JSON.stringify(x))
+          )
+        ))
+      }
+      return tiles
     }
   },
   methods: {

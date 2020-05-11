@@ -53,7 +53,10 @@ export default {
 
         // Auto-place tile and repeat
         const randRot = Math.floor(Math.random() * 4)
-        for (let i = 0; i < randRot; i++) this.rotate(this.pickedTile)
+        for (let i = 0; i < randRot; i++) {
+          Moves.rotateTile(this.pickedTile)
+          this.updateOkSlots()
+        }
 
         let bestPos = null
         let bestScore = 0
@@ -86,11 +89,15 @@ export default {
               }
             }
           }
-          this.rotate(this.pickedTile)
+          Moves.rotateTile(this.pickedTile)
+          this.updateOkSlots()
         }
 
         // Move to desired rotation for 'bestPos'
-        for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
+        for (let i = 0; i < bestRot; i++) {
+          Moves.rotateTile(this.pickedTile)
+          this.updateOkSlots()
+        }
 
         window.setTimeout(() => this.place(bestPos), 75)
       }
@@ -111,14 +118,6 @@ export default {
           position: slots[pick]
         }
       }
-    },
-    rotate (tile) {
-      const ss = []
-      for (var i = 0; i < tile.sides.length; i++) {
-        ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
-      }
-      tile.sides = ss
-      this.updateOkSlots()
     },
     place (pos) {
       if (this.pickedTile) {

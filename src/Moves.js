@@ -7,6 +7,15 @@ export default class {
     [-1, 0]
   ]
 
+  static rotateTile (tile) {
+    const ss = []
+    for (var i = 0; i < tile.sides.length; i++) {
+      ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
+    }
+    tile.sides = ss
+    return tile
+  }
+
   static canJoin (t1, t2, vec) {
     if ((Math.abs(vec[0]) + Math.abs(vec[1])) !== 1) {
       throw new Error('Unit vector expected')
