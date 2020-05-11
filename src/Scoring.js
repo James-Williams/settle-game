@@ -118,7 +118,7 @@ export default class {
             set.add(String(Moves.DIRECTIONS[oppositeIdx]))
           }
         } else {
-          if (side === 'c') {
+          if (side === 'c' || side === 'r') {
             set.add(String(Moves.DIRECTIONS[oppositeIdx]))
           }
         }
@@ -157,17 +157,15 @@ export default class {
           if (!(String(k) in adj)) adj[String(k)] = new Set()
         })
         if (tile.sides[prevIdx] === 'g') {
-          const d = ds[0]
-          const v = [ vec[0] + d[0], vec[1] + d[1] ]
           const w = Moves.DIRECTIONS[prevIdx]
+          const v = [ vec[0] + w[0], vec[1] + w[1] ]
           adj[String(v)].add(String(w))
           if (!(String(w) in adj)) adj[String(w)] = new Set()
           adj[String(w)].add(String(v))
         }
         if (tile.sides[nextIdx] === 'g') {
-          const d = ds[1]
-          const v = [ vec[0] + d[0], vec[1] + d[1] ]
           const w = Moves.DIRECTIONS[nextIdx]
+          const v = [ vec[0] + w[0], vec[1] + w[1] ]
           adj[String(v)].add(String(w))
           if (!(String(w) in adj)) adj[String(w)] = new Set()
           adj[String(w)].add(String(v))

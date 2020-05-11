@@ -135,6 +135,36 @@ describe('tileGraph', () => {
       })
   })
 
+  it('Graph for straight road', () => {
+    const straightRoad = {
+      sides: ['g', 'r', 'g', 'r'],
+    }
+
+    expect(Scoring.tileGraph(straightRoad))
+      .toEqual({
+        adj: {
+          [String([ 1, 0])]: new Set([ String([-1, 0]) ]),
+          [String([-1, 0])]: new Set([ String([ 1, 0]) ]),
+          [String([ 0, 1])]: new Set([ String([-1, 1]), String([ 1, 1]) ]),
+          [String([ 0,-1])]: new Set([ String([-1,-1]), String([ 1,-1]) ]),
+          [String([-1,-1])]: new Set([ String([ 0,-1]) ]),
+          [String([ 1,-1])]: new Set([ String([ 0,-1]) ]),
+          [String([-1, 1])]: new Set([ String([ 0, 1]) ]),
+          [String([ 1, 1])]: new Set([ String([ 0, 1]) ])
+        },
+        nodes: {
+          [String([ 1,0])]: { type: 'r', ofst: [1,0] },
+          [String([-1,0])]: { type: 'r', ofst: [-1,0] },
+          [String([0, 1])]: { type: 'g', ofst: [0,1] },
+          [String([0,-1])]: { type: 'g', ofst: [0,-1] },
+          [String([-1,-1])]: { type: 'g', ofst:[-1,-1] },
+          [String([-1, 1])]: { type: 'g', ofst:[-1, 1] },
+          [String([ 1,-1])]: { type: 'g', ofst:[ 1,-1] },
+          [String([ 1, 1])]: { type: 'g', ofst:[ 1, 1] }
+        }
+      })
+  })
+
   it('Graph for full road', () => {
     const fullRoad = {
       sides: ['r', 'r', 'r', 'r'],
