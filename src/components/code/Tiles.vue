@@ -1,13 +1,16 @@
 <template>
   <div>
     <Header />
+    <div class="options">
+      <input type="checkbox" v-model="showGraph">Show Graph</input>
+    </div>
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
         <span>
           <Tile :type="tile"/>
           <pre>{{ tileJson(tile) }}</pre>
         </span>
-        <span>
+        <span v-if="showGraph">
           <TileGraph :graph="graph(tile)" />
           <pre>{{ graphJson(tile) }}</pre>
         </span>
@@ -28,7 +31,8 @@ import Scoring from '@/Scoring'
 export default {
   data () {
     return {
-      tiles: TileLibrary.uniqueTiles()
+      tiles: TileLibrary.uniqueTiles(),
+      showGraph: false
     }
   },
   methods: {
