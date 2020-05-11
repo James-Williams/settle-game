@@ -10,10 +10,10 @@
 
 <script>
 
-import Tile from './Tile'
-import TilePicker from './TilePicker'
-import Board from './Board'
-import Header from './Header'
+import Tile from '../Tile'
+import TilePicker from '../TilePicker'
+import Board from '../Board'
+import Header from '../Header'
 
 export default {
   data () {

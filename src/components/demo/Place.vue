@@ -11,12 +11,12 @@
 
 <script>
 
-import Tile from './Tile'
-import TileLibrary from '@/TileLibrary'
-import TilePicker from './TilePicker'
-import Board from './Board'
-import Header from './Header'
+import Tile from '../Tile'
+import TilePicker from '../TilePicker'
+import Board from '../Board'
+import Header from '../Header'
 
+import TileLibrary from '@/TileLibrary'
 import Grid from '@/Grid'
 import Moves from '@/Moves'
 

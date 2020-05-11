@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import PickerDemo from '@/components/PickerDemo'
-import AutoTileDemo from '@/components/AutoTileDemo'
-import PlaceDemo from '@/components/PlaceDemo'
-import MeepleDemo from '@/components/MeepleDemo'
+import PickerDemo from '@/components/demo/Picker'
+import AutoTileDemo from '@/components/demo/AutoTile'
+import PlaceDemo from '@/components/demo/Place'
+import MeepleDemo from '@/components/demo/Meeple'
+import TilesCode from '@/components/code/Tiles'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
       label: 'Placing Demo',
       path: '/demo/place/',
       component: PlaceDemo
+    },
+    {
+      label: 'Tile Code',
+      path: '/code/tiles/',
+      component: TilesCode
     },
     {
       path: '*',

@@ -26,5 +26,6 @@ div {
   a {
     margin-left: 1em;
   }
+  margin-bottom: 15px;
 }
 </style>

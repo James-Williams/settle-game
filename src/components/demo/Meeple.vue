@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <Header />
+    <TilePicker :tiles="demoTiles" />
     <Tile v-if="this.pickedTile" :type="pickedTile" />
     <div>
       <strong>Remaining: {{ this.tiles.length }}</strong>
@@ -13,12 +14,12 @@
 
 <script>
 
-import Tile from './Tile'
-import TileLibrary from '@/TileLibrary'
-import TilePicker from './TilePicker'
-import Board from './Board'
-import Header from './Header'
+import Tile from '../Tile'
+import TilePicker from '../TilePicker'
+import Board from '../Board'
+import Header from '../Header'
 
+import TileLibrary from '@/TileLibrary'
 import Grid from '@/Grid'
 import Moves from '@/Moves'
 import Scoring from '@/Scoring'
@@ -30,7 +31,50 @@ export default {
       pickedIdx: null,
       okSlots: {},
       tiles: TileLibrary.allTiles(),
-      grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
+      grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } },
+      demoTiles: [
+        {
+          sides: ['r', 'r', 'r', 'r'],
+          meeple: { color: 'black', position: [-1, 0] }
+        },
+        {
+          sides: ['c', 'r', 'r', 'r'],
+          meeple: { color: 'orange', position: [0, 1] }
+        },
+        {
+          sides: ['r', 'r', 'r', 'r'],
+          meeple: { color: 'red', position: [1, 0] }
+        },
+        {
+          sides: ['g', 'g', 'g', 'g'],
+          cloister: true,
+          meeple: { color: 'blue', position: [0, 0] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [0, 1] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [1, 0] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [0, -1] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [-1, 0] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [-1, -1] }
+        },
+        {
+          sides: ['c', 'c', 'r', 'r'],
+          meeple: { color: 'blue', position: [-1, 1] }
+        }
+      ]
     }
   },
   methods: {
@@ -45,6 +89,15 @@ export default {
       if (this.tiles.length === 0) {
         this.pickedTile = null
         this.pickedIdx = null
+
+        const grid = new Grid(this.grid)
+        grid.keys().forEach((pos) => {
+          const key = String(pos)
+          const slots = Scoring.freeSlots(grid, pos)
+          slots.forEach((slot) => {
+            this.grid[key].meeple = { color: 'orange', position: slot }
+          })
+        })
       } else {
         const idx = Math.floor(Math.random() * this.tiles.length)
         this.pickedIdx = idx
@@ -92,13 +145,8 @@ export default {
         // Move to desired rotation for 'bestPos'
         for (let i = 0; i < bestRot; i++) this.rotate(this.pickedTile)
 
-        window.setTimeout(() => this.place(bestPos), 75)
+        window.setTimeout(() => this.place(bestPos), 25)
       }
-    },
-    randomColor () {
-      const colors = [ 'orange', 'blue', 'red', 'black' ]
-      const idx = Math.floor(Math.random() * colors.length)
-      return colors[idx]
     },
     randomMeeple (pos) {
       const grid = new Grid(this.grid)
@@ -106,10 +154,7 @@ export default {
         const slots = Scoring.freeSlots(grid, pos)
         const pick = Math.floor(Math.random() * slots.length)
         const key = String(pos)
-        this.grid[key].meeple = {
-          color: this.randomColor(),
-          position: slots[pick]
-        }
+        this.grid[key].meeple = { color: 'orange', position: slots[pick] }
       }
     },
     rotate (tile) {
@@ -135,7 +180,7 @@ export default {
             let grid = {...this.grid, [String(pos)]: newTile}
             this.grid = grid
 
-            this.randomMeeple(pos)
+            // this.randomMeeple(pos)
 
             this.randomizePick()
           }
