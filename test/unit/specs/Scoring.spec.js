@@ -22,6 +22,27 @@ describe('gridGraph', () => {
     expect(graph.adj[String([1,0,-1,0])].size)
       .toEqual(3)
   })
+
+  it('road connections include grass connections', () => {
+    const fullRoad = { sides: ['r', 'r', 'r', 'r'] }
+
+    const grid = new Grid({
+      [String([0,0])]: fullRoad,
+      [String([1,0])]: fullRoad
+    })
+
+    const graph = Scoring.gridGraph(grid)
+
+    expect(graph.adj[String([0,0,1,1])])
+      .toContain(String([1,0,-1,1]))
+    expect(graph.adj[String([1,0,-1,1])])
+      .toContain(String([0,0,1,1]))
+
+    expect(graph.adj[String([1,0,-1,-1])])
+      .toContain(String([0,0,1,-1]))
+    expect(graph.adj[String([0,0,1,-1])])
+      .toContain(String([1,0,-1,-1]))
+  })
 })
 
 describe('partitionGraph', () => {
@@ -457,6 +478,28 @@ describe('freeSlots', () => {
 
     expect(Scoring.freeSlots(grid, [1, 0]).sort())
     .toEqual([].sort())
+  })
+
+  it('grass wraps around a road cloister', () => {
+    const grassCloister = {
+      sides: ['g', 'r', 'g', 'g'],
+      cloister: true
+    }
+    const straightRoad = {
+      sides: ['g', 'r', 'g', 'r'],
+      meeple: { position: [1, 1] }
+    }
+
+    const grid = new Grid({
+      [String([0,0])]: grassCloister,
+      [String([1,0])]: straightRoad
+    })
+
+    expect(Scoring.freeSlots(grid, [1, 0]).sort())
+    .toEqual([
+      [-1, 0],
+      [ 1, 0]
+    ].sort())
   })
 })
 

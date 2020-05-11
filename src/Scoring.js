@@ -14,16 +14,27 @@ export default class {
         adj[key] = g.adj[key]
       })
 
+      // Add side crossing edges
       for (let i = 0; i < 4; i++) {
         const dir = Moves.DIRECTIONS[i]
-        const eastKey = [pos[0] + dir[0], pos[1] + dir[1]]
-        const eastTile = grid.get(eastKey)
-        if (eastTile) {
-          // TODO - Fix for farm connections
-          const adjDir = [-1 * dir[0], -1 * dir[1]]
-          const nodeKey = String(pos) + ',' + String(dir)
-          const adjKey = String(eastKey) + ',' + String(adjDir)
+        const adjPos = [pos[0] + dir[0], pos[1] + dir[1]]
+        const adjTile = grid.get(adjPos)
+        const adjDir = [-1 * dir[0], -1 * dir[1]]
+        const nodeKey = String(pos) + ',' + String(dir)
+        const adjKey = String(adjPos) + ',' + String(adjDir)
+        if (adjTile) {
           adj[nodeKey].add(adjKey)
+
+          if (tile.sides[i] === 'r') {
+            [-1, 1].forEach((j) => {
+              const ofst = dir[0] ? [0, j] : [j, 0]
+              const grassDir = [dir[0] + ofst[0], dir[1] + ofst[1]]
+              const grassAdjDir = [adjDir[0] + ofst[0], adjDir[1] + ofst[1]]
+              const nodeKey = String(pos) + ',' + String(grassDir)
+              const adjKey = String(adjPos) + ',' + String(grassAdjDir)
+              adj[nodeKey].add(adjKey)
+            })
+          }
         }
       }
     })
@@ -144,9 +155,6 @@ export default class {
       set.forEach((x) => adj[String(vec)].add(x))
 
       nodes[String(vec)] = { type: side, ofst: vec }
-      if (tile.meeple && String(vec) === String(tile.meeple.position)) {
-        nodes[String(vec)].meeple = {...tile.meeple}
-      }
 
       if (side === 'r') {
         const ds = (vec[0]) ? [[0, -1], [0, 1]] : [[-1, 0], [1, 0]]
@@ -177,6 +185,11 @@ export default class {
       const k = String([0, 0])
       nodes[k] = { type: 'cloister', ofst: [0, 0] }
       adj[k] = new Set()
+    }
+
+    // Add meeple to graph
+    if (tile.meeple && tile.meeple.position) {
+      nodes[String(tile.meeple.position)].meeple = {...tile.meeple}
     }
 
     return { adj: adj, nodes: nodes }
