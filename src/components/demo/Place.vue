@@ -61,14 +61,13 @@ export default {
       if (this.pickedTile) {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
 
-        this.tiles.splice(this.pickedIdx, 1)
-
         if (!(String(pos) in this.grid)) {
           const okSlots = {}
           Moves.findSlots(new Grid(this.grid), newTile).forEach((slot) => {
             okSlots[String(slot)] = slot
           })
           if (String(pos) in okSlots) {
+            this.tiles.splice(this.pickedIdx, 1)
             let grid = {...this.grid, [String(pos)]: newTile}
             this.grid = grid
             this.randomizePick()
