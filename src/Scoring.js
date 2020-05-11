@@ -2,6 +2,12 @@
 import Moves from '@/Moves'
 
 export default class {
+  /**
+   * @param {Grid} grid A grid of tiles
+   * @returns {Object} A single graph containing all nodes and edges
+   *   from the graphs of each tile in the grid. Nodes ids are lifted
+   *   into a global co-ordinate system.
+   */
   static gridGraph (grid) {
     const adj = {}
     const nodes = {}
@@ -42,6 +48,11 @@ export default class {
     return { nodes: nodes, adj: adj }
   }
 
+  /**
+   * Partitions a graph into connected sub-graphs.
+   * @param {Object} graph A graph
+   * @rturns {Object} A graph partioning
+   */
   static partitionGraph (graph) {
     const partitions = {}
     const membership = {}
@@ -81,6 +92,12 @@ export default class {
     return { partitions: partitions, membership: membership }
   }
 
+  /**
+   * @param {Object} tile A tile
+   * @param {Array} position A unit vector
+   * @returns {Object} The graph for the tile using
+   *   node ids lifted into a global co-ordinate system.
+   */
   static globalTileGraph (tile, position) {
     const tg = this.tileGraph(tile)
     const nodes = {}
@@ -100,6 +117,12 @@ export default class {
     return {adj: adj, nodes: nodes}
   }
 
+  /**
+   * @param {Object} tile A tile
+   * @returns {Object} A graph representing the tile. One node for each
+   *   position a meeple could possibly be played. Edges between nodes
+   *   that are part of the same tile element.
+   */
   static tileGraph (tile) {
     const adj = {}
     const nodes = {}
@@ -195,6 +218,13 @@ export default class {
     return { adj: adj, nodes: nodes }
   }
 
+  /**
+   * Given a grid and a tile position, returns the list of meeple slots
+   *   within the tile that it's valid for a new meeple to be played.
+   * @param {Grid} grid A grid
+   * @param {Array} pos A position vector
+   * @returns {Array} A list of position vectors.
+   */
   static freeSlots (grid, pos) {
     const graph = this.gridGraph(grid)
     const part = this.partitionGraph(graph)
@@ -227,6 +257,11 @@ export default class {
     return slots
   }
 
+  /**
+   * @param {Object} tile A tile
+   * @returns {Array} A list of slots within the tile which it
+   *   is potentially possible to play a meeple.
+   */
   static meepleSlots (tile) {
     return Object.keys(this.tileGraph(tile).nodes)
       .map((x) => x.split(',').map((y) => parseInt(y)))
