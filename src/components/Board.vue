@@ -82,6 +82,7 @@ export default {
   overflow-x: scroll;
   overflow-y: scroll;
   height: 100%;
+  line-height: 0;
 }
 .tile {
   position: relative;
