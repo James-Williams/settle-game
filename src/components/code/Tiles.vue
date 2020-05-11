@@ -2,7 +2,12 @@
   <div>
     <Header />
     <div class="options">
-      <input type="checkbox" v-model="showGraph">Show Graph</input>
+      <input type="checkbox" v-model="showGraph">
+        <label>Show Graph</label>
+      </input>
+        <input type="checkbox" v-model="hideBonus">
+        <label>Hide Bonus Tiles</label>
+      </input>
     </div>
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
@@ -31,8 +36,16 @@ import Scoring from '@/Scoring'
 export default {
   data () {
     return {
-      tiles: TileLibrary.uniqueTiles(),
-      showGraph: false
+      allTiles: TileLibrary.uniqueTiles(),
+      showGraph: false,
+      hideBonus: true
+    }
+  },
+  computed: {
+    tiles () {
+      return this.allTiles.filter((tile) => {
+        return !this.hideBonus || !tile.bonus
+      })
     }
   },
   methods: {
@@ -72,5 +85,8 @@ pre {
   display: inline-block;
   overflow-y: scroll;
   max-height: 180px;
+}
+label {
+  margin-right: 15px;
 }
 </style>
