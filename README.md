@@ -22,3 +22,7 @@ npm run unit
 # run all tests
 npm test
 ```
+
+## Docs
+
+* [Future Ideas](https://github.com/James-Williams/settle-game/blob/master/ideas.md)
