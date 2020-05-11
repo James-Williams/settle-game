@@ -3,9 +3,14 @@
     <Header />
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
-        <Tile :type="tile"/>
-        <pre>{{ tileJson(tile) }}</pre>
-        <pre>{{ graphJson(tile) }}</pre>
+        <span>
+          <Tile :type="tile"/>
+          <pre>{{ tileJson(tile) }}</pre>
+        </span>
+        <span>
+          <TileGraph :graph="graph(tile)" />
+          <pre>{{ graphJson(tile) }}</pre>
+        </span>
       </div>
     </div>
   </div>
@@ -14,6 +19,7 @@
 <script>
 
 import Tile from '../Tile'
+import TileGraph from '../TileGraph'
 import Header from '../Header'
 
 import TileLibrary from '@/TileLibrary'
@@ -27,15 +33,19 @@ export default {
   },
   methods: {
     tileJson (tile) {
-      return JSON.stringify(tile,null,2)
+      return JSON.stringify(tile, null, 2)
+    },
+    graph (tile) {
+      return Scoring.tileGraph(tile)
     },
     graphJson (tile) {
-      return JSON.stringify(Scoring.tileGraph(tile),null,2)
+      return JSON.stringify(this.graph(tile), null, 2)
     }
   },
   components: {
     Header,
-    Tile
+    Tile,
+    TileGraph
   }
 }
 </script>
@@ -46,12 +56,12 @@ export default {
   margin-left: 16px;
   margin-right: 16px;
 }
-div.entry {
+div.entry, span {
   margin-bottom: 15px;
   display: flex;
   align-items: center;
   * {
-    margin-right: 25px;
+    margin-right: 50px;
   }
 }
 pre {
