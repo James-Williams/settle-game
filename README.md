@@ -1,6 +1,6 @@
 # settle
 
-> Online tile-based board game inspired by [Carcassonne](https://en.wikipedia.org/wiki/Carcassonne_(board_game))
+Online tile-based board game inspired by [Carcassonne](https://en.wikipedia.org/wiki/Carcassonne_(board_game)).
 
 ## Development
 
