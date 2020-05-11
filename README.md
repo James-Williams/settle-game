@@ -10,19 +10,19 @@ Online tile-based board game inspired by [Carcassonne](https://en.wikipedia.org/
 
 ``` bash
 # install dependencies
-npm install
+yarn install
 
 # serve with hot reload at http://localhost:8080/
-npm run dev
+yarn run dev
 ```
 
 ### Testing
 ``` bash
 # run unit tests
-npm run unit
+yarn run unit
 
 # run all tests
-npm test
+yarn test
 ```
 
 ## Docs
