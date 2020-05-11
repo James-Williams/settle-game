@@ -1,5 +1,5 @@
 
-## Future Ideas
+## Further Ideas
 
 ### Improving mobile experience
   * Pinch-to-zoom on Board (i.e. Google maps)
