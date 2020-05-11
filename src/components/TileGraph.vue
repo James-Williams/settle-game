@@ -25,7 +25,8 @@ export default {
   methods: {
     svgPos (pos) {
       const vec = [ pos[0], -1 * pos[1] ]
-      return vec.map((x) => 50 + (35 * x))
+      const m = (pos[0] && pos[1]) ? 0 : 7
+      return vec.map((x) => 50 + ((28 + m) * x))
     },
     nodeTransform (node) {
       const pos = this.svgPos(node)
