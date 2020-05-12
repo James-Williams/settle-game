@@ -168,8 +168,10 @@ export default class {
         const v = [vec[0] + d[0], vec[1] + d[1]]
         const w = [-1 * v[0], -1 * v[1]]
 
+        // TODO - DRY - Use a local function for this repeated pair :)
         if (!(String(v) in adj)) adj[String(v)] = new Set()
         adj[String(v)].add(String(w))
+
         if (!(String(w) in adj)) adj[String(w)] = new Set()
         adj[String(w)].add(String(v))
       }
@@ -200,6 +202,18 @@ export default class {
           adj[String(v)].add(String(w))
           if (!(String(w) in adj)) adj[String(w)] = new Set()
           adj[String(w)].add(String(v))
+        }
+        if (tile.sides[nextIdx] === 'c' &&
+            tile.sides[oppositeIdx] === 'r') {
+          const v = Moves.DIRECTIONS[nextIdx]
+          const wp = Moves.DIRECTIONS[i]
+          const vp = [ v[0] + wp[0], v[1] + wp[1] ]
+          const wn = Moves.DIRECTIONS[oppositeIdx]
+          const vn = [ v[0] + wn[0], v[1] + wn[1] ]
+          if (!(String(vp) in adj)) adj[String(vp)] = new Set()
+          adj[String(vp)].add(String(vn))
+          if (!(String(vn) in adj)) adj[String(vn)] = new Set()
+          adj[String(vn)].add(String(vp))
         }
       }
     }

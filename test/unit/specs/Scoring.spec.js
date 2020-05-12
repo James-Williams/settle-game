@@ -481,7 +481,7 @@ describe('freeSlots', () => {
   })
 
   it('grass wraps around a road cloister', () => {
-    const grassCloister = {
+    const roadCloister = {
       sides: ['g', 'r', 'g', 'g'],
       cloister: true
     }
@@ -491,12 +491,35 @@ describe('freeSlots', () => {
     }
 
     const grid = new Grid({
-      [String([0,0])]: grassCloister,
+      [String([0,0])]: roadCloister,
       [String([1,0])]: straightRoad
     })
 
     expect(Scoring.freeSlots(grid, [1, 0]).sort())
     .toEqual([
+      [-1, 0],
+      [ 1, 0]
+    ].sort())
+  })
+
+  it('grass slides btween road and city', () => {
+    const roadCloister = {
+      sides: ['g', 'r', 'g', 'g'],
+      cloister: true
+    }
+    const cityRoad = {
+      sides: ['c', 'r', 'g', 'r'],
+      meeple: { position: [1, 1] }
+    }
+
+    const grid = new Grid({
+      [String([0,0])]: roadCloister,
+      [String([1,0])]: cityRoad
+    })
+
+    expect(Scoring.freeSlots(grid, [1, 0]).sort())
+    .toEqual([
+      [ 0, 1],
       [-1, 0],
       [ 1, 0]
     ].sort())
