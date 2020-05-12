@@ -61,30 +61,38 @@ export default {
       tile.sides = ss
       this.updateOkSlots()
     },
-    place (pos) {
-      if (this.pickedTile) {
-        const newTile = JSON.parse(JSON.stringify(this.pickedTile))
+    place (pos, meepleSlot) {
+      if (meepleSlot) {
+        this.grid[String(pos)] = {
+          ...this.grid[String(pos)],
+          meepleSelect: null,
+          meeple: { position: meepleSlot, color: 'red' }
+        }
+      } else {
+        if (this.pickedTile) {
+          const newTile = JSON.parse(JSON.stringify(this.pickedTile))
 
-        if (!(String(pos) in this.grid)) {
-          const okSlots = {}
-          Moves.findSlots(new Grid(this.grid), newTile).forEach((slot) => {
-            okSlots[String(slot)] = slot
-          })
-          if (String(pos) in okSlots) {
-            this.tiles.splice(this.pickedIdx, 1)
-
-            let grid = {...this.grid, [String(pos)]: newTile}
-            this.grid = grid
-
-            // Clear old meeple selection
-            Object.keys(this.grid).forEach((key) => {
-              this.grid[key].meepleSelect = null
+          if (!(String(pos) in this.grid)) {
+            const okSlots = {}
+            Moves.findSlots(new Grid(this.grid), newTile).forEach((slot) => {
+              okSlots[String(slot)] = slot
             })
+            if (String(pos) in okSlots) {
+              this.tiles.splice(this.pickedIdx, 1)
 
-            // Set meeple selection
-            newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
+              let grid = {...this.grid, [String(pos)]: newTile}
+              this.grid = grid
 
-            this.randomizePick()
+              // Clear old meeple selection
+              Object.keys(this.grid).forEach((key) => {
+                this.grid[key].meepleSelect = null
+              })
+
+              // Set meeple selection
+              newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
+
+              this.randomizePick()
+            }
           }
         }
       }
