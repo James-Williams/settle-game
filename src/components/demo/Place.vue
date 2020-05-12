@@ -13,7 +13,7 @@
         <span><p>Players</p><p v-html="playersHtml" /></span>
       </div>
     </div>
-    <Board @clicked="place" :tiles="grid" :selectable="okSlots" :selectColor="currentPlayer"/>
+    <Board @clicked="place" @meepleClicked="meepleClicked" :tiles="grid" :selectable="okSlots" :selectColor="currentPlayer"/>
   </div>
 </template>
 
@@ -51,9 +51,6 @@ export default {
       if (idx >= this.players.length) idx = 0
       this.currentPlayerIdx = idx
     },
-    meepleClicked (pos) {
-      console.log(pos)
-    },
     updateOkSlots () {
       const okSlots = {}
       Moves.findSlots(new Grid(this.grid), this.pickedTile).forEach((slot) => {
@@ -88,7 +85,6 @@ export default {
           meeple: { position: meepleSlot, color: this.prevPlayer }
         }
         this.playerData[this.prevPlayer].meepleCount -= 1
-
       } else {
         if (this.pickedTile) {
           const newTile = JSON.parse(JSON.stringify(this.pickedTile))
@@ -120,6 +116,14 @@ export default {
             }
           }
         }
+      }
+    },
+    meepleClicked (pos, meeple) {
+      const ok = confirm('Remove meeple?')
+      if (ok) {
+        const key = String(pos)
+        this.grid[key] = {...this.grid[key], meeple: null}
+        this.playerData[meeple.color].meepleCount += 1
       }
     }
   },

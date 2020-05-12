@@ -3,7 +3,7 @@
     <div class="grid">
       <div v-for="y in rangeY" :key="y">
         <div class="tile" v-for="x in rangeX" :key="x">
-          <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :selectColor="selectColor" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" :meepleSelectColor="getMeepleSelectColor(x, y)"/>
+          <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :selectColor="selectColor" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" :meepleSelectColor="getMeepleSelectColor(x, y)" @meepleClicked="$emit('meepleClicked', [x, y], $event)"/>
         </div>
       </div>
     </div>

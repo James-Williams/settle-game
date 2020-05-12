@@ -66,6 +66,16 @@ export default {
     svgClick (event) {
       const clickPos = [ event.offsetX, 100 - event.offsetY ]
 
+      if (this.meeple) {
+        const p = this.meeple.position
+        const p1 = this.meepleSelectPoints(p)[0]
+        const p2 = this.meepleSelectPoints(p)[2]
+        if (clickPos[0] >= p1[0] && clickPos[0] <= p2[0] &&
+            clickPos[1] >= p1[1] && clickPos[1] <= p2[1]) {
+          this.$emit('meepleClicked', {...this.meeple})
+        }
+      }
+
       let pos = null
       if (this.meepleSelect) {
         this.meepleSelect.forEach((p) => {
