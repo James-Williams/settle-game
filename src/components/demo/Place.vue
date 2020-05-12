@@ -10,7 +10,7 @@
         <span><p>Player's Tile</p><p v-html="playersHtml" /></span>
       </div>
     </div>
-    <Board @clicked="place" :tiles="grid" :selectable="okSlots" />
+    <Board @clicked="place" :tiles="grid" :selectable="okSlots" :selectColor="currentPlayer"/>
   </div>
 </template>
 
@@ -106,6 +106,7 @@ export default {
 
               // Set meeple selection
               newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
+              newTile.meepleSelectColor = this.currentPlayer
 
               this.nextPlayer()
               this.randomizePick()
@@ -128,9 +129,9 @@ export default {
     },
     playersHtml () {
       return this.players
-        .map((player) => (player === this.currentPlayer) ?
-          '<strong>' + player + '</strong>' :
-          player)
+        .map((player) => (player === this.currentPlayer)
+          ? '<strong>' + player + '</strong>'
+          : player)
         .join(', ')
     }
   },

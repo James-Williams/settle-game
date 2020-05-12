@@ -23,11 +23,11 @@
 
       <circle v-if="type.bonus" cx="82" cy="18" r="10" style="fill:blue" />
 
-      <polygon v-for="(pos,idx) in meepleSelect" :points="meepleSelectPoints(pos).map((x) => String(x)).join(' ')" style="fill:none;stroke:blue;stroke-width:2; transform: scale(1,-1);transform-origin: center" :key="'ms'+idx" />
+      <polygon v-for="(pos,idx) in meepleSelect" :points="meepleSelectPoints(pos).map((x) => String(x)).join(' ')" :style="{fill:'none', stroke: meepleSelectColor, 'stroke-width':2, transform: 'scale(1,-1)', 'transform-origin': 'center'}" :key="'ms'+idx" />
 
       <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
     </svg>
-    <div @click="$emit('clicked')" v-if="selectable" class="selectable" />
+    <div @click="$emit('clicked')" v-if="selectable" class="selectable" :style="userStyle"/>
   </div>
 </template>
 
@@ -41,6 +41,10 @@ export default {
       type: Boolean,
       default: false
     },
+    selectColor: {
+      type: String,
+      default: 'blue',
+    },
     halfSize: {
       type: Boolean,
       default: false
@@ -52,6 +56,10 @@ export default {
     meepleSelect: {
       type: Array,
       default: () => null
+    },
+    meepleSelectColor: {
+      type: String,
+      default: 'blue'
     }
   },
   methods: {
@@ -127,6 +135,11 @@ export default {
         (sides[0] === 'c' && sides[2] === 'c') ||
         (sides[1] === 'c' && sides[3] === 'c')
       )
+    },
+    userStyle () {
+      return {
+        '--shadow-color': this.selectColor
+      }
     }
   }
 }
@@ -161,6 +174,6 @@ export default {
   left: 0;
 }
 .selectable:hover {
-    box-shadow:inset 0px 0px 0px 5px blue;
+    box-shadow:inset 0px 0px 0px 5px var(--shadow-color);
 }
 </style>

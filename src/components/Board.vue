@@ -2,7 +2,7 @@
   <div class="grid">
     <div v-for="y in rangeY" :key="y">
       <div class="tile" v-for="x in rangeX" :key="x">
-        <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" />
+        <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :selectColor="selectColor" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" :meepleSelectColor="getMeepleSelectColor(x, y)"/>
       </div>
     </div>
   </div>
@@ -19,6 +19,10 @@ export default {
     selectable: {
       type: Object,
       default: () => { return {} }
+    },
+    selectColor: {
+      type: String,
+      default: 'blue'
     },
     halfSize: {
       type: Boolean,
@@ -64,14 +68,21 @@ export default {
     getMeeple (x, y) {
       if ((String([x, y]) in this.tiles)) {
         const tile = this.tiles[String([x, y])]
-        if (tile.meeple) return tile.meeple
+        return tile.meeple
       }
       return null
     },
     getMeepleSelect (x, y) {
       if ((String([x, y]) in this.tiles)) {
         const tile = this.tiles[String([x, y])]
-        if (tile.meepleSelect) return tile.meepleSelect
+        return tile.meepleSelect
+      }
+      return null
+    },
+    getMeepleSelectColor (x, y) {
+      if ((String([x, y]) in this.tiles)) {
+        const tile = this.tiles[String([x, y])]
+        return tile.meepleSelectColor
       }
       return null
     }
