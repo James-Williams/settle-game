@@ -4,10 +4,13 @@
       <Header />
       <div class="controls">
         <span>
-          <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true" :halfSize="true"/>
-          <div><strong>{{ this.tiles.length }}</strong></div>
+          <p><strong>{{ this.tiles.length }}</strong></p>
+          <p>tiles left</p>
         </span>
-        <span><p>Player's Tile</p><p v-html="playersHtml" /></span>
+        <span>
+          <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true" :halfSize="true"/>
+        </span>
+        <span><p>Players</p><p v-html="playersHtml" /></span>
       </div>
     </div>
     <Board @clicked="place" :tiles="grid" :selectable="okSlots" :selectColor="currentPlayer"/>
@@ -78,12 +81,14 @@ export default {
       this.updateOkSlots()
     },
     place (pos, meepleSlot) {
-      if (meepleSlot) {
+      if (meepleSlot && this.playerData[this.prevPlayer].meepleCount > 0) {
         this.grid[String(pos)] = {
           ...this.grid[String(pos)],
           meepleSelect: null,
           meeple: { position: meepleSlot, color: this.prevPlayer }
         }
+        this.playerData[this.prevPlayer].meepleCount -= 1
+
       } else {
         if (this.pickedTile) {
           const newTile = JSON.parse(JSON.stringify(this.pickedTile))
@@ -104,9 +109,11 @@ export default {
                 this.grid[key].meepleSelect = null
               })
 
-              // Set meeple selection
-              newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
-              newTile.meepleSelectColor = this.currentPlayer
+              if (this.playerData[this.currentPlayer].meepleCount > 0) {
+                // Set meeple selection
+                newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
+                newTile.meepleSelectColor = this.currentPlayer
+              }
 
               this.nextPlayer()
               this.randomizePick()
@@ -128,10 +135,11 @@ export default {
       return this.players[this.currentPlayerIdx]
     },
     playersHtml () {
+      const count = (player) => { return this.playerData[player].meepleCount }
       return this.players
         .map((player) => (player === this.currentPlayer)
-          ? '<strong>' + player + '</strong>'
-          : player)
+          ? '<strong>' + player + ' (' + count(player) + ')</strong>'
+          : player + ' (' + count(player) + ')')
         .join(', ')
     }
   },
