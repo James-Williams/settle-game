@@ -43,16 +43,16 @@ export default {
     maxY () { return Math.max(...this.keys.map((x) => x[1])) },
     rangeX () {
       var rs = []
-      var x = this.minX - 1
-      while (x <= this.maxX + 1) {
+      var x = this.minX - 2
+      while (x <= this.maxX + 2) {
         rs.push(x++)
       }
       return rs
     },
     rangeY () {
       var rs = []
-      var x = this.minY - 1
-      while (x <= this.maxY + 1) {
+      var x = this.minY - 2
+      while (x <= this.maxY + 2) {
         rs.push(x++)
       }
       return rs.reverse()
