@@ -1,11 +1,18 @@
 <template>
   <div class="page">
-    <Header />
-    <div>
-      <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true"/>
-      <div><strong>Remaining: {{ this.tiles.length }}</strong></div>
+    <div class="fixed">
+      <Header />
+      <div class="controls">
+        <span>
+          <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true" :halfSize="true"/>
+          <div><strong>{{ this.tiles.length }}</strong></div>
+        </span>
+        <span>
+          Next Tile: {{ this.currentPlayer }}
+        </span>
+      </div>
     </div>
-    <Board @clicked="place" :tiles="grid" :selectable="okSlots"/>
+    <Board @clicked="place" :tiles="grid" :selectable="okSlots" />
   </div>
 </template>
 
@@ -24,6 +31,12 @@ import Scoring from '@/Scoring'
 export default {
   data () {
     return {
+      players: ['orange', 'red'],
+      playerData: {
+        'orange': { meepleCount: 7 },
+        'red': { meepleCount: 7 }
+      },
+      currentPlayerIdx: 1,
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
@@ -32,6 +45,11 @@ export default {
     }
   },
   methods: {
+    nextPlayer () {
+      let idx = this.currentPlayerIdx + 1
+      if (idx >= this.players.length) idx = 0
+      this.currentPlayerIdx = idx
+    },
     meepleClicked (pos) {
       console.log(pos)
     },
@@ -66,7 +84,7 @@ export default {
         this.grid[String(pos)] = {
           ...this.grid[String(pos)],
           meepleSelect: null,
-          meeple: { position: meepleSlot, color: 'red' }
+          meeple: { position: meepleSlot, color: this.prevPlayer }
         }
       } else {
         if (this.pickedTile) {
@@ -91,6 +109,7 @@ export default {
               // Set meeple selection
               newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
 
+              this.nextPlayer()
               this.randomizePick()
             }
           }
@@ -100,6 +119,15 @@ export default {
   },
   created () {
     this.randomizePick()
+  },
+  computed: {
+    prevPlayer () {
+      const idx = this.currentPlayerIdx
+      return this.players[(idx > 0) ? idx - 1 : this.players.length - 1]
+    },
+    currentPlayer () {
+      return this.players[this.currentPlayerIdx]
+    }
   },
   components: {
     Header,
@@ -112,9 +140,20 @@ export default {
 
 <style scoped lang="scss">
 .page {
-  div {
-    margin-bottom: 15px;
-  }
+  width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.fixed {
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span:not(:last-child) {
+    margin-right: 1em;
+  }
+  margin-bottom: 1ex;
 }
 </style>

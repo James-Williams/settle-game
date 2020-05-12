@@ -23,9 +23,9 @@ export default {
 <style scoped lang="scss">
 div {
   text-align: left;
-  a {
-    margin-left: 1em;
+  a:not(:last-child) {
+    margin-right: 1em;
   }
-  margin-bottom: 15px;
+  margin-bottom: 1ex;
 }
 </style>
