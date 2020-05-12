@@ -2,14 +2,14 @@
   <div>
     <Header />
     <div class="options">
-      <input type="checkbox" v-model="showGraph" />
-      <label>Show Graph</label>
-      <input type="checkbox" v-model="hideBonus" />
-      <label>Hide Bonus Tiles</label>
-      <input type="checkbox" v-model="rotate90" />
-      <label>Rotate 90&deg;</label>
-      <input type="checkbox" v-model="rotate180" />
-      <label>Rotate 180&deg;</label>
+      <input type="checkbox" id="showGraph" v-model="showGraph" />
+      <label for="showGraph">Show Graph</label>
+      <input type="checkbox" id="hideBonus" v-model="hideBonus" />
+      <label for="hideBonus">Hide Bonus Tiles</label>
+      <input type="checkbox" id="rotate90" v-model="rotate90" />
+      <label for="rotate90">Rotate 90&deg;</label>
+      <input type="checkbox" id="rotate180" v-model="rotate180" />
+      <label for="rotate180">Rotate 180&deg;</label>
     </div>
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       allTiles: TileLibrary.uniqueTiles(),
-      showGraph: false,
+      showGraph: true,
       hideBonus: true,
       rotate90: false,
       rotate180: false
