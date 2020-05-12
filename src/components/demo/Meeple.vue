@@ -52,19 +52,19 @@ export default {
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: { color: 'blue', position: [0, 1] }
+          meeple: { color: 'yellow', position: [0, 1] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: { color: 'blue', position: [1, 0] }
+          meeple: { color: 'black', position: [1, 0] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: { color: 'blue', position: [0, -1] }
+          meeple: { color: 'orange', position: [0, -1] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: { color: 'blue', position: [-1, 0] }
+          meeple: { color: 'red', position: [-1, 0] }
         },
         {
           sides: ['c', 'c', 'r', 'r'],
@@ -72,7 +72,7 @@ export default {
         },
         {
           sides: ['c', 'c', 'r', 'r'],
-          meeple: { color: 'blue', position: [-1, 1] }
+          meeple: { color: 'yellow', position: [-1, 1] }
         }
       ]
     }
