@@ -2,7 +2,7 @@
   <div class="grid">
     <div v-for="y in rangeY" :key="y">
       <div class="tile" v-for="x in rangeX" :key="x">
-        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :halfSize="halfSize" :meeple="getMeeple(x, y)" />
+        <Tile @clicked="$emit('clicked', [x, y])" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" />
       </div>
     </div>
   </div>
@@ -65,6 +65,13 @@ export default {
       if ((String([x, y]) in this.tiles)) {
         const tile = this.tiles[String([x, y])]
         if (tile.meeple) return tile.meeple
+      }
+      return null
+    },
+    getMeepleSelect (x, y) {
+      if ((String([x, y]) in this.tiles)) {
+        const tile = this.tiles[String([x, y])]
+        if (tile.meepleSelect) return tile.meepleSelect
       }
       return null
     }

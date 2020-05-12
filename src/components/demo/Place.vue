@@ -19,6 +19,7 @@ import Header from '../Header'
 import TileLibrary from '@/TileLibrary'
 import Grid from '@/Grid'
 import Moves from '@/Moves'
+import Scoring from '@/Scoring'
 
 export default {
   data () {
@@ -31,6 +32,9 @@ export default {
     }
   },
   methods: {
+    meepleClicked (pos) {
+      console.log(pos)
+    },
     updateOkSlots () {
       const okSlots = {}
       Moves.findSlots(new Grid(this.grid), this.pickedTile).forEach((slot) => {
@@ -68,8 +72,18 @@ export default {
           })
           if (String(pos) in okSlots) {
             this.tiles.splice(this.pickedIdx, 1)
+
             let grid = {...this.grid, [String(pos)]: newTile}
             this.grid = grid
+
+            // Clear old meeple selection
+            Object.keys(this.grid).forEach((key) => {
+              this.grid[key].meepleSelect = null
+            })
+
+            // Set meeple selection
+            newTile.meepleSelect = Scoring.freeSlots(new Grid(this.grid), pos)
+
             this.randomizePick()
           }
         }

@@ -1,7 +1,7 @@
 <template>
   <div :class="{tile: true, halfSize: halfSize}">
     <svg v-if="type.blank" @click="$emit('clicked')" class="blank"/>
-    <svg v-else @click="$emit('clicked')" style="background: green">
+    <svg v-else @click="svgClick" style="background: green">
 
       <rect v-if="type.sides[0] == 'r'" x="42" y="00" width="16" height="50" style="stroke:none;fill:white"/>
       <rect v-if="type.sides[1] == 'r'" x="50" y="42" width="50" height="16" style="stroke:none;fill:white"/>
@@ -22,6 +22,8 @@
       <path v-if="meeple" d="M-.03,.15 a.05,.05 0 1,0 .06,0" :style="meepleStyle" />
 
       <circle v-if="type.bonus" cx="82" cy="18" r="10" style="fill:blue" />
+
+      <polygon v-for="(pos,idx) in meepleSelect" :points="meepleSelectPoints(pos).map((x) => String(x)).join(' ')" style="fill:none;stroke:blue;stroke-width:2; transform: scale(1,-1);transform-origin: center" :key="'ms'+idx" />
 
       <rect x="0" y="0" rx="2" ry="2" width="100" height="100" style="fill:none;stroke:black;stroke-width:2;opacity:1" />
     </svg>
@@ -46,9 +48,31 @@ export default {
     meeple: {
       type: Object,
       default: null
+    },
+    meepleSelect: {
+      type: Array,
+      default: () => null
     }
   },
   methods: {
+    svgClick (event) {
+      const clickPos = [ event.offsetX, 100 - event.offsetY ]
+
+      let pos = null
+      if (this.meepleSelect) {
+        this.meepleSelect.forEach((p) => {
+          const p1 = this.meepleSelectPoints(p)[0]
+          const p2 = this.meepleSelectPoints(p)[2]
+
+          if (clickPos[0] >= p1[0] && clickPos[0] <= p2[0] &&
+              clickPos[1] >= p1[1] && clickPos[1] <= p2[1]) {
+            pos = p
+          }
+        })
+      }
+
+      this.$emit('clicked', pos)
+    },
     cityPoints (pos) {
       const a = this.type.split ? 35 : 30
       const b = this.type.split ? 65 : 70
@@ -56,6 +80,22 @@ export default {
       if (pos === 1) return '100,000 100,100 070,' + b + ' 070,' + a
       if (pos === 2) return '000,100 100,100 ' + b + ',070 ' + a + ',070'
       if (pos === 3) return '000,100 000,000 030,' + a + ' 030,' + b
+    },
+    meepleSelectPoints (pos) {
+      const radius = 13
+      const size = 2 * radius
+      const offset = 32
+      const v = [
+        50 + ((offset * pos[0]) - radius),
+        50 + ((offset * pos[1]) - radius)
+      ]
+      const ps = [
+        [v[0], v[1]],
+        [v[0], v[1] + size],
+        [v[0] + size, v[1] + size],
+        [v[0] + size, v[1]]
+      ]
+      return ps
     }
   },
   computed: {
