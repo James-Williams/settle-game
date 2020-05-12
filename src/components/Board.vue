@@ -99,8 +99,8 @@ export default {
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: scroll;
-  height: 100%;
   line-height: 0;
+  height: 100%;
 }
 .tile {
   position: relative;
