@@ -43,7 +43,7 @@ export default {
     },
     selectColor: {
       type: String,
-      default: 'blue',
+      default: 'blue'
     },
     halfSize: {
       type: Boolean,

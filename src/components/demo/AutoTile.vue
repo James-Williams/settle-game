@@ -1,13 +1,13 @@
 <template>
   <div class="page">
-    <Header />
-    <Tile v-if="this.pickedTile" :type="pickedTile" />
-    <div>
-      <strong>Remaining: {{ this.tiles.length }}</strong>
+    <div class="fixed">
+      <Header />
+      <Tile v-if="this.pickedTile" :type="pickedTile" />
+      <div>
+        <strong>Remaining: {{ this.tiles.length }}</strong>
+      </div>
     </div>
-    <div>
-      <Board @clicked="place" :tiles="grid" :halfSize="true"/>
-    </div>
+    <Board @clicked="place" :tiles="grid" :halfSize="true"/>
   </div>
 </template>
 
@@ -156,8 +156,11 @@ export default {
 
 <style scoped lang="scss">
 .page {
-  div {
-    margin-bottom: 15px;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
-  <div class="grid">
-    <div v-for="y in rangeY" :key="y">
-      <div class="tile" v-for="x in rangeX" :key="x">
-        <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :selectColor="selectColor" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" :meepleSelectColor="getMeepleSelectColor(x, y)"/>
+  <div class="wrap">
+    <div class="grid">
+      <div v-for="y in rangeY" :key="y">
+        <div class="tile" v-for="x in rangeX" :key="x">
+          <Tile @clicked="$emit('clicked', [x, y], $event)" :type="getTile(x, y)" :selectable="isSelectable(x, y)" :selectColor="selectColor" :halfSize="halfSize" :meeple="getMeeple(x, y)" :meepleSelect="getMeepleSelect(x, y)" :meepleSelectColor="getMeepleSelectColor(x, y)"/>
+        </div>
       </div>
     </div>
   </div>
@@ -94,6 +96,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.wrap {
+  flex: auto;
+  position: relative;
+}
 .grid {
   background: grey;
   white-space: nowrap;
@@ -101,6 +107,11 @@ export default {
   overflow-y: scroll;
   line-height: 0;
   height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .tile {
   position: relative;

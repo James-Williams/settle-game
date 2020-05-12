@@ -1,10 +1,10 @@
 <template>
   <div class="page">
-    <Header />
-    <TilePicker @selected="clickTile"/>
-    <div>
-      <Board v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
+    <div class="fixed">
+      <Header />
+      <TilePicker @selected="clickTile"/>
     </div>
+    <Board v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
   </div>
 </template>
 
@@ -47,8 +47,11 @@ export default {
 
 <style scoped lang="scss">
 .page {
-  div {
-    margin-bottom: 15px;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
 }
 </style>

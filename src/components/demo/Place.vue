@@ -147,10 +147,11 @@ export default {
 <style scoped lang="scss">
 .page {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
   height: 100vh;
+  height: -webkit-fill-available;
 }
 .controls {
   display: flex;
