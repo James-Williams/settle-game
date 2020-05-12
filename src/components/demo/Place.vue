@@ -7,9 +7,7 @@
           <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile" :selectable="true" :halfSize="true"/>
           <div><strong>{{ this.tiles.length }}</strong></div>
         </span>
-        <span>
-          Next Tile: {{ this.currentPlayer }}
-        </span>
+        <span><p>Player's Tile</p><p v-html="playersHtml" /></span>
       </div>
     </div>
     <Board @clicked="place" :tiles="grid" :selectable="okSlots" />
@@ -127,6 +125,13 @@ export default {
     },
     currentPlayer () {
       return this.players[this.currentPlayerIdx]
+    },
+    playersHtml () {
+      return this.players
+        .map((player) => (player === this.currentPlayer) ?
+          '<strong>' + player + '</strong>' :
+          player)
+        .join(', ')
     }
   },
   components: {
@@ -145,14 +150,15 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.fixed {
-}
 .controls {
   display: flex;
   align-items: center;
   justify-content: center;
   span:not(:last-child) {
     margin-right: 1em;
+  }
+  p {
+    margin: 0;
   }
   margin-bottom: 1ex;
 }
