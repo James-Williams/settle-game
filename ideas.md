@@ -3,7 +3,7 @@
 
 ### Improving mobile experience
   * Pinch-to-zoom on Board (i.e. Google maps)
-  * Fixing elements to fullscreen
+  * ~~Fixing elements to fullscreen~~
   * Mobile friendly layout
 
 ### Artwork
