@@ -136,17 +136,21 @@ export default class {
       const set = new Set()
 
       // Neighbours
-      if (!(side === 'c') || !tile.split) {
-        if (tile.sides[prevIdx] === side) {
-          set.add(String(Moves.DIRECTIONS[prevIdx]))
-        }
-        if (tile.sides[nextIdx] === side) {
-          set.add(String(Moves.DIRECTIONS[nextIdx]))
+      if (side !== 'c' || !tile.split) {
+        if (side !== 'r') {
+          if (tile.sides[prevIdx] === side) {
+            set.add(String(Moves.DIRECTIONS[prevIdx]))
+          }
+          if (tile.sides[nextIdx] === side) {
+            set.add(String(Moves.DIRECTIONS[nextIdx]))
+          }
         }
       }
 
       // Opposites
-      if (tile.sides[oppositeIdx] === side && tile.sides[nextIdx] !== side) {
+      if (tile.sides[oppositeIdx] === side &&
+          tile.sides[prevIdx] !== side &&
+          tile.sides[nextIdx] !== side) {
         if (tile.split) {
           if (side === 'g') {
             set.add(String(Moves.DIRECTIONS[oppositeIdx]))
@@ -174,6 +178,15 @@ export default class {
 
         if (!(String(w) in adj)) adj[String(w)] = new Set()
         adj[String(w)].add(String(v))
+
+        // Road connection
+        // TODO - RED - GREEN this :)
+        const a = Moves.DIRECTIONS[i]
+        const b = Moves.DIRECTIONS[nextIdx]
+        if (!(String(a) in adj)) adj[String(a)] = new Set()
+        adj[String(a)].add(String(b))
+        if (!(String(b) in adj)) adj[String(b)] = new Set()
+        adj[String(b)].add(String(a))
       }
 
       if (!(String(vec) in adj)) adj[String(vec)] = new Set()
@@ -204,6 +217,7 @@ export default class {
           adj[String(w)].add(String(v))
         }
         if (tile.sides[nextIdx] === 'c' &&
+            tile.sides[nextIdx] === 'c' &&
             tile.sides[oppositeIdx] === 'r') {
           const v = Moves.DIRECTIONS[nextIdx]
           const wp = Moves.DIRECTIONS[i]
