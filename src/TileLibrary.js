@@ -187,7 +187,7 @@ export default {
     },
 
     { label: 'Four-way cross-road',
-      count: 2,
+      count: 1,
       tile: {
         sides: [ 'r', 'r', 'r', 'r' ]
       }
