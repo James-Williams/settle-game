@@ -13,7 +13,7 @@
         <span><p>Players</p><p v-html="playersHtml" /></span>
       </div>
     </div>
-    <Board @clicked="place" @meepleClicked="meepleClicked" :tiles="grid" :selectable="okSlots" :selectColor="currentPlayer"/>
+    <Board @clicked="place" @meepleClicked="meepleClicked" :tiles="getGrid" :selectable="okSlots" :selectColor="currentPlayer"/>
   </div>
 </template>
 
@@ -35,8 +35,8 @@ export default {
     return {
       players: ['orange', 'red'],
       playerData: {
-        'orange': { meepleCount: 7 },
-        'red': { meepleCount: 7 }
+        orange: { meepleCount: 7 },
+        red: { meepleCount: 7 }
       },
       currentPlayerIdx: 1,
       pickedTile: null,
@@ -47,7 +47,7 @@ export default {
   },
   props: {
     tiles: {
-      type: Array,
+      type: Object,
       default: () => TileLibrary.allTiles()
     }
   },
@@ -68,13 +68,13 @@ export default {
       this.okSlots = okSlots
     },
     randomizePick () {
-      if (this.tiles.size === 0) {
+      if (this.tileList.size === 0) {
         this.pickedTile = null
         this.pickedIdx = null
       } else {
-        const idx = Math.floor(Math.random() * this.tiles.size)
+        const idx = Math.floor(Math.random() * this.tileList.size)
         this.pickedIdx = idx
-        this.pickedTile = this.tiles.get(idx)
+        this.pickedTile = this.tileList.get(idx)
         this.updateOkSlots()
       }
     },
@@ -84,15 +84,13 @@ export default {
     },
     place (pos, meepleSlot) {
       if (meepleSlot && this.playerData[this.prevPlayer].meepleCount > 0) {
-        this.grid[String(pos)] = {
-          ...this.grid[String(pos)],
-          meepleSelect: null,
-          meeple: { position: meepleSlot, color: this.prevPlayer }
-        }
+        this.grid[String(pos)] = this.grid[String(pos)]
+          .set('meepleSelect', null)
+          .set('meeple', Immutable.fromJS({ position: meepleSlot, color: this.prevPlayer }))
         this.playerData[this.prevPlayer].meepleCount -= 1
       } else {
         if (this.pickedTile) {
-          const newTile = this.pickedTile
+          let newTile = this.pickedTile
 
           if (!(String(pos) in this.grid)) {
             const okSlots = {}
@@ -103,7 +101,7 @@ export default {
               okSlots[String(slot)] = slot
             })
             if (String(pos) in okSlots) {
-              // this.tiles.splice(this.pickedIdx, 1)
+              // this.tileList.splice(this.pickedIdx, 1)
 
               let grid = {...this.grid, [String(pos)]: newTile}
               this.grid = grid
@@ -115,10 +113,11 @@ export default {
 
               if (this.playerData[this.currentPlayer].meepleCount > 0) {
                 // Set meeple selection
-                newTile.meepleSelect = Scoring.freeSlots(new Grid(
-                  Immutable.toJS(this.grid)
-                ), pos)
-                newTile.meepleSelectColor = this.currentPlayer
+                newTile = newTile.set('meepleSelect', Scoring.freeSlots(new Grid(
+                  Immutable.fromJS(this.grid).toJS()
+                ), pos))
+                newTile = newTile.set('meepleSelectColor', this.currentPlayer)
+                this.grid[String(pos)] = newTile
               }
 
               this.nextPlayer()
@@ -147,6 +146,12 @@ export default {
     placedMeeple () {
       return Object.values(this.grid)
         .filter(x => x.meeple)
+    },
+    getGrid () {
+      return Immutable.fromJS(this.grid).toJS()
+    },
+    tileList () {
+      return Immutable.fromJS(this.tiles)
     },
     prevPlayer () {
       const idx = this.currentPlayerIdx
