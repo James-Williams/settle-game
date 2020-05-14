@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 import Place from '@/components/demo/Place'
-import Immutable from 'immutable'
 
 describe('Init State', () => {
   it('should display a single tile svg', () => {
