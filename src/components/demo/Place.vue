@@ -8,7 +8,7 @@
           <p>tiles left</p>
         </span>
         <span>
-          <Tile v-if="this.pickedTile" @clicked="rotate(pickedTile)" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
+          <Tile v-if="this.pickedTile" @clicked="rotatePickedTile" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
         </span>
         <span><p>Players</p><p v-html="playersHtml" /></span>
       </div>
@@ -78,12 +78,8 @@ export default {
         this.updateOkSlots()
       }
     },
-    rotate (tile) {
-      const ss = []
-      for (var i = 0; i < tile.sides.length; i++) {
-        ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
-      }
-      tile.sides = ss
+    rotatePickedTile () {
+      this.pickedTile = Moves.rotateTile(this.pickedTile)
       this.updateOkSlots()
     },
     place (pos, meepleSlot) {
@@ -107,7 +103,7 @@ export default {
               okSlots[String(slot)] = slot
             })
             if (String(pos) in okSlots) {
-              //this.tiles.splice(this.pickedIdx, 1)
+              // this.tiles.splice(this.pickedIdx, 1)
 
               let grid = {...this.grid, [String(pos)]: newTile}
               this.grid = grid
