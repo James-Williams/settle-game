@@ -41,8 +41,13 @@ export default {
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
-      tiles: TileLibrary.allTiles(),
       grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
+    }
+  },
+  props: {
+    tiles: {
+      type: Array,
+      default: () => TileLibrary.allTiles()
     }
   },
   methods: {
@@ -140,10 +145,12 @@ export default {
     },
     playersHtml () {
       const count = (player) => { return this.playerData[player].meepleCount }
+      const countHtml = (player) => '(<span class="count">' + count(player) + '</span>)'
       return this.players
         .map((player) => (player === this.currentPlayer)
-          ? '<strong>' + player + ' (' + count(player) + ')</strong>'
-          : player + ' (' + count(player) + ')')
+          ? '<strong>' + player + ' ' + countHtml(player) + '</strong>'
+          : player + ' ' + countHtml(player))
+        .map(x => '<span class="player">' + x + '</span>')
         .join(', ')
     }
   },
