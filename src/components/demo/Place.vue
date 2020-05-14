@@ -4,7 +4,7 @@
       <Header />
       <div class="controls">
         <span>
-          <p><strong>{{ this.tiles.length }}</strong></p>
+          <p><strong><span class="tiles-left">{{ this.tiles.length }}</span></strong></p>
           <p>tiles left</p>
         </span>
         <span>

@@ -60,6 +60,29 @@ describe('Controls', () => {
     expect(tileCountAfter).toEqual(2)
   })
 
+  it('placing a tile derements the tile count', async () => {
+    const Constructor = Vue.extend(Place)
+    const vm = mount(Place, {
+      propsData: {
+        tiles: [
+          { sides: ['c', 'c', 'c', 'c'] },
+          { sides: ['c', 'c', 'c', 'c'] },
+        ]
+      }
+    })
+
+    const tileCountBefore = vm.find('.controls .tiles-left').text()
+    expect(tileCountBefore).toEqual(String(2))
+
+    const validSlots = vm.findAll('.grid .tile div.selectable')
+    expect(validSlots.length).toBeGreaterThan(0)
+
+    await validSlots.at(0).trigger('click')
+
+    const tileCountAfter = vm.find('.controls .tiles-left').text()
+    expect(tileCountAfter).toEqual(String(1))
+  })
+
   it('players start with 7 meeple', async () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
@@ -76,7 +99,6 @@ describe('Controls', () => {
       expect(counts.at(i).text()).toEqual(String(7))
     }
   })
-
 
   it('placing a meeple decreased count', async () => {
     const Constructor = Vue.extend(Place)
@@ -109,6 +131,56 @@ describe('Controls', () => {
     const counts = vm.findAll('.controls .player .count')
     expect(counts.at(1).text()).toEqual(String(6))
   })
+
+  it('clicking on a meeple removes it', async () => {
+    const Constructor = Vue.extend(Place)
+    const vm = mount(Place, {
+      propsData: {
+        tiles: [
+          { sides: ['c', 'c', 'c', 'c'] },
+          { sides: ['c', 'c', 'c', 'c'] },
+        ]
+      }
+    })
+
+    const validSlots = vm.findAll('.grid .tile div.selectable')
+    const tileCountBefore = vm.findAll('.grid .tile svg:not(.blank)').length
+
+    expect(validSlots.length).toBeGreaterThan(0)
+
+    await validSlots.at(0).trigger('click')
+
+    const validTiles = vm.findAll('.grid .tile svg:not(.blank)')
+    expect(validTiles.length).toEqual(2)
+
+    // Place meeple
+    for (let i = 0; i < validTiles.length; i++) {
+      await validTiles.at(i).trigger('click', {
+        offsetX: 15,
+        offsetY: 50
+      })
+    }
+
+    global.confirm = jest.fn(() => true)
+    expect(global.confirm).not.toHaveBeenCalled()
+
+    const countsBefore = vm.findAll('.controls .player .count')
+    expect(countsBefore.at(1).text()).toEqual(String(6))
+
+    // Remove meeple
+    for (let i = 0; i < validTiles.length; i++) {
+      await validTiles.at(i).trigger('click', {
+        offsetX: 15,
+        offsetY: 50
+      })
+    }
+
+    expect(global.confirm).toHaveBeenCalled()
+
+    const countsAfter = vm.findAll('.controls .player .count')
+    expect(countsAfter.at(1).text()).toEqual(String(7))
+  })
+
 })
 
 const spies = {};
