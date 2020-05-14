@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 
 export default class {
   static DIRECTIONS = [
@@ -9,11 +10,11 @@ export default class {
 
   static rotateTile (tile) {
     const ss = []
-    for (var i = 0; i < tile.sides.length; i++) {
-      ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
+    const sides = tile.get('sides')
+    for (var i = 0; i < sides.size; i++) {
+      ss.push(sides.get((i + sides.size - 1) % sides.size))
     }
-    tile.sides = ss
-    return tile
+    return tile.set('sides', Immutable.fromJS(ss))
   }
 
   static canJoin (t1, t2, vec) {

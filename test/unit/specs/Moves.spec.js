@@ -1,8 +1,23 @@
 import Grid from '@/Grid'
 import Moves from '@/Moves'
+import Immutable from 'immutable'
+
+describe('rotateTile', () => {
+  it('should rotate a road cloister', () => {
+    const roadCloister = Immutable.fromJS({
+      sides: [ 'g', 'g', 'r', 'g' ],
+      cloister: true
+    })
+
+    expect(Moves.rotateTile(roadCloister))
+      .toEqual(Immutable.fromJS({
+        sides: [ 'g', 'g', 'g', 'r'],
+        cloister: true
+      }))
+  })
+})
 
 describe('findSlots', () => {
-
   it('should return all sides for full city', () => {
     const fullCity = { sides: ['c', 'c', 'c', 'c'] }
 
