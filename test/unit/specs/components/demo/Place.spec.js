@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { mount } from '@vue/test-utils'
 import Place from '@/components/demo/Place'
 
 describe('Init State', () => {
@@ -10,6 +11,23 @@ describe('Init State', () => {
 
     expect(nonBlankSvgs.length).toEqual(1)
     expect(nonBlankSvgs[0].children.length).toBeGreaterThan(0)
+  })
+})
+
+describe('Controls', () => {
+  it('clicking should modify next tile (due to rotation)', async () => {
+    const Constructor = Vue.extend(Place)
+    const vm = mount(Place)
+
+    const nextTile = vm.find('.controls .tile')
+    const svgBefore = nextTile.find('svg').html()
+    const clickSurface = nextTile.find('.selectable')
+
+    await clickSurface.trigger('click')
+
+    const svgAfter = nextTile.find('svg').html()
+
+    expect(svgAfter).not.toEqual(svgBefore)
   })
 })
 
