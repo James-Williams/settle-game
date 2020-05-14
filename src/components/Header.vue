@@ -12,10 +12,12 @@ export default {
     }
   },
   created () {
-    this.items = this.$router.options.routes
-      .filter((x) => x.component)
-      .filter((x) => x.label)
-      .filter((x) => x.path)
+    if (this.$router) {
+      this.items = this.$router.options.routes
+        .filter((x) => x.component)
+        .filter((x) => x.label)
+        .filter((x) => x.path)
+    }
   }
 }
 </script>
