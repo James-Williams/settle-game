@@ -22,7 +22,7 @@ yarn run dev
 yarn run unit
 
 # run all tests
-yarn test
+~~yarn test~~ (currently failing)
 ```
 
 ## Docs
