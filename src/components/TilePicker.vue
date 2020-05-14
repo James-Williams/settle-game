@@ -22,7 +22,7 @@ export default {
   props: {
     tiles: {
       type: Array,
-      default: TileLibrary.uniqueTiles()
+      default: () => TileLibrary.uniqueTiles()
     }
   },
   methods: {
