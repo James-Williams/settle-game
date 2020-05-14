@@ -14,7 +14,7 @@
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
         <span class="render">
-          <Tile :type="tile"/>
+          <Tile :type="tile.toJS()"/>
           <pre>{{ tileJson(tile) }}</pre>
         </span>
         <span v-if="showGraph" class="graph">
@@ -49,19 +49,17 @@ export default {
   computed: {
     tiles () {
       let tiles = this.allTiles.filter((tile) => {
-        return !this.hideBonus || !tile.bonus
+        return !this.hideBonus || !tile.get('bonus')
       })
       if (this.rotate90) {
-        tiles = tiles.map((x) => Moves.rotateTile(
-          JSON.parse(JSON.stringify(x))
-        ))
+        tiles = tiles.map((x) => Moves.rotateTile(x))
       }
       if (this.rotate180) {
-        tiles = tiles.map((x) => Moves.rotateTile(
+        tiles = tiles.map(x =>
           Moves.rotateTile(
-            JSON.parse(JSON.stringify(x))
+            Moves.rotateTile(x)
           )
-        ))
+        )
       }
       return tiles
     }
@@ -71,7 +69,7 @@ export default {
       return JSON.stringify(tile, null, 2)
     },
     graph (tile) {
-      return Scoring.tileGraph(tile)
+      return Scoring.tileGraph(tile.toJS())
     },
     graphJson (tile) {
       return JSON.stringify(this.graph(tile), null, 2)

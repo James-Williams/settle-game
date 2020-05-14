@@ -8,7 +8,7 @@ describe('allTiles', () => {
       tiles.map((x) => JSON.stringify(x))
     )
 
-    expect(tileSet.size).toBeLessThan(tiles.length)
+    expect(tileSet.size).toBeLessThan(tiles.size)
     expect(tileSet.size).toBeGreaterThan(0)
   })
 })
@@ -21,11 +21,11 @@ describe('uniqueTiles', () => {
       tiles.map((x) => JSON.stringify(x))
     )
 
-    expect(tileSet.size).toEqual(tiles.length)
+    expect(tileSet.size).toEqual(tiles.size)
   })
 
   it('should return 24 items', () => {
-    expect(TileLibrary.uniqueTiles().length)
+    expect(TileLibrary.uniqueTiles().size)
       .toEqual(24)
 
   })

@@ -1,15 +1,17 @@
+import Immutable from 'immutable'
 
 export default {
   uniqueTiles () {
-    return this.packed.map(
-      (x) => JSON.parse(JSON.stringify(x.tile))
-    )
+    // Do we need SEQ here?
+    return Immutable.Seq(Immutable.fromJS(
+      this.packed.map(x => x.tile)
+    ))
   },
   allTiles () {
-    const tiles = []
+    let tiles = Immutable.List()
     this.packed.forEach((p) => {
       for (let i = 0; i < p.count; i++) {
-        tiles.push(JSON.parse(JSON.stringify(p.tile)))
+        tiles = tiles.push(Immutable.fromJS(p.tile))
       }
     })
     return tiles
