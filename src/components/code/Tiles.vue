@@ -13,11 +13,11 @@
     </div>
     <div class="tiles">
       <div v-for="(tile, idx) in tiles" class="entry" :key="idx">
-        <span>
+        <span class="render">
           <Tile :type="tile"/>
           <pre>{{ tileJson(tile) }}</pre>
         </span>
-        <span v-if="showGraph">
+        <span v-if="showGraph" class="graph">
           <TileGraph :graph="graph(tile)" />
           <pre>{{ graphJson(tile) }}</pre>
         </span>
