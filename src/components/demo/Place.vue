@@ -128,7 +128,7 @@ export default {
       const meeplePlaced = this.grid.placedMeeple()
         .filter(x => x.get('color') === player)
         .size
-      return 7 - meeplePlaced
+      return this.gameState.config().get('startingMeeple') - meeplePlaced
     }
   },
   created () {
