@@ -109,7 +109,7 @@ export default {
 
               // Clear old meeple selection
               Object.keys(this.grid).forEach((key) => {
-                this.grid[key].meepleSelect = null
+                this.grid[key] = this.grid[key].set('meepleSelect', null)
               })
 
               if (this.playerData[this.currentPlayer].meepleCount > 0) {
