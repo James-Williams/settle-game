@@ -34,7 +34,6 @@ import Scoring from '@/Scoring'
 export default {
   data () {
     return {
-      players: ['orange', 'red'],
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
@@ -143,16 +142,16 @@ export default {
       return this.grid.keys().length - 1
     },
     prevPlayer () {
-      const idx = this.tilesPlayed % this.players.length
-      return this.players[(idx > 0) ? idx - 1 : this.players.length - 1]
+      const idx = this.tilesPlayed % this.gameState.players().size
+      return this.gameState.players().get((idx > 0) ? idx - 1 : this.gameState.players().size - 1)
     },
     currentPlayer () {
-      return this.players[this.tilesPlayed % this.players.length]
+      return this.gameState.players().get(this.tilesPlayed % this.gameState.players().size)
     },
     playersHtml () {
       const count = (player) => { return this.meepleCount(player) }
       const countHtml = (player) => '(<span class="count">' + count(player) + '</span>)'
-      return this.players
+      return this.gameState.players()
         .map((player) => (player === this.currentPlayer)
           ? '<strong>' + player + ' ' + countHtml(player) + '</strong>'
           : player + ' ' + countHtml(player))
