@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import PickerDemo from '@/components/demo/Picker'
 import AutoTileDemo from '@/components/demo/AutoTile'
 import PlaceDemo from '@/components/demo/Place'
-import MeepleDemo from '@/components/demo/Meeple'
 import TilesCode from '@/components/code/Tiles'
 
 Vue.use(Router)
@@ -19,11 +18,6 @@ export default new Router({
       label: 'Auto Map Demo',
       path: '/demo/auto/',
       component: AutoTileDemo
-    },
-    {
-      label: 'Meeple Demo',
-      path: '/demo/meeple/',
-      component: MeepleDemo
     },
     {
       label: 'Picker Demo',
