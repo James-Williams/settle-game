@@ -13,7 +13,7 @@
         <span><p>Players</p><p v-html="playersHtml" /></span>
       </div>
     </div>
-    <Board @clicked="place" @meepleClicked="meepleClicked" :tiles="this.grid.toJS()" :selectable="okSlots" :selectColor="currentPlayer"/>
+    <Board @clicked="place" @meepleClicked="meepleClicked" :grid="this.grid" :selectable="okSlots" :selectColor="currentPlayer"/>
   </div>
 </template>
 

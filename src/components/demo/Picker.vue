@@ -4,11 +4,13 @@
       <Header />
       <TilePicker @selected="clickTile"/>
     </div>
-    <Board @clicked="place" :tiles="grid" />
+    <Board @clicked="place" :grid="getGrid" />
   </div>
 </template>
 
 <script>
+
+import Grid from '@/Grid'
 
 import Tile from '../Tile'
 import TilePicker from '../TilePicker'
@@ -31,6 +33,11 @@ export default {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
         this.grid = {...this.grid, [String(pos)]: newTile}
       }
+    }
+  },
+  computed: {
+    getGrid () {
+      return new Grid(this.grid)
     }
   },
   components: {

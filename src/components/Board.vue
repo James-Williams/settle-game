@@ -15,7 +15,7 @@ import Tile from './Tile'
 
 export default {
   props: {
-    tiles: {
+    grid: {
       type: Object
     },
     selectable: {
@@ -32,27 +32,18 @@ export default {
     }
   },
   computed: {
-    keys () {
-      return Object.keys(this.tiles)
-        .map((x) => x.split(',').map((x) => parseInt(x)))
-    },
-    // TODO - Use Grid Object!
-    minX () { return Math.min(...this.keys.map((x) => x[0])) },
-    maxX () { return Math.max(...this.keys.map((x) => x[0])) },
-    minY () { return Math.min(...this.keys.map((x) => x[1])) },
-    maxY () { return Math.max(...this.keys.map((x) => x[1])) },
     rangeX () {
       var rs = []
-      var x = this.minX - 2
-      while (x <= this.maxX + 2) {
+      var x = this.grid.minX() - 2
+      while (x <= this.grid.maxX() + 2) {
         rs.push(x++)
       }
       return rs
     },
     rangeY () {
       var rs = []
-      var x = this.minY - 2
-      while (x <= this.maxY + 2) {
+      var x = this.grid.minY() - 2
+      while (x <= this.grid.maxY() + 2) {
         rs.push(x++)
       }
       return rs.reverse()
@@ -63,27 +54,27 @@ export default {
       return String([x, y]) in this.selectable
     },
     getTile (x, y) {
-      const tile = this.tiles[String([x, y])]
+      const tile = this.grid.get([x, y])
       if (tile) return tile
       else return { blank: 1 }
     },
     getMeeple (x, y) {
-      if ((String([x, y]) in this.tiles)) {
-        const tile = this.tiles[String([x, y])]
+      const tile = this.grid.get([x, y])
+      if (tile) {
         return tile.meeple
       }
       return null
     },
     getMeepleSelect (x, y) {
-      if ((String([x, y]) in this.tiles)) {
-        const tile = this.tiles[String([x, y])]
+      const tile = this.grid.get([x, y])
+      if (tile) {
         return tile.meepleSelect
       }
       return null
     },
     getMeepleSelectColor (x, y) {
-      if ((String([x, y]) in this.tiles)) {
-        const tile = this.tiles[String([x, y])]
+      const tile = this.grid.get([x, y])
+      if (tile) {
         return tile.meepleSelectColor
       }
       return null

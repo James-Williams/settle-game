@@ -7,7 +7,7 @@
         <strong>Remaining: {{ this.tiles.length }}</strong>
       </div>
     </div>
-    <Board @clicked="place" :tiles="grid" :halfSize="true"/>
+    <Board @clicked="place" :grid="getGrid" :halfSize="true"/>
   </div>
 </template>
 
@@ -157,6 +157,11 @@ export default {
           }
         }
       }
+    }
+  },
+  computed: {
+    getGrid () {
+      return new Grid(this.grid)
     }
   },
   created () {
