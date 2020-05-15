@@ -2,10 +2,9 @@ import Immutable from 'immutable'
 
 export default {
   uniqueTiles () {
-    // Do we need SEQ here?
-    return Immutable.Seq(Immutable.fromJS(
+    return Immutable.fromJS(
       this.packed.map(x => x.tile)
-    ))
+    )
   },
   allTiles () {
     let tiles = Immutable.List()

@@ -1,45 +1,41 @@
 <template>
   <div class="showcase">
-    <div class="item" v-for="(tile, idx) in tiles" :key="idx">
-      <Tile @clicked="clicked(tile)" :type="tile" :key="idx" :halfSize="true" :selectable="true" :meeple="tile.meeple" />
-      <div @click="clicked(tile)" v-if="tile === selected" class="selected"></div>
+    <div class="item" v-for="(tile, idx) in tileList" :key="idx">
+      <Tile @clicked="clicked(idx)" :type="tile.toJS()" :key="idx" :halfSize="true" :selectable="true" :meeple="tile.get('meeple')" />
+      <div @click="clicked(idx)" v-if="idx === selectedIdx" class="selected"></div>
     </div>
   </div>
 </template>
 
 <script>
+import Immutable from 'immutable'
 
 import Tile from './Tile'
 
 import TileLibrary from '@/TileLibrary'
+import Moves from '@/Moves'
 
 export default {
   data () {
     return {
-      selected: null
+      selectedIdx: -1,
+      tileList: Immutable.fromJS(this.tiles)
     }
   },
   props: {
     tiles: {
-      type: Array,
+      type: Object,
       default: () => TileLibrary.uniqueTiles()
     }
   },
   methods: {
-    clicked (tile) {
-      if (this.selected === tile) {
-        this.rotate(this.selected)
+    clicked (idx) {
+      if (this.selectedIdx === idx) {
+        this.tileList = this.tileList.set(idx, Moves.rotateTile(this.tileList.get(idx)))
       } else {
-        this.selected = tile
+        this.selectedIdx = idx
       }
-      this.$emit('selected', this.selected)
-    },
-    rotate (tile) {
-      const ss = []
-      for (var i = 0; i < tile.sides.length; i++) {
-        ss.push(tile.sides[(i + tile.sides.length - 1) % tile.sides.length])
-      }
-      tile.sides = ss
+      this.$emit('selected', this.tileList.get(this.selectedIdx))
     }
   },
   components: {

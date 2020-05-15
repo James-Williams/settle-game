@@ -18,7 +18,7 @@ describe('Init State', () => {
   it('tile picker displays all unique tiles', () => {
     const vm = mount(Picker)
     const pickerTiles = vm.findAll('.showcase .tile svg:not(.blank)')
-    expect(pickerTiles.length).toEqual(TileLibrary.uniqueTiles().length)
+    expect(pickerTiles.length).toEqual(TileLibrary.uniqueTiles().size)
   })
 })
 
