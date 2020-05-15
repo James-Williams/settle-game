@@ -4,7 +4,7 @@
       <Header />
       <TilePicker @selected="clickTile"/>
     </div>
-    <Board v-for="(grid, idx) in grids" @clicked="place" :tiles="grid" :key="idx" />
+    <Board @clicked="place" :tiles="grid" />
   </div>
 </template>
 
@@ -19,9 +19,7 @@ export default {
   data () {
     return {
       pickedTile: null,
-      grids: [
-        {[String([0, 0])]: { blank: 1 }}
-      ]
+      grid: {[String([0, 0])]: { blank: 1 }}
     }
   },
   methods: {
@@ -31,8 +29,7 @@ export default {
     place (pos) {
       if (this.pickedTile) {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
-        var grid = {...this.grids[0], [String(pos)]: newTile}
-        this.grids = {...this.grids, 0: grid}
+        this.grid = {...this.grid, [String(pos)]: newTile}
       }
     }
   },
