@@ -130,7 +130,7 @@ describe('Controls', () => {
     }
 
     const counts = vm.findAll('.controls .player .count')
-    expect(counts.at(1).text()).toEqual(String(6))
+    expect(counts.at(0).text()).toEqual(String(6))
   })
 
   it('clicking on a meeple removes it', async () => {

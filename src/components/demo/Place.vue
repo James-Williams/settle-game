@@ -34,7 +34,6 @@ export default {
   data () {
     return {
       players: ['orange', 'red'],
-      currentPlayerIdx: 1,
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
@@ -49,11 +48,6 @@ export default {
     }
   },
   methods: {
-    nextPlayer () {
-      let idx = this.currentPlayerIdx + 1
-      if (idx >= this.players.length) idx = 0
-      this.currentPlayerIdx = idx
-    },
     updateOkSlots () {
       const okSlots = {}
       Moves.findSlots(
@@ -103,8 +97,8 @@ export default {
               this.grid = this.grid.set(pos, newTile)
 
               // Clear old meeple selection
-              Object.keys(this.grid).forEach((key) => {
-                this.grid = this.grid.set(String(pos), Immutable.fromJS(this.grid.get(pos))
+              this.grid.keys().forEach((key) => {
+                this.grid = this.grid.set(String(key), Immutable.fromJS(this.grid.get(key))
                   .set('meepleSelect', null)
                 )
               })
@@ -112,11 +106,10 @@ export default {
               if (this.meepleCount(this.currentPlayer) > 0) {
                 // Set meeple selection
                 newTile = newTile.set('meepleSelect', Scoring.freeSlots(this.grid, pos))
-                newTile = newTile.set('meepleSelectColor', this.currentPlayer)
+                newTile = newTile.set('meepleSelectColor', this.prevPlayer)
                 this.grid = this.grid.set(String(pos), newTile)
               }
 
-              this.nextPlayer()
               this.randomizePick()
             }
           }
@@ -142,12 +135,15 @@ export default {
     this.randomizePick()
   },
   computed: {
+    tilesPlayed () {
+      return this.grid.keys().length - 1
+    },
     prevPlayer () {
-      const idx = this.currentPlayerIdx
+      const idx = this.tilesPlayed % this.players.length
       return this.players[(idx > 0) ? idx - 1 : this.players.length - 1]
     },
     currentPlayer () {
-      return this.players[this.currentPlayerIdx]
+      return this.players[this.tilesPlayed % this.players.length]
     },
     playersHtml () {
       const count = (player) => { return this.meepleCount(player) }
