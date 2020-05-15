@@ -27,7 +27,6 @@ import Header from '../Header'
 
 import TileLibrary from '@/TileLibrary'
 import GameState from '@/GameState'
-import Grid from '@/Grid'
 import Moves from '@/Moves'
 import Scoring from '@/Scoring'
 
@@ -38,13 +37,17 @@ export default {
       pickedIdx: null,
       okSlots: {},
       tileList: Immutable.fromJS(this.tiles),
-      gameState: new GameState(new Grid({ [String([0, 0])]: Immutable.fromJS({ sides: [ 'c', 'r', 'g', 'r' ] }) }))
+      gameState: this.initGameState
     }
   },
   props: {
     tiles: {
       type: Object,
       default: () => TileLibrary.allTiles()
+    },
+    initGameState: {
+      type: Object,
+      default: () => new GameState()
     }
   },
   methods: {

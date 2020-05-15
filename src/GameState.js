@@ -1,13 +1,26 @@
 import Immutable from 'immutable'
+import Grid from '@/Grid'
 
 export default class {
-  constructor (grid) {
-    this.state = Immutable.fromJS({
-      grid: grid,
-      config: {
+  constructor (grid, config) {
+    if (!grid) {
+      grid = new Grid({
+        [String([0, 0])]: Immutable.fromJS({
+          sides: [ 'c', 'r', 'g', 'r' ]
+        })
+      })
+    }
+
+    if (!config) {
+      config = {
         players: ['red', 'orange', 'black'],
         startingMeeple: 7
       }
+    }
+
+    this.state = Immutable.fromJS({
+      grid: grid,
+      config: config
     })
   }
 
