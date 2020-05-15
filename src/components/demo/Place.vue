@@ -130,12 +130,19 @@ export default {
         this.grid[key] = {...this.grid[key], meeple: null}
         this.playerData[meeple.color].meepleCount += 1
       }
+    },
+    getGrid () {
+      return this.grid
     }
   },
   created () {
     this.randomizePick()
   },
   computed: {
+    placedMeeple () {
+      return Object.values(this.grid)
+        .filter(x => x.meeple)
+    },
     prevPlayer () {
       const idx = this.currentPlayerIdx
       return this.players[(idx > 0) ? idx - 1 : this.players.length - 1]

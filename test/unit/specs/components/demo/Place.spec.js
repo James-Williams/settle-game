@@ -164,8 +164,8 @@ describe('Controls', () => {
     global.confirm = jest.fn(() => true)
     expect(global.confirm).not.toHaveBeenCalled()
 
-    const countsBefore = vm.findAll('.controls .player .count')
-    expect(countsBefore.at(1).text()).toEqual(String(6))
+    const countBefore = vm.vm.placedMeeple.length
+    expect(countBefore).toEqual(1)
 
     // Remove meeple
     for (let i = 0; i < validTiles.length; i++) {
@@ -177,8 +177,8 @@ describe('Controls', () => {
 
     expect(global.confirm).toHaveBeenCalled()
 
-    const countsAfter = vm.findAll('.controls .player .count')
-    expect(countsAfter.at(1).text()).toEqual(String(7))
+    const countAfter = vm.vm.placedMeeple.length
+    expect(countAfter).toEqual(0)
   })
 
 })
