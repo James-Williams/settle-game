@@ -60,7 +60,7 @@ describe('Controls', () => {
     expect(tileCountAfter).toEqual(2)
   })
 
-  it('placing a tile derements the tile count', async () => {
+  it('placing a tile decrements the tile count', async () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
@@ -100,7 +100,7 @@ describe('Controls', () => {
     }
   })
 
-  it('placing a meeple decreased count', async () => {
+  it('placing a meeple decrements displaye tile count', async () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
