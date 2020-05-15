@@ -12,6 +12,12 @@ export default class {
       .map((x) => x.split(',').map((x) => parseInt(x)))
   }
 
+  placedMeeple () {
+    return Object.values(this.tiles)
+      .filter(x => x.get('meeple'))
+      .map(x => x.get('meeple'))
+  }
+
   minX () { return Math.min(...this.keys().map((x) => x[0])) }
   maxX () { return Math.max(...this.keys().map((x) => x[0])) }
   minY () { return Math.min(...this.keys().map((x) => x[1])) }

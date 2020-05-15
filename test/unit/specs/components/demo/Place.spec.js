@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 import Place from '@/components/demo/Place'
+import Grid from '@/Grid'
 
 describe('Init State', () => {
   it('should display a single tile svg', () => {
@@ -164,7 +165,7 @@ describe('Controls', () => {
     global.confirm = jest.fn(() => true)
     expect(global.confirm).not.toHaveBeenCalled()
 
-    const countBefore = vm.vm.placedMeeple.length
+    const countBefore = new Grid(vm.vm.grid).placedMeeple().length
     expect(countBefore).toEqual(1)
 
     // Remove meeple
@@ -177,7 +178,7 @@ describe('Controls', () => {
 
     expect(global.confirm).toHaveBeenCalled()
 
-    const countAfter = vm.vm.placedMeeple.length
+    const countAfter = new Grid(vm.vm.grid).placedMeeple().length
     expect(countAfter).toEqual(0)
   })
 
