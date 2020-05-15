@@ -26,6 +26,7 @@ import Board from '../Board'
 import Header from '../Header'
 
 import TileLibrary from '@/TileLibrary'
+import GameState from '@/GameState'
 import Grid from '@/Grid'
 import Moves from '@/Moves'
 import Scoring from '@/Scoring'
@@ -38,7 +39,7 @@ export default {
       pickedIdx: null,
       okSlots: {},
       tileList: Immutable.fromJS(this.tiles),
-      grid: new Grid({ [String([0, 0])]: Immutable.fromJS({ sides: [ 'c', 'r', 'g', 'r' ] }) })
+      gameState: new GameState(new Grid({ [String([0, 0])]: Immutable.fromJS({ sides: [ 'c', 'r', 'g', 'r' ] }) }))
     }
   },
   props: {
@@ -75,7 +76,7 @@ export default {
     },
     place (pos, meepleSlot) {
       if (meepleSlot && this.meepleCount(this.prevPlayer) > 0) {
-        this.grid = this.grid.set(String(pos), Immutable.fromJS(this.grid.get(pos))
+        this.gameState = this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
           .set('meepleSelect', null)
           .set('meeple', Immutable.fromJS({ position: meepleSlot, color: this.prevPlayer }))
         )
@@ -94,11 +95,11 @@ export default {
             if (String(pos) in okSlots) {
               this.tileList = this.tileList.splice(this.pickedIdx, 1)
 
-              this.grid = this.grid.set(pos, newTile)
+              this.gameState = this.gameState.setGrid(pos, newTile)
 
               // Clear old meeple selection
               this.grid.keys().forEach((key) => {
-                this.grid = this.grid.set(String(key), Immutable.fromJS(this.grid.get(key))
+                this.gameState = this.gameState.setGrid(String(key), Immutable.fromJS(this.grid.get(key))
                   .set('meepleSelect', null)
                 )
               })
@@ -107,7 +108,7 @@ export default {
                 // Set meeple selection
                 newTile = newTile.set('meepleSelect', Scoring.freeSlots(this.grid, pos))
                 newTile = newTile.set('meepleSelectColor', this.prevPlayer)
-                this.grid = this.grid.set(String(pos), newTile)
+                this.gameState = this.gameState.setGrid(String(pos), newTile)
               }
 
               this.randomizePick()
@@ -119,7 +120,7 @@ export default {
     meepleClicked (pos, meeple) {
       const ok = confirm('Remove meeple?')
       if (ok) {
-        this.grid = this.grid.set(String(pos), Immutable.fromJS(this.grid.get(pos))
+        this.gameState = this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
           .set('meeple', null)
         )
       }
@@ -135,6 +136,9 @@ export default {
     this.randomizePick()
   },
   computed: {
+    grid () {
+      return this.gameState.grid()
+    },
     tilesPlayed () {
       return this.grid.keys().length - 1
     },
