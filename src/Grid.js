@@ -1,19 +1,18 @@
+import Immutable from 'immutable'
 
 export default class {
   constructor (tiles) {
-    this.tiles = {}
-    Object.keys(tiles).forEach((k) => {
-      this.tiles[k] = tiles[k]
-    })
+    this.tiles = Immutable.fromJS(tiles)
   }
 
   keys () {
-    return Object.keys(this.tiles)
+    return Immutable.List(this.tiles.keys())
       .map((x) => x.split(',').map((x) => parseInt(x)))
+      .toJS()
   }
 
   placedMeeple () {
-    return Object.values(this.tiles)
+    return Immutable.List(this.tiles.values())
       .filter(x => x.get('meeple'))
       .map(x => x.get('meeple'))
   }
@@ -24,9 +23,17 @@ export default class {
   maxY () { return Math.max(...this.keys().map((x) => x[1])) }
 
   get (pos) {
-    if (String(pos) in this.tiles) {
-      return JSON.parse(JSON.stringify(this.tiles[String(pos)]))
+    if (this.tiles.has(String(pos))) {
+      return this.tiles.get(String(pos)).toJS()
     }
     return null
+  }
+
+  toJS () {
+    return this.tiles.toJS()
+  }
+
+  set (pos, tile) {
+    return new this.constructor(this.tiles.set(String(pos), tile))
   }
 }

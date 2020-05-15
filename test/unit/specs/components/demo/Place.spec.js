@@ -165,7 +165,7 @@ describe('Controls', () => {
     global.confirm = jest.fn(() => true)
     expect(global.confirm).not.toHaveBeenCalled()
 
-    const countBefore = new Grid(vm.vm.grid).placedMeeple().length
+    const countBefore = vm.vm.grid.placedMeeple().size
     expect(countBefore).toEqual(1)
 
     // Remove meeple
@@ -178,7 +178,7 @@ describe('Controls', () => {
 
     expect(global.confirm).toHaveBeenCalled()
 
-    const countAfter = new Grid(vm.vm.grid).placedMeeple().length
+    const countAfter = vm.vm.grid.placedMeeple().size
     expect(countAfter).toEqual(0)
   })
 
