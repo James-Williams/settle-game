@@ -90,13 +90,13 @@ export default {
               }
             }
           }
-          Moves.rotateTile(Immutable.fromJS(this.pickedTile)).toJS()
+          this.pickedTile = Moves.rotateTile(Immutable.fromJS(this.pickedTile)).toJS()
           this.updateOkSlots()
         }
 
         // Move to desired rotation for 'bestPos'
         for (let i = 0; i < bestRot; i++) {
-          Moves.rotateTile(this.pickedTile)
+          this.pickedTile = Moves.rotateTile(Immutable.fromJS(this.pickedTile)).toJS()
           this.updateOkSlots()
         }
 
@@ -114,9 +114,11 @@ export default {
         const slots = Scoring.freeSlots(grid, pos)
         const pick = Math.floor(Math.random() * slots.length)
         const key = String(pos)
-        this.grid[key].meeple = {
-          color: this.randomColor(),
-          position: slots[pick]
+        if (slots.length > 0) {
+          this.grid[key].meeple = {
+            color: this.randomColor(),
+            position: slots[pick]
+          }
         }
       }
     },
