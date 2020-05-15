@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import Immutable from 'immutable'
 
 import Tile from '../Tile'
 import TilePicker from '../TilePicker'
@@ -29,7 +30,7 @@ export default {
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
-      tiles: TileLibrary.allTiles(),
+      tiles: TileLibrary.allTiles().toJS(),
       grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
     }
   },
@@ -54,7 +55,7 @@ export default {
         // Auto-place tile and repeat
         const randRot = Math.floor(Math.random() * 4)
         for (let i = 0; i < randRot; i++) {
-          Moves.rotateTile(this.pickedTile)
+          this.pickedTile = Moves.rotateTile(Immutable.fromJS(this.pickedTile)).toJS()
           this.updateOkSlots()
         }
 
@@ -89,7 +90,7 @@ export default {
               }
             }
           }
-          Moves.rotateTile(this.pickedTile)
+          Moves.rotateTile(Immutable.fromJS(this.pickedTile)).toJS()
           this.updateOkSlots()
         }
 
