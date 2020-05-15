@@ -25,12 +25,21 @@ import Moves from '@/Moves'
 import Scoring from '@/Scoring'
 
 export default {
+  props: {
+    waitTime: {
+      type: Number,
+      default: 75
+    },
+    tiles: {
+      type: Array,
+      default: () => TileLibrary.allTiles().toJS()
+    }
+  },
   data () {
     return {
       pickedTile: null,
       pickedIdx: null,
       okSlots: {},
-      tiles: TileLibrary.allTiles().toJS(),
       grid: { [String([0, 0])]: { sides: [ 'c', 'r', 'g', 'r' ] } }
     }
   },
@@ -46,6 +55,7 @@ export default {
       if (this.tiles.length === 0) {
         this.pickedTile = null
         this.pickedIdx = null
+        this.$emit('finished')
       } else {
         const idx = Math.floor(Math.random() * this.tiles.length)
         this.pickedIdx = idx
@@ -100,7 +110,11 @@ export default {
           this.updateOkSlots()
         }
 
-        window.setTimeout(() => this.place(bestPos), 75)
+        if (this.waitTime) {
+          window.setTimeout(() => this.place(bestPos), this.waitTime)
+        } else {
+          this.place(bestPos)
+        }
       }
     },
     randomColor () {
