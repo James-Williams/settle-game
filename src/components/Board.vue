@@ -1,5 +1,6 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" :style="style">
+    <Zoom @zoom100="zoom100" @zoomSeeAll="zoomSeeAll"/>
     <div class="grid">
       <div v-for="y in rangeY" :key="y">
         <div class="tile" v-for="x in rangeX" :key="x">
@@ -12,8 +13,14 @@
 
 <script>
 import Tile from './Tile'
+import Zoom from './Zoom'
 
 export default {
+  data () {
+    return {
+      zoomLevel: 1.0
+    }
+  },
   props: {
     grid: {
       type: Object
@@ -47,6 +54,11 @@ export default {
         rs.push(x++)
       }
       return rs.reverse()
+    },
+    style () {
+      return {
+        '--zoom-level': this.zoomLevel
+      }
     }
   },
   methods: {
@@ -78,10 +90,17 @@ export default {
         return tile.meepleSelectColor
       }
       return null
+    },
+    zoom100 () {
+      this.zoomLevel = 1
+    },
+    zoomSeeAll () {
+      this.zoomLevel = 0.5
     }
   },
   components: {
-    Tile
+    Tile,
+    Zoom
   }
 }
 </script>
@@ -97,12 +116,15 @@ export default {
   overflow-x: scroll;
   overflow-y: scroll;
   line-height: 0;
-  height: 100%;
+  height: calc(100% * (1 / var(--zoom-level)));
+  width: calc(100% * (1 / var(--zoom-level)));
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  transform: scale(var(--zoom-level));
+  transform-origin: top left;
 }
 .tile {
   position: relative;
