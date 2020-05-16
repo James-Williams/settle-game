@@ -39,4 +39,11 @@ export default class {
   setGrid (pos, tile) {
     return new this.constructor(this.grid().set(pos, tile))
   }
+
+  toJS () {
+    return {
+      grid: this.grid().toJS(),
+      config: this.config().toJS()
+    }
+  }
 }

@@ -37,7 +37,7 @@ export default {
       pickedIdx: null,
       okSlots: {},
       tileList: Immutable.fromJS(this.tiles),
-      gameState: this.initGameState
+      gameStateHistory: Immutable.List().push(this.initGameState)
     }
   },
   props: {
@@ -78,10 +78,10 @@ export default {
     },
     place (pos, meepleSlot) {
       if (meepleSlot && this.meepleCount(this.prevPlayer) > 0) {
-        this.gameState = this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
+        this.updateState(this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
           .set('meepleSelect', null)
           .set('meeple', Immutable.fromJS({ position: meepleSlot, color: this.prevPlayer }))
-        )
+        ))
       } else {
         if (this.pickedTile) {
           let newTile = this.pickedTile
@@ -97,21 +97,23 @@ export default {
             if (String(pos) in okSlots) {
               this.tileList = this.tileList.splice(this.pickedIdx, 1)
 
-              this.gameState = this.gameState.setGrid(pos, newTile)
+              let newState = this.gameState
+              newState = newState.setGrid(pos, newTile)
 
               // Clear old meeple selection
-              this.grid.keys().forEach((key) => {
-                this.gameState = this.gameState.setGrid(String(key), Immutable.fromJS(this.grid.get(key))
+              newState.grid().keys().forEach((key) => {
+                newState = newState.setGrid(key, Immutable.fromJS(newState.grid().get(key))
                   .set('meepleSelect', null)
                 )
               })
 
               if (this.meepleCount(this.prevPlayer) > 0) {
                 // Set meeple selection
-                newTile = newTile.set('meepleSelect', Scoring.freeSlots(this.grid, pos))
+                newTile = newTile.set('meepleSelect', Scoring.freeSlots(newState.grid(), pos))
                 newTile = newTile.set('meepleSelectColor', this.prevPlayer)
-                this.gameState = this.gameState.setGrid(String(pos), newTile)
               }
+              newState = newState.setGrid(pos, newTile)
+              this.updateState(newState)
 
               this.randomizePick()
             }
@@ -122,9 +124,9 @@ export default {
     meepleClicked (pos, meeple) {
       const ok = confirm('Remove meeple?')
       if (ok) {
-        this.gameState = this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
+        this.updateState(this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
           .set('meeple', null)
-        )
+        ))
       }
     },
     meepleCount (player) {
@@ -132,12 +134,18 @@ export default {
         .filter(x => x.get('color') === player)
         .size
       return this.gameState.config().get('startingMeeple') - meeplePlaced
+    },
+    updateState (newGameState) {
+      this.gameStateHistory = this.gameStateHistory.unshift(newGameState)
     }
   },
   created () {
     this.randomizePick()
   },
   computed: {
+    gameState () {
+      return this.gameStateHistory.get(0)
+    },
     grid () {
       return this.gameState.grid()
     },
