@@ -151,22 +151,24 @@ describe('Controls', () => {
 
     await validSlots.at(0).trigger('click')
 
+    const placedTileIdx = 0
     const validTiles = vm.findAll('.grid .tile svg:not(.blank)')
     expect(validTiles.length).toEqual(2)
+    const validTileComp = validTiles.at(placedTileIdx).element.parentElement.__vue__
+    expect(validTileComp.meepleSelectColor).toEqual('red')
 
     // Place meeple
-    for (let i = 0; i < validTiles.length; i++) {
-      await validTiles.at(i).trigger('click', {
-        offsetX: 15,
-        offsetY: 50
-      })
-    }
+    await validTiles.at(placedTileIdx).trigger('click', {
+      offsetX: 15,
+      offsetY: 50
+    })
 
     global.confirm = jest.fn(() => true)
     expect(global.confirm).not.toHaveBeenCalled()
 
-    const countBefore = vm.vm.grid.placedMeeple().size
-    expect(countBefore).toEqual(1)
+    const meepleBefore = vm.vm.grid.placedMeeple()
+    expect(meepleBefore.size).toEqual(1)
+    expect(meepleBefore.get(0).get('color')).toEqual('red')
 
     // Remove meeple
     for (let i = 0; i < validTiles.length; i++) {
@@ -178,8 +180,8 @@ describe('Controls', () => {
 
     expect(global.confirm).toHaveBeenCalled()
 
-    const countAfter = vm.vm.grid.placedMeeple().size
-    expect(countAfter).toEqual(0)
+    const meepleAfter = vm.vm.grid.placedMeeple()
+    expect(meepleAfter.size).toEqual(0)
   })
 
 })

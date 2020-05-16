@@ -107,10 +107,10 @@ export default {
                 )
               })
 
-              if (this.meepleCount(this.prevPlayer) > 0) {
+              if (this.meepleCount(this.currentPlayer) > 0) {
                 // Set meeple selection
                 newTile = newTile.set('meepleSelect', Scoring.freeSlots(newState.grid(), pos))
-                newTile = newTile.set('meepleSelectColor', this.prevPlayer)
+                newTile = newTile.set('meepleSelectColor', this.currentPlayer)
               }
               newState = newState.setGrid(pos, newTile)
               this.updateState(newState)
