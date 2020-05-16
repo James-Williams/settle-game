@@ -4,7 +4,7 @@
       <Header />
       <div class="controls">
         <span>
-          <p><strong><span class="tiles-left">{{ this.tileList.size }}</span></strong> left</p>
+          <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong> left</p>
           <p>
             <button @click="undoState" :disabled="!enableUndo">Undo</button>
             <button @click="redoState" :disabled="!enableRedo">Redo</button>
@@ -28,7 +28,6 @@ import TilePicker from '../TilePicker'
 import Board from '../Board'
 import Header from '../Header'
 
-import TileLibrary from '@/TileLibrary'
 import GameState from '@/GameState'
 import Moves from '@/Moves'
 import Scoring from '@/Scoring'
@@ -37,18 +36,12 @@ export default {
   data () {
     return {
       pickedTile: null,
-      pickedIdx: null,
       okSlots: {},
-      tileList: Immutable.fromJS(this.tiles),
       gameStateHistory: Immutable.List().push(this.initGameState),
       gameStateIdx: 0
     }
   },
   props: {
-    tiles: {
-      type: Object,
-      default: () => TileLibrary.allTiles()
-    },
     initGameState: {
       type: Object,
       default: () => new GameState()
@@ -58,11 +51,13 @@ export default {
     undoState () {
       if (this.enableUndo) {
         this.gameStateIdx += 1
+        this.updatePick()
       }
     },
     redoState () {
       if (this.enableRedo) {
         this.gameStateIdx -= 1
+        this.updatePick()
       }
     },
     updateOkSlots () {
@@ -75,16 +70,10 @@ export default {
       })
       this.okSlots = okSlots
     },
-    randomizePick () {
-      if (this.tileList.size === 0) {
-        this.pickedTile = null
-        this.pickedIdx = null
-      } else {
-        const idx = Math.floor(Math.random() * this.tileList.size)
-        this.pickedIdx = idx
-        this.pickedTile = this.tileList.get(idx)
-        this.updateOkSlots()
-      }
+    updatePick () {
+      // TODO - Compute this directly from GameState + rotation
+      this.pickedTile = this.gameState.nextTile()
+      this.updateOkSlots()
     },
     rotatePickedTile () {
       this.pickedTile = Moves.rotateTile(this.pickedTile)
@@ -109,9 +98,8 @@ export default {
               okSlots[String(slot)] = slot
             })
             if (String(pos) in okSlots) {
-              this.tileList = this.tileList.splice(this.pickedIdx, 1)
-
               let newState = this.gameState
+              newState = newState.removeTile()
               newState = newState.setGrid(pos, newTile)
 
               // Clear old meeple selection
@@ -129,7 +117,7 @@ export default {
               newState = newState.setGrid(pos, newTile)
               this.updateState(newState)
 
-              this.randomizePick()
+              this.updatePick()
             }
           }
         }
@@ -159,10 +147,11 @@ export default {
         this.gameStateHistory = this.gameStateHistory
           .unshift(newGameState)
       }
+      this.updateOkSlots()
     }
   },
   created () {
-    this.randomizePick()
+    this.updatePick()
   },
   computed: {
     enableUndo () {
@@ -180,10 +169,12 @@ export default {
     tilesPlayed () {
       return this.grid.keys().length - 1
     },
+    // TODO - Move this into GameState
     prevPlayer () {
       const idx = this.tilesPlayed % this.gameState.players().size
       return this.gameState.players().get((idx > 0) ? idx - 1 : this.gameState.players().size - 1)
     },
+    // TODO - Move this into GameState
     currentPlayer () {
       return this.gameState.players().get(this.tilesPlayed % this.gameState.players().size)
     },

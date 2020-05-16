@@ -22,9 +22,11 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'g', 'g', 'g'] }
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'g', 'g', 'g'] }
+          ]
+        })
       }
     })
 
@@ -43,10 +45,12 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'c', 'c', 'c'] },
-          { sides: ['c', 'c', 'c', 'c'] },
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'c', 'c', 'c'] },
+            { sides: ['c', 'c', 'c', 'c'] },
+          ]
+        })
       }
     })
 
@@ -67,10 +71,12 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'c', 'c', 'c'] },
-          { sides: ['c', 'c', 'c', 'c'] },
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'c', 'c', 'c'] },
+            { sides: ['c', 'c', 'c', 'c'] },
+          ]
+        })
       }
     })
 
@@ -90,9 +96,11 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'g', 'g', 'g'] }
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'g', 'g', 'g'] }
+          ]
+        })
       }
     })
 
@@ -107,10 +115,12 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'c', 'c', 'c'] },
-          { sides: ['c', 'c', 'c', 'c'] },
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'c', 'c', 'c'] },
+            { sides: ['c', 'c', 'c', 'c'] },
+          ]
+        })
       }
     })
 
@@ -139,10 +149,12 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['c', 'c', 'c', 'c'] },
-          { sides: ['c', 'c', 'c', 'c'] },
-        ]
+        initGameState: new GameState({
+          tileList: [
+            { sides: ['c', 'c', 'c', 'c'] },
+            { sides: ['c', 'c', 'c', 'c'] },
+          ]
+        })
       }
     })
 
@@ -190,21 +202,22 @@ describe('Controls', () => {
     const Constructor = Vue.extend(Place)
     const vm = mount(Place, {
       propsData: {
-        tiles: [
-          { sides: ['g', 'g', 'g', 'g'], cloister: true },
-          { sides: ['g', 'g', 'g', 'g'], cloister: true },
-          { sides: ['g', 'g', 'g', 'g'], cloister: true },
-        ],
-        initGameState: new GameState(new Grid({
-          [String([0, 0])]: Immutable.fromJS({
-            sides: [ 'g', 'g', 'g', 'g' ],
-            cloister: true
-          })}),
-          {
+        initGameState: new GameState({
+          grid: new Grid({
+            [String([0, 0])]: Immutable.fromJS({
+              sides: [ 'g', 'g', 'g', 'g' ],
+              cloister: true
+            })}),
+          config: {
             players: ['red'],
             startingMeeple: 1
-          }
-        )
+          },
+          tileList: [
+            { sides: ['g', 'g', 'g', 'g'], cloister: true },
+            { sides: ['g', 'g', 'g', 'g'], cloister: true },
+            { sides: ['g', 'g', 'g', 'g'], cloister: true },
+          ]
+        })
       }
     })
 
