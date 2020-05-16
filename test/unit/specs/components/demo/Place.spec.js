@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 import Place from '@/components/demo/Place'
 import Grid from '@/Grid'
+import GameState from '@/GameState'
+import Immutable from 'immutable'
 
 describe('Init State', () => {
   it('should display a single tile svg', () => {
@@ -182,6 +184,62 @@ describe('Controls', () => {
 
     const meepleAfter = vm.vm.grid.placedMeeple()
     expect(meepleAfter.size).toEqual(0)
+  })
+
+  it('single player - can\'t place more meeple than we have', async () => {
+    const Constructor = Vue.extend(Place)
+    const vm = mount(Place, {
+      propsData: {
+        tiles: [
+          { sides: ['g', 'g', 'g', 'g'], cloister: true },
+          { sides: ['g', 'g', 'g', 'g'], cloister: true },
+          { sides: ['g', 'g', 'g', 'g'], cloister: true },
+        ],
+        initGameState: new GameState(new Grid({
+          [String([0, 0])]: Immutable.fromJS({
+            sides: [ 'g', 'g', 'g', 'g' ],
+            cloister: true
+          })}),
+          {
+            players: ['red'],
+            startingMeeple: 1
+          }
+        )
+      }
+    })
+
+    const validSlots = vm.findAll('.grid .tile div.selectable')
+    const tileCountBefore = vm.findAll('.grid .tile svg:not(.blank)').length
+    expect(validSlots.length).toBeGreaterThan(0)
+    await validSlots.at(0).trigger('click')
+
+    const placedTileIdx = 0
+    const validTiles = vm.findAll('.grid .tile svg:not(.blank)')
+    expect(validTiles.length).toEqual(2)
+    const validTileComp = validTiles.at(placedTileIdx).element.parentElement.__vue__
+    expect(validTileComp.meepleSelectColor).toEqual('red')
+
+    // Place meeple
+    await validTiles.at(placedTileIdx).trigger('click', {
+      offsetX: 15,
+      offsetY: 50
+    })
+
+    const meepleBefore = vm.vm.grid.placedMeeple()
+    expect(meepleBefore.size).toEqual(1)
+    expect(meepleBefore.get(0).get('color')).toEqual('red')
+
+    const validSlots2 = vm.findAll('.grid .tile div.selectable')
+    expect(validSlots2.length).toBeGreaterThan(0)
+    await validSlots2.at(0).trigger('click')
+
+    const validTiles2 = vm.findAll('.grid .tile svg:not(.blank)')
+    expect(validTiles2.length).toEqual(3)
+    for (let i = 0; i < validTiles2.length; i++) {
+      const validTile = validTiles2.at(i)
+      const validTileComp = validTile.element.parentElement.__vue__
+      expect(validTileComp.meepleSelect).toBeNull()
+    }
   })
 
 })
