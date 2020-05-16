@@ -4,8 +4,11 @@
       <Header />
       <div class="controls">
         <span>
-          <p><strong><span class="tiles-left">{{ this.tileList.size }}</span></strong></p>
-          <p>tiles left</p>
+          <p><strong><span class="tiles-left">{{ this.tileList.size }}</span></strong> left</p>
+          <p>
+            <button @click="undoState" :disabled="!enableUndo">Undo</button>
+            <button @click="redoState" :disabled="!enableRedo">Redo</button>
+          </p>
         </span>
         <span>
           <Tile v-if="this.pickedTile" @clicked="rotatePickedTile" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
@@ -37,7 +40,8 @@ export default {
       pickedIdx: null,
       okSlots: {},
       tileList: Immutable.fromJS(this.tiles),
-      gameStateHistory: Immutable.List().push(this.initGameState)
+      gameStateHistory: Immutable.List().push(this.initGameState),
+      gameStateIdx: 0
     }
   },
   props: {
@@ -51,6 +55,16 @@ export default {
     }
   },
   methods: {
+    undoState () {
+      if (this.enableUndo) {
+        this.gameStateIdx += 1
+      }
+    },
+    redoState () {
+      if (this.enableRedo) {
+        this.gameStateIdx -= 1
+      }
+    },
     updateOkSlots () {
       const okSlots = {}
       Moves.findSlots(
@@ -136,15 +150,29 @@ export default {
       return this.gameState.config().get('startingMeeple') - meeplePlaced
     },
     updateState (newGameState) {
-      this.gameStateHistory = this.gameStateHistory.unshift(newGameState)
+      if (this.gameStateIdx > 0) {
+        this.gameStateHistory = this.gameStateHistory
+          .slice(this.gameStateIdx)
+          .unshift(newGameState)
+        this.gameStateIdx = 0
+      } else {
+        this.gameStateHistory = this.gameStateHistory
+          .unshift(newGameState)
+      }
     }
   },
   created () {
     this.randomizePick()
   },
   computed: {
+    enableUndo () {
+      return this.gameStateIdx < this.gameStateHistory.size - 1
+    },
+    enableRedo () {
+      return this.gameStateIdx > 0
+    },
     gameState () {
-      return this.gameStateHistory.get(0)
+      return this.gameStateHistory.get(this.gameStateIdx)
     },
     grid () {
       return this.gameState.grid()
