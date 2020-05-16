@@ -12,7 +12,7 @@
   * Improve meeple drawing
 
 ### Testing
-  * Unit tests for Vue components
+  * ~~Unit tests for Vue components~~
   * Application level testing
 
 ### Playing over internet
@@ -39,4 +39,4 @@
 
 ### Optimisation
   * Create graphs etc. iteratively
-  * Ecapsulate all related state in the Grid object
+  * ~~Ecapsulate all related state in the Grid object~~
