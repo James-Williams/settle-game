@@ -227,5 +227,8 @@ export default {
     margin: 0;
   }
   margin-bottom: 1ex;
+  button {
+    height: 28px;
+  }
 }
 </style>
