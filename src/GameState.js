@@ -60,7 +60,7 @@ export default class {
     return this.state.get('tileList').size
   }
 
-  tilesPlayed() {
+  tilesPlayed () {
     return this.grid().keys().length - 1
   }
 
