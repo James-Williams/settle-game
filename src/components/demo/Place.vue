@@ -52,7 +52,9 @@ export default {
   },
   methods: {
     addPlayer () {
-      const ok = confirm('Adding a player will restart the game. Are you sure?')
+      const ok = (this.gameStateHistory.size <= 1)
+        ? true
+        : confirm('Adding a player will restart the game. Are you sure?')
       if (ok) {
         const currentState = this.gameState
         this.gameStateIdx = 0
