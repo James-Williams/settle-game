@@ -6,14 +6,17 @@
         <span>
           <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong> left</p>
           <p>
-            <button @click="undoState" :disabled="!enableUndo">Undo</button>
-            <button @click="redoState" :disabled="!enableRedo">Redo</button>
+            <button class="large" @click="undoState" :disabled="!enableUndo">Undo</button>
+            <button class="large" @click="redoState" :disabled="!enableRedo">Redo</button>
           </p>
         </span>
         <span>
           <Tile v-if="this.pickedTile" @clicked="rotatePickedTile" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
         </span>
-        <span><p>Players</p><p v-html="playersHtml" /></span>
+        <span><p>
+          Players
+          <button @click="addPlayer" :disabled="!canAddPlayers">+</button>
+        </p><p v-html="playersHtml" /></span>
       </div>
     </div>
     <Board @clicked="place" @meepleClicked="meepleClicked" :grid="this.grid" :selectable="okSlots" :selectColor="currentPlayer"/>
@@ -48,6 +51,20 @@ export default {
     }
   },
   methods: {
+    addPlayer () {
+      const ok = confirm('Adding a player will restart the game. Are you sure?')
+      if (ok) {
+        const currentState = this.gameState
+        this.gameStateIdx = 0
+        this.gameStateHistory = Immutable.List().push(
+          this.initGameState.setConfig(
+            currentState.config().set('players',
+              GameState.PLAYER_COLORS.slice(0, currentState.players().size + 1)
+            )
+          )
+        )
+      }
+    },
     undoState () {
       if (this.enableUndo) {
         this.gameStateIdx += 1
@@ -154,6 +171,9 @@ export default {
     this.updatePick()
   },
   computed: {
+    canAddPlayers () {
+      return this.gameState.players().size < GameState.PLAYER_COLORS.size
+    },
     enableUndo () {
       return this.gameStateIdx < this.gameStateHistory.size - 1
     },
@@ -218,7 +238,7 @@ export default {
     margin: 0;
   }
   margin-bottom: 1ex;
-  button {
+  button.large {
     height: 28px;
   }
 }

@@ -3,6 +3,8 @@ import Grid from '@/Grid'
 import TileLibrary from '@/TileLibrary'
 
 export default class {
+  static PLAYER_COLORS = Immutable.List(['red', 'orange', 'aqua', 'fuchsia', 'black'])
+
   constructor (state) {
     let grid = state && state.grid
     let config = state && state.config
@@ -15,12 +17,10 @@ export default class {
       })
     }
 
-    if (!config) {
-      config = {
-        players: ['red', 'orange', 'black'],
-        startingMeeple: 7
-      }
-    }
+    if (!config) config = {}
+
+    if (!config.players) config.players = ['red', 'orange'].slice(0, 1)
+    if (!config.startingMeeple) config.startingMeeple = 7
 
     if (!tileList) {
       tileList = TileLibrary.allTiles()
@@ -76,11 +76,19 @@ export default class {
     })
   }
 
+  setConfig (config) {
+    return new this.constructor({
+      grid: this.grid(),
+      config: Immutable.fromJS(config),
+      tileList: this.state.get('tileList')
+    })
+  }
+
   toJS () {
     return {
       grid: this.grid().toJS(),
       config: this.config().toJS(),
-      tileList: this.state.get('tileList')
+      tileList: this.state.get('tileList').toJS()
     }
   }
 }
