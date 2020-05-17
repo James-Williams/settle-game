@@ -19,7 +19,7 @@
         </p><p v-html="playersHtml" /></span>
       </div>
     </div>
-    <Board @clicked="place" @meepleClicked="meepleClicked" :grid="this.grid" :selectable="okSlots" :selectColor="currentPlayer"/>
+    <Board @clicked="place" @meepleClicked="meepleClicked" :grid="this.grid" :selectable="okSlots" :selectColor="gameState.currentPlayer()"/>
   </div>
 </template>
 
@@ -99,10 +99,10 @@ export default {
       this.updateOkSlots()
     },
     place (pos, meepleSlot) {
-      if (meepleSlot && this.meepleCount(this.prevPlayer) > 0) {
+      if (meepleSlot && this.meepleCount(this.gameState.prevPlayer()) > 0) {
         this.updateState(this.gameState.setGrid(String(pos), Immutable.fromJS(this.grid.get(pos))
           .set('meepleSelect', null)
-          .set('meeple', Immutable.fromJS({ position: meepleSlot, color: this.prevPlayer }))
+          .set('meeple', Immutable.fromJS({ position: meepleSlot, color: this.gameState.prevPlayer() }))
         ))
       } else {
         if (this.pickedTile) {
@@ -128,10 +128,10 @@ export default {
                 )
               })
 
-              if (this.meepleCount(this.currentPlayer) > 0) {
+              if (this.meepleCount(this.gameState.currentPlayer()) > 0) {
                 // Set meeple selection
                 newTile = newTile.set('meepleSelect', Scoring.freeSlots(newState.grid(), pos))
-                newTile = newTile.set('meepleSelectColor', this.currentPlayer)
+                newTile = newTile.set('meepleSelectColor', this.gameState.currentPlayer())
               }
               newState = newState.setGrid(pos, newTile)
               this.updateState(newState)
@@ -188,23 +188,11 @@ export default {
     grid () {
       return this.gameState.grid()
     },
-    tilesPlayed () {
-      return this.grid.keys().length - 1
-    },
-    // TODO - Move this into GameState
-    prevPlayer () {
-      const idx = this.tilesPlayed % this.gameState.players().size
-      return this.gameState.players().get((idx > 0) ? idx - 1 : this.gameState.players().size - 1)
-    },
-    // TODO - Move this into GameState
-    currentPlayer () {
-      return this.gameState.players().get(this.tilesPlayed % this.gameState.players().size)
-    },
     playersHtml () {
       const count = (player) => { return this.meepleCount(player) }
       const countHtml = (player) => '(<span class="count">' + count(player) + '</span>)'
       return this.gameState.players()
-        .map((player) => (player === this.currentPlayer)
+        .map((player) => (player === this.gameState.currentPlayer())
           ? '<strong>' + player + ' ' + countHtml(player) + '</strong>'
           : player + ' ' + countHtml(player))
         .map(x => '<span class="player">' + x + '</span>')

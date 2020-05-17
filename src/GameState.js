@@ -60,6 +60,19 @@ export default class {
     return this.state.get('tileList').size
   }
 
+  tilesPlayed() {
+    return this.grid().keys().length - 1
+  }
+
+  currentPlayer () {
+    return this.players().get(this.tilesPlayed() % this.players().size)
+  }
+
+  prevPlayer () {
+    const idx = this.tilesPlayed() % this.players().size
+    return this.players().get((idx > 0) ? idx - 1 : this.players().size - 1)
+  }
+
   removeTile () {
     return new this.constructor({
       grid: this.grid(),
