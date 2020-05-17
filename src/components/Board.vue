@@ -62,6 +62,14 @@ export default {
     }
   },
   methods: {
+    centerScroll () {
+      const grid = this.$el.querySelector('.grid')
+      const width = grid.scrollWidth - grid.clientWidth
+      const height = grid.scrollHeight - grid.clientHeight
+      const x = width / 2
+      const y = height / 2
+      grid.scrollTo(x, y)
+    },
     isSelectable (x, y) {
       return String([x, y]) in this.selectable
     },
@@ -93,9 +101,15 @@ export default {
     },
     zoom100 () {
       this.zoomLevel = 1
+      window.setTimeout(() => {
+        this.centerScroll()
+      }, 0)
     },
     zoomSeeAll () {
       this.zoomLevel = 0.5
+      window.setTimeout(() => {
+        this.centerScroll()
+      }, 0)
     }
   },
   components: {
