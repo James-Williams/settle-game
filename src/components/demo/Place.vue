@@ -151,6 +151,18 @@ export default {
               move.position,
               Immutable.fromJS(move.tile)
             ))
+
+            const freeSlots = Scoring.freeSlots(this.gameState.grid(), move.position)
+            if (freeSlots.length > 0) {
+              const slot = freeSlots[Math.floor(Math.random() * freeSlots.length)]
+              this.updateState(this.gameState.setGrid(
+                move.position,
+                Immutable.fromJS(this.grid.get(move.position
+              ))
+                .set('meepleSelect', null)
+                .set('meeple', Immutable.fromJS({ position: slot, color: this.gameState.prevPlayer() }))
+            ))
+            }
           }
           this.updateState(this.gameState.removeTile())
           this.playerStart()
