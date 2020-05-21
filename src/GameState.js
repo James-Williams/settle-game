@@ -25,7 +25,7 @@ export default class {
     if (!tileList) {
       tileList = TileLibrary.allTiles()
       // Shuffle
-      for (let i = tileList.size; i > 0; i--) {
+      for (let i = tileList.size - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1))
         const t = tileList.get(i)
         tileList = tileList.set(i, tileList.get(j))

@@ -1,19 +1,15 @@
 import Immutable from 'immutable'
-import Scoring from '@/Scoring'
 import Moves from '@/Moves'
 
 export default class {
-
   static nextMove (grid, tile) {
-
     let bestScore = 0
     let best = null
-    
+
     for (let i = 0; i < 4; i++) {
       const slots = Moves.findSlots(grid, tile)
       if (slots.length > 0) {
         slots.forEach((slot) => {
-
           let score = 0
           for (let dx = 0; dx < 4; dx++) {
             const dir = Moves.DIRECTIONS[dx]
