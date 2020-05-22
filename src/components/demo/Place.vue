@@ -161,21 +161,33 @@ export default {
               freeSlots.forEach(slot => {
                 const type = graph.nodes[String(slot)].type
                 let score = 0
-                if (type === 'cloister') score = 4
-                else if (type === 'c') score = 3
-                else if (type === 'r') score = 2
-                else if (type === 'g') score = Math.random() > 0.8 ? 1 : 0
-                if (score > bestScore) {
+                let prob = 1
+                if (type === 'cloister') {
+                  score = 4
+                  prob = 0.9
+                } else if (type === 'c') {
+                  score = 3
+                  prob = 0.6
+                } else if (type === 'r') {
+                  score = 2
+                  prob = 0.3
+                } else if (type === 'g') {
+                  score = 1
+                  prob = 0.1
+                }
+                if (score > bestScore && Math.random() <= prob) {
                   bestScore = score
                   bestSlot = slot
                 }
               })
-              this.updateState(this.gameState.setGrid(
-                move.position,
-                Immutable.fromJS(this.grid.get(move.position))
-                  .set('meepleSelect', null)
-                  .set('meeple', Immutable.fromJS({ position: bestSlot, color: this.gameState.prevPlayer() }))
-              ))
+              if (bestSlot) {
+                this.updateState(this.gameState.setGrid(
+                  move.position,
+                  Immutable.fromJS(this.grid.get(move.position))
+                    .set('meepleSelect', null)
+                    .set('meeple', Immutable.fromJS({ position: bestSlot, color: this.gameState.prevPlayer() }))
+                ))
+              }
             }
           }
           this.updateState(this.gameState.removeTile())
