@@ -4,7 +4,7 @@
       <Header />
       <div class="controls">
         <span>
-          <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong> left</p>
+          <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong></p>
           <p>
             <button class="large" @click="undoState" :disabled="!enableUndo">Undo</button>
             <button class="large" @click="redoState" :disabled="!enableRedo">Redo</button>
@@ -13,19 +13,26 @@
         <span>
           <Tile v-if="this.pickedTile" @clicked="rotatePickedTile" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
         </span>
+        <span class="player" v-for="(player, idx) in this.gameState.players()" :key="'p' + idx">
+          <PlayerInfo :color="player" :selected="player === gameState.currentPlayer()" :meepleCount="meepleCount(player)" :isComputer="computerPlayers.has(player)" @backgroundClick="toggleComputer(player)" @meepleClick="toggleComputer(player)" @scoreClick="updateScore(player)" :score="gameState.playerScore(player)" />
+        </span>
+        <!-- TODO - Don't use constant 5 here -->
+        <span v-if="gameState.players().size < 5">
+            <button @click="addPlayer()">Add Player</button>
+        </span>
+        <!--
         <span class="players">
           <p>
             Players
-            <button @click="addPlayer()">+</button></p>
           <p>
             <span v-for="(player, idx) in this.gameState.players()" :class="{player: true, selected: player == gameState.currentPlayer()}" :key="idx">
-              <a class="nostyle" href="javascript:void(0)" @click="toggleComputer(player)">
                 <span v-if="isComputer(player)">(C) </span>{{ player }}
                 <span>(<span class="count">{{ meepleCount(player) }}</span>)</span>
               </a>
             </span>
           </p>
         </span>
+        -->
         <span v-if="computerPlayers.size > 0" :class="{'skip-meeple': true, hidden: !showSkipMeeple}">
           <button class="skip-meeple" @click="skipMeeple()">Don't Place a Meeple</button>
         </span>
@@ -42,6 +49,7 @@ import Tile from '../Tile'
 import TilePicker from '../TilePicker'
 import Board from '../Board'
 import Header from '../Header'
+import PlayerInfo from '../PlayerInfo'
 
 import GameState from '@/GameState'
 import Moves from '@/Moves'
@@ -65,6 +73,13 @@ export default {
     }
   },
   methods: {
+    updateScore (player) {
+      const dScore = parseInt(prompt('Enter score to add', 0))
+      if (dScore) {
+        const newScore = this.gameState.playerScore(player) + dScore
+        this.updateState(this.gameState.setScore(player, newScore))
+      }
+    },
     skipMeeple () {
       // Clear old meeple selection
       let newState = this.gameState
@@ -304,7 +319,8 @@ export default {
     Header,
     Tile,
     TilePicker,
-    Board
+    Board,
+    PlayerInfo
   }
 }
 </script>
@@ -323,7 +339,10 @@ export default {
   align-items: center;
   justify-content: center;
   & > span:not(:last-child) {
-    margin-right: 1em;
+    margin-right: 0.75em;
+  }
+  span.player:not(:last-child) {
+    margin-right: 0.75ex;
   }
   p {
     margin: 0;
@@ -337,14 +356,6 @@ export default {
   }
   .skip-meeple.hidden {
     visibility:hidden;
-  }
-  .players {
-    .player:not(:first-child) {
-      margin-left: 1em
-    }
-    .selected {
-      font-weight: bold;
-    }
   }
 }
 a.nostyle:link {

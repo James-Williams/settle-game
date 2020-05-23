@@ -9,6 +9,7 @@ export default class {
     let grid = state && state.grid
     let config = state && state.config
     let tileList = state && state.tileList
+    let playerScores = state && state.playerScores
     if (!grid) {
       grid = new Grid({
         [String([0, 0])]: Immutable.fromJS({
@@ -33,10 +34,18 @@ export default class {
       }
     }
 
+    if (!playerScores) {
+      playerScores = {}
+      config.players.forEach(player => {
+        playerScores[player] = 0
+      })
+    }
+
     this.state = Immutable.fromJS({
       grid: grid,
       config: config,
-      tileList: tileList
+      tileList: tileList,
+      playerScores: playerScores
     })
   }
 
@@ -46,6 +55,10 @@ export default class {
 
   players () {
     return this.state.get('config').get('players')
+  }
+
+  playerScore (player) {
+    return this.state.get('playerScores').get(player)
   }
 
   config () {
@@ -77,6 +90,7 @@ export default class {
     return new this.constructor({
       grid: this.grid(),
       config: this.config(),
+      playerScores: this.state.get('playerScores'),
       tileList: this.state.get('tileList').shift()
     })
   }
@@ -85,6 +99,7 @@ export default class {
     return new this.constructor({
       grid: this.grid().set(pos, tile),
       config: this.config(),
+      playerScores: this.state.get('playerScores'),
       tileList: this.state.get('tileList')
     })
   }
@@ -93,6 +108,24 @@ export default class {
     return new this.constructor({
       grid: this.grid(),
       config: Immutable.fromJS(config),
+      playerScores: this.state.get('playerScores'),
+      tileList: this.state.get('tileList')
+    })
+  }
+
+  setScore (player, score) {
+    let playerScores = this.state.get('playerScores')
+
+    if (playerScores.has(player) &&
+        Number.isInteger(score) &&
+        score >= 0) {
+      playerScores = playerScores.set(player, score)
+    }
+
+    return new this.constructor({
+      grid: this.grid(),
+      config: this.config(),
+      playerScores: playerScores,
       tileList: this.state.get('tileList')
     })
   }
@@ -101,6 +134,7 @@ export default class {
     return {
       grid: this.grid().toJS(),
       config: this.config().toJS(),
+      playerScores: this.state.get('playerScores').toJS(),
       tileList: this.state.get('tileList').toJS()
     }
   }
