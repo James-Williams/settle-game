@@ -18,7 +18,7 @@
           <PlayerInfo :color="player" :selected="player === gameState.currentPlayer()" :meepleCount="meepleCount(player)" :isComputer="computerPlayers.has(player)" @backgroundClick="toggleComputer(player)" @meepleClick="toggleComputer(player)" @scoreClick="updateScore(player)" :score="gameState.playerScore(player)" />
         </span>
         <!-- TODO - Don't use constant 5 here -->
-        <span v-if="gameState.players().size < 5">
+        <span v-if="gameState.players().size < 5 && gameStateHistory.size <= 1">
             <button @click="addPlayer()">Add Player</button>
         </span>
         <!--
@@ -96,12 +96,16 @@ export default {
       return this.computerPlayers.has(player)
     },
     toggleComputer (player) {
-      if (player !== this.gameState.currentPlayer()) {
-        if (this.computerPlayers.has(player)) {
-          this.computerPlayers = this.computerPlayers.delete(player)
-        } else {
-          this.computerPlayers = this.computerPlayers.add(player)
+      if (this.gameStateHistory.size <= 1) {
+        if (player !== this.gameState.currentPlayer()) {
+          if (this.computerPlayers.has(player)) {
+            this.computerPlayers = this.computerPlayers.delete(player)
+          } else {
+            this.computerPlayers = this.computerPlayers.add(player)
+          }
         }
+      } else {
+        this.updateScore(player)
       }
     },
     addPlayer () {
