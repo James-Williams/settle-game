@@ -36,9 +36,6 @@ export default class {
 
     if (!playerScores) {
       playerScores = {}
-      config.players.forEach(player => {
-        playerScores[player] = 0
-      })
     }
 
     this.state = Immutable.fromJS({
@@ -58,6 +55,9 @@ export default class {
   }
 
   playerScore (player) {
+    if (!this.state.get('playerScores').has(player)) {
+      return 0
+    }
     return this.state.get('playerScores').get(player)
   }
 
@@ -116,7 +116,7 @@ export default class {
   setScore (player, score) {
     let playerScores = this.state.get('playerScores')
 
-    if (playerScores.has(player) &&
+    if (this.players().contains(player) &&
         Number.isInteger(score) &&
         score >= 0) {
       playerScores = playerScores.set(player, score)
