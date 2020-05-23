@@ -1,6 +1,6 @@
 <template>
   <div class="wrap" :style="style">
-    <Zoom @zoom100="zoom100" @zoomSeeAll="zoomSeeAll"/>
+    <Zoom @zoom100="zoom100" @zoomSeeAll="zoomSeeAll" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <div class="grid">
       <div v-for="y in rangeY" :key="y">
         <div class="tile" v-for="x in rangeX" :key="x">
@@ -36,6 +36,10 @@ export default {
     halfSize: {
       type: Boolean,
       default: false
+    },
+    zoomInc: {
+      type: Number,
+      default: 0.15
     }
   },
   computed: {
@@ -62,6 +66,18 @@ export default {
     }
   },
   methods: {
+    zoomIn () {
+      this.zoomLevel += this.zoomLevel * this.zoomInc
+      window.setTimeout(() => {
+        this.centerScroll()
+      }, 0)
+    },
+    zoomOut () {
+      this.zoomLevel -= this.zoomLevel * this.zoomInc
+      window.setTimeout(() => {
+        this.centerScroll()
+      }, 0)
+    },
     centerScroll () {
       const grid = this.$el.querySelector('.grid')
       const width = grid.scrollWidth - grid.clientWidth
