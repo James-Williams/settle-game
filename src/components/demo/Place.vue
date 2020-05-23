@@ -10,8 +10,9 @@
             <button class="large" @click="redoState" :disabled="!enableRedo">Redo</button>
           </p>
         </span>
-        <span>
+        <span class="tile">
           <Tile v-if="this.pickedTile" @clicked="rotatePickedTile" :type="pickedTile.toJS()" :selectable="true" :halfSize="true"/>
+          <button v-if="showSkipMeeple" class="skip-meeple" @click="skipMeeple()">Don't Place a Meeple</button>
         </span>
         <span class="player" v-for="(player, idx) in this.gameState.players()" :key="'p' + idx">
           <PlayerInfo :color="player" :selected="player === gameState.currentPlayer()" :meepleCount="meepleCount(player)" :isComputer="computerPlayers.has(player)" @backgroundClick="toggleComputer(player)" @meepleClick="toggleComputer(player)" @scoreClick="updateScore(player)" :score="gameState.playerScore(player)" />
@@ -33,9 +34,6 @@
           </p>
         </span>
         -->
-        <span v-if="computerPlayers.size > 0" :class="{'skip-meeple': true, hidden: !showSkipMeeple}">
-          <button class="skip-meeple" @click="skipMeeple()">Don't Place a Meeple</button>
-        </span>
       </div>
     </div>
     <Board @clicked="place" @meepleClicked="meepleClicked" :grid="this.grid" :selectable="okSlots" :selectColor="gameState.currentPlayer()"/>
@@ -351,11 +349,14 @@ export default {
   button.large {
     height: 28px;
   }
-  .skip-meeple {
-    height: 100%;
-  }
-  .skip-meeple.hidden {
-    visibility:hidden;
+  .tile {
+    position: relative;
+    .skip-meeple {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
   }
 }
 a.nostyle:link {
