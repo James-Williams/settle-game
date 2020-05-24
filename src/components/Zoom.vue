@@ -1,13 +1,16 @@
 <template>
   <div>
     <div class="zoom-control">
-      <button @click="$emit('zoom100')" class="zoom-button">100%</button><button @click="$emit('zoomSeeAll')" class="zoom-button">See all</button>
+      <button @click="$emit('zoom100')" class="zoom-button">100%</button>
     </div>
     <div class="zoom-control row2">
       <button @click="$emit('zoomIn')" class="zoom-button">+</button>
     </div>
     <div class="zoom-control row3">
       <button @click="$emit('zoomOut')" class="zoom-button">-</button>
+    </div>
+    <div class="zoom-control bottom">
+      <button @click="$emit('zoomSeeAll')" class="zoom-button">See all</button>
     </div>
   </div>
 </template>
@@ -41,6 +44,12 @@
   button {
     width: 100%;
   }
+}
+.bottom {
+  top: auto;
+  bottom: 0;
+  padding-top: 2px;
+  padding-bottom: 0;
 }
 .zoom-button {
   height: 32px;
