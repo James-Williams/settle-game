@@ -3,7 +3,7 @@ const path = require('path');
 const serveStatic = require('serve-static');
 const appDir = path.resolve(__dirname, "dist")
 
-let app = express();
+const app = express();
 app.use(serveStatic(appDir));
 
 app.get( "*", function( req, res ) {
@@ -11,6 +11,6 @@ app.get( "*", function( req, res ) {
 } );
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
+export default app.listen(port, () => {
   console.log('Listening on port ' + port)
 });

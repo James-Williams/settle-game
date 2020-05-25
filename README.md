@@ -21,8 +21,11 @@ yarn run dev
 # run unit tests
 yarn run unit
 
+# run api tests
+yarn run api
+
 # run all tests
-~~yarn test~~ (currently failing)
+yarn test
 ```
 
 ## Docs
