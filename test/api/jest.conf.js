@@ -16,10 +16,12 @@ module.exports = {
     '<rootDir>/test/unit',
     '<rootDir>/test/e2e'
   ],
+  watchPathIgnorePatterns: [
+    '<rootDir>/src/'
+  ],
   collectCoverageFrom: [
-    'src/**/*.{js,vue}',
-    '!src/main.js',
-    '!src/router/index.js',
+    '*.{js}',
+    '!src/**/*',
     '!**/node_modules/**'
   ]
 }
