@@ -1,6 +1,6 @@
 
 const request = require('supertest')
-import Server from '@/../server.js'
+let Server = undefined
 
 describe('/game/', () => {
   it('posting to create game is ok', async () => {
@@ -23,13 +23,38 @@ describe('/game/', () => {
       .post('/api/game/')
       .send({})
     const gameId = gameRes.body.gameId
-    const p = '/api/game/' + gameId + '/state/0'
+    const p = '/api/game/' + gameId + '/state/latest'
     const stateRes = await request(Server)
       .get(p)
 
     expect(stateRes.statusCode).toEqual(200)
     expect(stateRes.body).toHaveProperty('state')
   })
+
+  it('can retrieve stored state', async () => {
+    const testState = {foo: {bar: [1, 2, 3]}}
+    const gameRes = await request(Server)
+      .post('/api/game/')
+      .send({})
+    const gameId = gameRes.body.gameId
+    const s = '/api/game/' + gameId + '/state/'
+    const putRes = await request(Server)
+      .post(s)
+      .send(testState)
+
+    expect(putRes.statusCode).toEqual(201)
+
+    const getRes = await request(Server)
+      .get(s + 'latest')
+
+    expect(getRes.statusCode).toEqual(200)
+    expect(getRes.body.state).toEqual(testState)
+  })
 })
 
-afterAll(() => Server.close());
+beforeAll(() => {
+  process.env.REDIS_URL = 'REDIS-MOCK'
+  Server = require('@/../server.js')
+})
+
+afterAll(() => { if (Server) Server.close()})
