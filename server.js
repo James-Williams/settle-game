@@ -11,36 +11,38 @@ const redis = (process.env.REDIS_URL === 'REDIS-MOCK')
   ? require('redis-mock').createClient()
   : null
 
-const ID = 'new-dummy-id'
+let lastIdNum = 0
+const createNewId = () => {
+  lastIdNum += 1
+  return 'dummy-id-' + lastIdNum
+}
 
 app.post('/api/game/', (req, res) => {
   res.status(201)
   res.send({
-    gameId: ID
+    gameId: createNewId()
   })
 })
 
 app.post('/api/game/:gid/state/', (req, res) => {
-  if (req.params.gid === ID) {
-    redis.hset('latestGameState', req.params.gid, JSON.stringify(req.body), (err, val) => {
-      res.status(201)
-      res.send()
-    })
-  }
+  redis.hset('latestGameState', req.params.gid, JSON.stringify(req.body), (err, val) => {
+    res.status(201)
+    res.send()
+  })
 })
 
 app.get('/api/game/:gid/state/latest', (req, res) => {
-  if (req.params.gid === ID) {
-    redis.hget('latestGameState', req.params.gid, (err, val) => {
+  redis.hget('latestGameState', req.params.gid, (err, val) => {
+    if (err) {
+      res.status(404)
+      res.send()
+    } else {
       res.status(200)
       res.send({
         state: JSON.parse(val) || 'none'
       })
-    })
-  } else {
-    res.status(404)
-    res.send()
-  }
+    }
+  })
 })
 
 app.get('/api/*', (req, res) => {
