@@ -157,6 +157,10 @@ export default {
           }
         }
       }
+    },
+    appHeight () {
+      const doc = document.documentElement
+      doc.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px')
     }
   },
   computed: {
@@ -166,6 +170,8 @@ export default {
   },
   created () {
     this.randomizePick()
+    window.addEventListener('resize', this.appHeight)
+    this.appHeight()
   },
   components: {
     Tile,
@@ -183,5 +189,6 @@ export default {
   flex-direction: column;
   height: 100%;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 </style>

@@ -284,10 +284,16 @@ export default {
           .unshift(newGameState)
       }
       this.updatePick()
+    },
+    appHeight () {
+      const doc = document.documentElement
+      doc.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px')
     }
   },
   created () {
     this.updatePick()
+    window.addEventListener('resize', this.appHeight)
+    this.appHeight()
   },
   computed: {
     showSkipMeeple () {
@@ -334,6 +340,7 @@ export default {
   flex-direction: column;
   height: 100%;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 .controls {
   display: flex;

@@ -33,12 +33,20 @@ export default {
         const newTile = JSON.parse(JSON.stringify(this.pickedTile))
         this.grid = {...this.grid, [String(pos)]: newTile}
       }
+    },
+    appHeight () {
+      const doc = document.documentElement
+      doc.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px')
     }
   },
   computed: {
     getGrid () {
       return new Grid(this.grid)
     }
+  },
+  created () {
+    window.addEventListener('resize', this.appHeight)
+    this.appHeight()
   },
   components: {
     Header,
@@ -56,5 +64,6 @@ export default {
   flex-direction: column;
   height: 100%;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 </style>
