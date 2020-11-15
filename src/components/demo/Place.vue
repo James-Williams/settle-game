@@ -343,6 +343,7 @@ export default {
   height: calc(var(--vh, 1vh) * 100);
 }
 .controls {
+  margin: 0 1ex;
   display: flex;
   align-items: center;
   justify-content: center;

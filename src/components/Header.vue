@@ -29,5 +29,8 @@ div {
     margin-right: 1em;
   }
   margin-bottom: 1ex;
+  margin-left: 0.5ex;
+  margin-right: 0.5ex;
+  margin-top: 0.5ex;
 }
 </style>
