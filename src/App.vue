@@ -20,4 +20,7 @@ export default {
   box-sizing: content-box;
   line-height: normal;
 }
+body {
+  margin: 0 !important;
+}
 </style>
