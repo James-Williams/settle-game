@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import PickerDemo from '@/components/demo/Picker'
 import AutoTileDemo from '@/components/demo/AutoTile'
 import PlaceDemo from '@/components/demo/Place'
+import NewGame from '@/components/NewGame'
 import TilesCode from '@/components/code/Tiles'
 
 Vue.use(Router)
@@ -12,7 +13,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/demo/place/'
+      redirect: '/play/'
+    },
+    {
+      path: '/play/',
+      component: NewGame
     },
     {
       label: 'Auto Map Demo',
