@@ -334,7 +334,6 @@ export default {
   flex-direction: column;
   height: 100%;
   height: 100vh;
-  height: -webkit-fill-available;
 }
 .controls {
   display: flex;
