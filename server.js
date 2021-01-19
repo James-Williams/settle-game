@@ -4,6 +4,7 @@ const serveStatic = require('serve-static')
 const appDir = path.resolve(__dirname, "dist")
 const { uid } = require('uid')
 
+
 const app = express()
 app.use(serveStatic(appDir))
 app.use(express.json())
@@ -30,12 +31,14 @@ app.post('/api/game/:gid/state/', (req, res) => {
   if (data) {
     const sid = uid(10)
     const gsid = req.params.gid + ':' + sid
+    const href = path.normalize(req.baseUrl + req.path + '/' + sid)
     console.log('Store in ' + gsid + ': ' + data)
     redis.hset('gameState', gsid, data, (err, val) => {
       redis.hset('latestGameState', req.params.gid, sid, (err, val) => {
+        io.emit('newState', href)
         res.status(201)
         res.send({
-          href: path.normalize(req.baseUrl + req.path + '/' + sid)
+          href: href
         })
       })
     })
@@ -95,7 +98,15 @@ app.get('*', function( req, res ) {
     res.sendFile( path.resolve( appDir, "index.html" ) )
 })
 
-const port = process.env.PORT || 5000
-module.exports = app.listen(port, () => {
+const port = process.env.PORT || 8080
+const server = app.listen(port, () => {
   console.log('Listening on port ' + port)
 });
+module.exports = server
+
+const io = require('socket.io')(server)
+
+io.on('connection', () => {
+  console.log('connected')
+})
+

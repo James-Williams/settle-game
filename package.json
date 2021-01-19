@@ -18,11 +18,13 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "http": "^0.0.1-security",
     "immutable": "^4.0.0-rc.12",
     "node-sass": "^4.14.0",
     "path": "^0.12.7",
     "redis": "^3.0.2",
     "sass-loader": "^7.3.1",
+    "socket.io": "^3.1.0",
     "supertest": "^4.0.2",
     "uid": "^2.0.0",
     "vue": "^2.5.2",

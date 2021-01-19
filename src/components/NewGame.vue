@@ -10,6 +10,13 @@ export default {
     start () {
       alert('All Right!')
     }
+  },
+  created () {
+    console.log('bang')
+    const socket = io()
+    socket.on('newState', (href) => {
+      console.log('Need to read: ' + href)
+    })
   }
 }
 </script>
