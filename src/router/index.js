@@ -17,6 +17,7 @@ export default new Router({
     },
     {
       path: '/play/',
+      label: 'New Game',
       component: NewGame
     },
     {

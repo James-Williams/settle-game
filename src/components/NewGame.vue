@@ -5,22 +5,23 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      start () {
-        alert("All Right!")
-      }
+export default {
+  methods: {
+    start () {
+      alert('All Right!')
     }
   }
+}
 </script>
 
 <style scoped lang="scss">
 .page {
+  margin: 1em;
   width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  height: 100vh;
-  height: -webkit-fill-available;
+}
+a {
+  cursor: pointer;
 }
 </style>
