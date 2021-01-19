@@ -108,6 +108,11 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@lukeed/csprng@^1.0.0":
+  version "1.0.0"
+  resolved "https://npm.dharmachakra.com/@lukeed%2fcsprng/-/csprng-1.0.0.tgz#733a122382749d27e2e46ec38f8c71c9d53a9636"
+  integrity sha512-ruuGHsnabmObBdeMg3vKdGRmh06Oog3eFpf/Tk6X0kDSJDpJTDCj2dqdp1+0VjzIUgHlFF9GBm7uFqfYhhdX9g==
+
 "@types/q@^1.5.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
@@ -2828,6 +2833,11 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
+
+denque@^1.4.1:
+  version "1.5.0"
+  resolved "https://npm.dharmachakra.com/denque/-/denque-1.5.0.tgz#773de0686ff2d8ec2ff92914316a47b73b1c73de"
+  integrity sha512-CYiCSgIF1p6EUByQPlGkKnP1M9g0ZV3qMIrqMqZqdwazygIA/YP2vrbcyl1h/WppKJTdl1F85cXIle+394iDAQ==
 
 depd@~1.1.2:
   version "1.1.2"
@@ -7258,6 +7268,14 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
+path@^0.12.7:
+  version "0.12.7"
+  resolved "https://npm.dharmachakra.com/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
+  integrity sha1-1NwqUGxM4hl+tIHr/NWzbAFAsQ8=
+  dependencies:
+    process "^0.11.1"
+    util "^0.10.3"
+
 pbkdf2@^3.0.3:
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
@@ -8036,7 +8054,7 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
-process@^0.11.10:
+process@^0.11.1, process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
@@ -8354,10 +8372,37 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+redis-commands@^1.5.0:
+  version "1.6.0"
+  resolved "https://npm.dharmachakra.com/redis-commands/-/redis-commands-1.6.0.tgz#36d4ca42ae9ed29815cdb30ad9f97982eba1ce23"
+  integrity sha512-2jnZ0IkjZxvguITjFTrGiLyzQZcTvaw8DAaCXxZq/dsHXz7KfMQ3OUJy7Tz9vnRtZRVz6VRCPDvruvU8Ts44wQ==
+
+redis-errors@^1.0.0, redis-errors@^1.2.0:
+  version "1.2.0"
+  resolved "https://npm.dharmachakra.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
+  integrity sha1-62LSrbFeTq9GEMBK/hUpOEJQq60=
+
 redis-mock@^0.49.0:
   version "0.49.0"
   resolved "https://registry.yarnpkg.com/redis-mock/-/redis-mock-0.49.0.tgz#744c38dde3caae4c9ca70e2a674c4bb30eb607ca"
   integrity sha512-FW/cLZvF1PAVN/PYIwXf1vQRoJCyYCwUMtq8BXRwrvb9LNNAT4RKXM02Qlt6qSkC/98hmHlU2EGoQoxVy3E2lA==
+
+redis-parser@^3.0.0:
+  version "3.0.0"
+  resolved "https://npm.dharmachakra.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
+  integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
+  dependencies:
+    redis-errors "^1.0.0"
+
+redis@^3.0.2:
+  version "3.0.2"
+  resolved "https://npm.dharmachakra.com/redis/-/redis-3.0.2.tgz#bd47067b8a4a3e6a2e556e57f71cc82c7360150a"
+  integrity sha512-PNhLCrjU6vKVuMOyFu7oSP296mwBkcE6lrAjruBYG5LgdSqtRBoVQIylrMyVZD/lkF24RSNNatzvYag6HRBHjQ==
+  dependencies:
+    denque "^1.4.1"
+    redis-commands "^1.5.0"
+    redis-errors "^1.2.0"
+    redis-parser "^3.0.0"
 
 reduce-css-calc@^1.2.6:
   version "1.3.0"
@@ -9854,6 +9899,13 @@ uglifyjs-webpack-plugin@^1.1.1:
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
 
+uid@^2.0.0:
+  version "2.0.0"
+  resolved "https://npm.dharmachakra.com/uid/-/uid-2.0.0.tgz#1773bec106e96955f1658f20272e2ccea414e8bc"
+  integrity sha512-hFw+zKBA1szYdbZWj6FjTxZzJnKNf+wTDcsxlJaXS64MCy9LQEmJUVieGYHCKek/WRyFIcs0cEXtGIQmfvHe2A==
+  dependencies:
+    "@lukeed/csprng" "^1.0.0"
+
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-1.0.4.tgz#2619800c4c825800efdd8343af7dd9933cbe2818"
@@ -10001,6 +10053,13 @@ util@0.10.3:
   integrity sha1-evsa/lCAUkZInj23/g7TeTNqwPk=
   dependencies:
     inherits "2.0.1"
+
+util@^0.10.3:
+  version "0.10.4"
+  resolved "https://npm.dharmachakra.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
+  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
+  dependencies:
+    inherits "2.0.3"
 
 util@^0.11.0:
   version "0.11.1"

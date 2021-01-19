@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const serveStatic = require('serve-static')
 const appDir = path.resolve(__dirname, "dist")
+const { uid } = require('uid')
 
 const app = express()
 app.use(serveStatic(appDir))
@@ -9,12 +10,12 @@ app.use(express.json())
 
 const redis = (process.env.REDIS_URL === 'REDIS-MOCK')
   ? require('redis-mock').createClient()
-  : null
+  : require('redis').createClient(process.env.REDIS_URL)
 
-let lastIdNum = 0
+console.log(redis)
+
 const createNewId = () => {
-  lastIdNum += 1
-  return 'dummy-id-' + lastIdNum
+  return uid(8)
 }
 
 app.post('/api/game/', (req, res) => {
@@ -25,13 +26,39 @@ app.post('/api/game/', (req, res) => {
 })
 
 app.post('/api/game/:gid/state/', (req, res) => {
-  redis.hset('latestGameState', req.params.gid, JSON.stringify(req.body), (err, val) => {
-    res.status(201)
-    res.send()
+  const data = JSON.stringify(req.body)
+  if (data) {
+    const sid = uid(10)
+    const gsid = req.params.gid + ':' + sid
+    console.log('Store in ' + gsid + ': ' + data)
+    redis.hset('gameState', gsid, data, (err, val) => {
+      redis.hset('latestGameState', req.params.gid, sid, (err, val) => {
+        res.status(201)
+        res.send({
+          href: path.normalize(req.baseUrl + req.path + '/' + sid)
+        })
+      })
+    })
+  }
+})
+
+app.get('/api/game/:gid/state/:sid', (req, res) => {
+  const gsid = req.params.gid + ':' + req.params.sid
+  redis.hget('gameState', gsid, (err, val) => {
+    if (err || !val) {
+      res.status(404)
+      res.send()
+    } else {
+      res.status(200)
+      res.send({
+        href: path.normalize(req.baseUrl + req.path).replace(/\/+$/, ''),
+        state: JSON.parse(val)
+      })
+    }
   })
 })
 
-app.get('/api/game/:gid/state/latest', (req, res) => {
+app.get('/api/game/:gid/state/', (req, res) => {
   redis.hget('latestGameState', req.params.gid, (err, val) => {
     if (err) {
       res.status(404)
@@ -39,7 +66,21 @@ app.get('/api/game/:gid/state/latest', (req, res) => {
     } else {
       res.status(200)
       res.send({
-        state: JSON.parse(val) || 'none'
+        latest: path.normalize(req.baseUrl + req.path + '/' + val)
+      })
+    }
+  })
+})
+
+app.get('/api/game/:gid', (req, res) => {
+  redis.hget('latestGameState', req.params.gid, (err, val) => {
+    if (err || !val) {
+      res.status(404)
+      res.send()
+    } else {
+      res.status(200)
+      res.send({
+        state: path.normalize(req.baseUrl + req.path + '/state/')
       })
     }
   })
