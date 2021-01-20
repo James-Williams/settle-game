@@ -58,6 +58,7 @@ export default {
   data () {
     return {
       pickedTile: null,
+      gameId: undefined,
       okSlots: {},
       gameStateHistory: Immutable.List().push(this.initGameState),
       gameStateIdx: 0,
@@ -291,7 +292,13 @@ export default {
     }
   },
   created () {
-    console.log('Game Id: ' + this.$route.params.gid)
+    const gameId = this.$route.params.gid
+    this.gameId = gameId
+    console.log('Game Id: ' + gameId)
+    const socket = io()
+    socket.on('newState', (href) => {
+      console.log('Need to read: ' + href)
+    })
     this.updatePick()
     window.addEventListener('resize', this.appHeight)
     this.appHeight()

@@ -16,13 +16,6 @@ export default {
           window.location = '/play/' + gameId
         })
     }
-  },
-  created () {
-    console.log('bang')
-    const socket = io()
-    socket.on('newState', (href) => {
-      console.log('Need to read: ' + href)
-    })
   }
 }
 </script>
