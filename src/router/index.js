@@ -4,6 +4,7 @@ import PickerDemo from '@/components/demo/Picker'
 import AutoTileDemo from '@/components/demo/AutoTile'
 import PlaceDemo from '@/components/demo/Place'
 import NewGame from '@/components/NewGame'
+import Play from '@/components/Play'
 import TilesCode from '@/components/code/Tiles'
 
 Vue.use(Router)
@@ -19,6 +20,10 @@ export default new Router({
       path: '/play/',
       label: 'New Game',
       component: NewGame
+    },
+    {
+      path: '/play/:gid',
+      component: Play
     },
     {
       label: 'Auto Map Demo',

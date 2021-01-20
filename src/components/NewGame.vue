@@ -5,10 +5,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   methods: {
     start () {
-      alert('All Right!')
+      axios.post('/api/game')
+        .then((res) => {
+          const gameId = res.data.gameId
+          window.location = '/play/' + gameId
+        })
     }
   },
   created () {
