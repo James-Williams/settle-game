@@ -4,7 +4,6 @@ const serveStatic = require('serve-static')
 const appDir = path.resolve(__dirname, "dist")
 const { uid } = require('uid')
 
-
 const app = express()
 app.use(serveStatic(appDir))
 app.use(express.json())
@@ -13,7 +12,7 @@ const redis = (process.env.REDIS_URL === 'REDIS-MOCK')
   ? require('redis-mock').createClient()
   : require('redis').createClient(process.env.REDIS_URL)
 
-console.log(redis)
+console.log(redis ? 'Redis Connected' : 'NO REDIS!')
 
 const createNewId = () => {
   return uid(8)
@@ -107,6 +106,5 @@ module.exports = server
 const io = require('socket.io')(server)
 
 io.on('connection', () => {
-  console.log('connected')
+  console.log('Socket.io: Client Connected')
 })
-
