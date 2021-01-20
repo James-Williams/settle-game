@@ -5,7 +5,7 @@
   "author": "Jay Williams <jay@freebuddhistaudio.com>",
   "private": true,
   "scripts": {
-    "serve": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "serve": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --public localhost --host 0.0.0.0",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
