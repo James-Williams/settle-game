@@ -296,7 +296,7 @@ export default {
     this.gameId = gameId
     console.log('Game Id: ' + gameId)
     const socket = io()
-    socket.on('newState', (href) => {
+    socket.on('newState' + gameId, (href) => {
       console.log('Need to read: ' + href)
     })
     this.updatePick()

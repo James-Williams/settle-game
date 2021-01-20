@@ -34,7 +34,7 @@ app.post('/api/game/:gid/state/', (req, res) => {
     console.log('Store in ' + gsid + ': ' + data)
     redis.hset('gameState', gsid, data, (err, val) => {
       redis.hset('latestGameState', req.params.gid, sid, (err, val) => {
-        io.emit('newState', href)
+        io.emit('newState' + req.params.gid, href)
         res.status(201)
         res.send({
           href: href
