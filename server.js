@@ -107,4 +107,5 @@ const io = require('socket.io')(server)
 
 io.on('connection', () => {
   console.log('Socket.io: Client Connected')
+  io.emit('message', 'Hello :)')
 })

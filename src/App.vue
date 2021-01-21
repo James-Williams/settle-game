@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import { io } from 'socket.io-client'
 export default {
-  name: 'App'
+  created () {
+    io().on('message', (text) => {
+      console.log('Server: ' + text)
+    })
+  }
 }
 </script>
 

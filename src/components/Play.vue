@@ -42,6 +42,7 @@
 
 <script>
 import Immutable from 'immutable'
+import { io } from 'socket.io-client'
 
 import Tile from './Tile'
 import TilePicker from './TilePicker'
@@ -295,8 +296,7 @@ export default {
     const gameId = this.$route.params.gid
     this.gameId = gameId
     console.log('Game Id: ' + gameId)
-    const socket = io()
-    socket.on('newState' + gameId, (href) => {
+    io().on('newState' + gameId, (href) => {
       console.log('Need to read: ' + href)
     })
     this.updatePick()
