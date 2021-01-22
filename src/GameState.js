@@ -2,8 +2,17 @@ import Immutable from 'immutable'
 import Grid from '@/Grid'
 import TileLibrary from '@/TileLibrary'
 
-export default class {
+export default class GameState {
   static PLAYER_COLORS = Immutable.List(['red', 'orange', 'aqua', 'fuchsia', 'black'])
+
+  static fromJS (data) {
+    return new GameState({
+      grid: new Grid(data.grid),
+      config: data.config,
+      tileList: data.tileList,
+      playerScores: data.playerScores
+    })
+  }
 
   constructor (state) {
     let grid = state && state.grid

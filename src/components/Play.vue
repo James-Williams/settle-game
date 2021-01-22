@@ -43,6 +43,7 @@
 <script>
 import Immutable from 'immutable'
 import { io } from 'socket.io-client'
+import axios from 'axios'
 
 import Tile from './Tile'
 import TilePicker from './TilePicker'
@@ -276,6 +277,10 @@ export default {
       return this.gameState.config().get('startingMeeple') - meeplePlaced
     },
     updateState (newGameState) {
+
+      newGameState = GameState.fromJS(newGameState.toJS())
+      console.log('Post:', newGameState.toJS())
+
       if (this.gameStateIdx > 0) {
         this.gameStateHistory = this.gameStateHistory
           .slice(this.gameStateIdx)
@@ -286,6 +291,10 @@ export default {
           .unshift(newGameState)
       }
       this.updatePick()
+      axios.post('/api/game/' + this.gameId + '/state/', {
+        previousState: 'TODO',
+        gameState: newGameState.toJS()
+      })
     },
     appHeight () {
       const doc = document.documentElement
