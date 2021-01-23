@@ -13,9 +13,7 @@
     "e2e": "node test/e2e/runner.js",
     "test": "yarn run unit && yarn run api",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js",
-    "heroku-prebuild": "npm install --dev",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
+    "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -27,6 +25,7 @@
     "redis": "^3.0.2",
     "sass-loader": "^7.3.1",
     "socket.io": "^3.1.0",
+    "socket.io-client": "^3.1.0",
     "supertest": "^4.0.2",
     "uid": "^2.0.0",
     "vue": "^2.6.0",
