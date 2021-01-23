@@ -62,7 +62,7 @@ app.get('/api/game/:gid/state/:sid', (req, res) => {
 
 app.get('/api/game/:gid/state/', (req, res) => {
   redis.hget('latestGameState', req.params.gid, (err, val) => {
-    if (err) {
+    if (err || !val) {
       res.status(404)
       res.send()
     } else {

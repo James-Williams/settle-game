@@ -18,7 +18,7 @@
           <PlayerInfo :color="player" :selected="player === gameState.currentPlayer()" :meepleCount="meepleCount(player)" :isComputer="computerPlayers.has(player)" @backgroundClick="toggleComputer(player)" @meepleClick="toggleComputer(player)" @scoreClick="updateScore(player)" :score="gameState.playerScore(player)" />
         </span>
         <!-- TODO - Don't use constant 5 here -->
-        <span v-if="gameState.players().size < 5 && gameStateHistory.size <= 1">
+        <span v-if="gameState.players().size < 5 && !currentState.hasHistory()">
             <button @click="addPlayer()">Add Player</button>
         </span>
         <!--
@@ -52,6 +52,7 @@ import Header from './Header'
 import PlayerInfo from './PlayerInfo'
 
 import GameState from '@/GameState'
+import CurrentState from '@/CurrentState'
 import Moves from '@/Moves'
 import Scoring from '@/Scoring'
 import Greedy from '@/computer/Greedy'
@@ -59,8 +60,9 @@ import Greedy from '@/computer/Greedy'
 export default {
   data () {
     return {
+      currentState: new CurrentState(this.$route.params.gid),
       pickedTile: null,
-      gameId: undefined,
+      gameId: this.$route.params.gid,
       okSlots: {},
       gameStateHistory: Immutable.List().push(this.initGameState),
       gameStateIdx: 0,
@@ -74,6 +76,13 @@ export default {
     }
   },
   methods: {
+    loadState (href) {
+      axios.get(href)
+        .then((res) => {
+          console.log('Read:', res.data)
+          this.currentState.newState(res.data.state.gameState)
+        })
+    },
     updateScore (player) {
       const dScore = parseInt(prompt('Enter score to add', 0))
       if (dScore) {
@@ -112,19 +121,19 @@ export default {
       }
     },
     addPlayer () {
-      const ok = (this.gameStateHistory.size <= 1)
+      const ok = (!this.currentState.hasHistory())
         ? true
         : confirm('Adding a player will restart the game. Are you sure?')
       if (ok) {
-        const currentState = this.gameState
-        this.gameStateIdx = 0
-        this.gameStateHistory = Immutable.List().push(
+        const prevState = this.gameState
+        this.updateState(
           this.initGameState.setConfig(
-            currentState.config().set('players',
-              GameState.PLAYER_COLORS.slice(0, currentState.players().size + 1)
+            prevState.config().set('players',
+              GameState.PLAYER_COLORS.slice(0, prevState.players().size + 1)
             )
           )
         )
+        this.currentState.resetHistory()
       }
     },
     undoState () {
@@ -277,22 +286,7 @@ export default {
       return this.gameState.config().get('startingMeeple') - meeplePlaced
     },
     updateState (newGameState) {
-
-      newGameState = GameState.fromJS(newGameState.toJS())
-      console.log('Post:', newGameState.toJS())
-
-      if (this.gameStateIdx > 0) {
-        this.gameStateHistory = this.gameStateHistory
-          .slice(this.gameStateIdx)
-          .unshift(newGameState)
-        this.gameStateIdx = 0
-      } else {
-        this.gameStateHistory = this.gameStateHistory
-          .unshift(newGameState)
-      }
-      this.updatePick()
       axios.post('/api/game/' + this.gameId + '/state/', {
-        previousState: 'TODO',
         gameState: newGameState.toJS()
       })
     },
@@ -302,15 +296,26 @@ export default {
     }
   },
   created () {
-    const gameId = this.$route.params.gid
-    this.gameId = gameId
-    console.log('Game Id: ' + gameId)
-    io().on('newState' + gameId, (href) => {
-      console.log('Need to read: ' + href)
+    console.log('Game Id: ' + this.gameId)
+    axios.get('/api/game/' + this.gameId + '/state/')
+      .then((res) => {
+        const href = res.data.latest
+        this.loadState(href)
+      })
+      .catch(() => {
+        this.updateState(new GameState())
+      })
+    io().on('newState' + this.gameId, (href) => {
+      this.loadState(href)
     })
     this.updatePick()
     window.addEventListener('resize', this.appHeight)
     this.appHeight()
+  },
+  watch: {
+    gameState (val) {
+      this.updatePick()
+    }
   },
   computed: {
     showSkipMeeple () {
@@ -330,7 +335,7 @@ export default {
       return this.gameStateIdx > 0
     },
     gameState () {
-      return this.gameStateHistory.get(this.gameStateIdx)
+      return this.currentState.get()
     },
     grid () {
       return this.gameState.grid()
