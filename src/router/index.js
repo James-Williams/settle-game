@@ -14,7 +14,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/play/'
+      redirect: '/demo/place/'
     },
     {
       path: '/play/',

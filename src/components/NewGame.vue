@@ -1,11 +1,16 @@
 <template>
-  <div class="page">
-    <a @click="start">Start New Game</a>
+  <div>
+    <Header />
+    <div class="page">
+      <a @click="start">Start New Game</a>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+
+import Header from './Header'
 
 export default {
   methods: {
@@ -16,6 +21,9 @@ export default {
           window.location = '/play/' + gameId
         })
     }
+  },
+  components: {
+    Header
   }
 }
 </script>
