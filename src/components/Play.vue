@@ -6,8 +6,8 @@
         <span>
           <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong></p>
           <p>
-            <button class="large" @click="undoState" :disabled="!enableUndo">Undo</button>
-            <button class="large" @click="redoState" :disabled="!enableRedo">Redo</button>
+            <button class="large" @click="this.currentState.undo()" :disabled="!currentState.canUndo()">Undo</button>
+            <button class="large" @click="this.currentState.redo()" :disabled="!currentState.canRedo()">Redo</button>
           </p>
         </span>
         <span class="tile">
@@ -62,8 +62,6 @@ export default {
       pickedTile: null,
       gameId: this.$route.params.gid,
       okSlots: {},
-      gameStateHistory: Immutable.List().push(this.initGameState),
-      gameStateIdx: 0,
       computerPlayers: Immutable.Set()
     }
   },
@@ -99,7 +97,7 @@ export default {
       return this.computerPlayers.has(player)
     },
     toggleComputer (player) {
-      if (this.gameStateHistory.size <= 1) {
+      if (this.currentState.hasHistory()) {
         if (player !== this.gameState.currentPlayer()) {
           if (this.computerPlayers.has(player)) {
             this.computerPlayers = this.computerPlayers.delete(player)
@@ -125,18 +123,6 @@ export default {
           )
         )
         this.currentState.resetHistory()
-      }
-    },
-    undoState () {
-      if (this.enableUndo) {
-        this.gameStateIdx += 1
-        this.updatePick()
-      }
-    },
-    redoState () {
-      if (this.enableRedo) {
-        this.gameStateIdx -= 1
-        this.updatePick()
       }
     },
     updateOkSlots () {
@@ -304,12 +290,6 @@ export default {
     },
     canAddPlayers () {
       return this.gameState.players().size < GameState.PLAYER_COLORS.size
-    },
-    enableUndo () {
-      return this.gameStateIdx < this.gameStateHistory.size - 1
-    },
-    enableRedo () {
-      return this.gameStateIdx > 0
     },
     gameState () {
       return this.currentState.get()

@@ -46,5 +46,13 @@ export default class {
     return false
   }
 
+  canUndo () {
+    return false
+  }
+
+  canRedo () {
+    return false
+  }
+
   resetHistory () {}
 }
