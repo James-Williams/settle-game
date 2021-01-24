@@ -6,8 +6,8 @@
         <span>
           <p><strong><span class="tiles-left">{{ this.gameState.tilesLeft() }}</span></strong></p>
           <p>
-            <button class="large" @click="this.currentState.undo()" :disabled="!currentState.canUndo()">Undo</button>
-            <button class="large" @click="this.currentState.redo()" :disabled="!currentState.canRedo()">Redo</button>
+            <button class="large" @click="currentState.undo()" :disabled="!currentState.canUndo()">Undo</button>
+            <button class="large" @click="currentState.redo()" :disabled="!currentState.canRedo()">Redo</button>
           </p>
         </span>
         <span class="tile">
@@ -18,7 +18,7 @@
           <PlayerInfo :color="player" :selected="player === gameState.currentPlayer()" :meepleCount="meepleCount(player)" :isComputer="computerPlayers.has(player)" @backgroundClick="toggleComputer(player)" @meepleClick="toggleComputer(player)" @scoreClick="updateScore(player)" :score="gameState.playerScore(player)" />
         </span>
         <!-- TODO - Don't use constant 5 here -->
-        <span v-if="gameState.players().size < 5 && !currentState.hasHistory()">
+        <span v-if="gameState.players().size < 5">
             <button @click="addPlayer()">Add Player</button>
         </span>
         <!--
@@ -97,7 +97,7 @@ export default {
       return this.computerPlayers.has(player)
     },
     toggleComputer (player) {
-      if (this.currentState.hasHistory()) {
+      if (!this.currentState.canUndo()) {
         if (player !== this.gameState.currentPlayer()) {
           if (this.computerPlayers.has(player)) {
             this.computerPlayers = this.computerPlayers.delete(player)
@@ -110,9 +110,9 @@ export default {
       }
     },
     addPlayer () {
-      const ok = (!this.currentState.hasHistory())
-        ? true
-        : confirm('Adding a player will restart the game. Are you sure?')
+      const ok = (this.currentState.canUndo())
+        ? confirm('Adding a player will restart the game. Are you sure?')
+        : true
       if (ok) {
         const prevState = this.gameState
         this.updateState(
@@ -122,7 +122,6 @@ export default {
             )
           )
         )
-        this.currentState.resetHistory()
       }
     },
     updateOkSlots () {

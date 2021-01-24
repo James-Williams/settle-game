@@ -7,7 +7,10 @@ export default class {
   constructor (gameId) {
     this._gameId = gameId
     this._state = Vue.observable({
-      current: new GameState()
+      current: new GameState(),
+      currentHref: null,
+      undoStack: [],
+      redoStack: []
     })
 
     axios.get('/api/game/' + this._gameId + '/state/')
@@ -20,6 +23,10 @@ export default class {
       })
 
     io().on('newState' + this._gameId, (href) => {
+      if (this._state.currentHref) {
+          this._state.undoStack.push(this._state.currentHref)
+      }
+      this._state.redoStack = []
       this._loadState(href)
     })
   }
@@ -28,6 +35,7 @@ export default class {
     axios.get(href)
       .then((res) => {
         console.log('Read:', res.data)
+        this._state.currentHref = href
         this._state.current = GameState.fromJS(res.data.state.gameState)
       })
   }
@@ -42,17 +50,25 @@ export default class {
     })
   }
 
-  hasHistory () {
-    return false
+  canUndo () {
+    return this._state.undoStack.length > 0
   }
 
-  canUndo () {
-    return false
+  undo () {
+    if(this.canUndo()) {
+        this._state.redoStack.push(this._state.currentHref)
+        this._loadState(this._state.undoStack.pop())
+    }
   }
 
   canRedo () {
-    return false
+    return this._state.redoStack.length > 0
   }
 
-  resetHistory () {}
+  redo () {
+    if(this.canRedo()) {
+        this._state.undoStack.push(this._state.currentHref)
+        this._loadState(this._state.redoStack.pop())
+    }
+  }
 }
