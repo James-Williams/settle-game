@@ -42,8 +42,6 @@
 
 <script>
 import Immutable from 'immutable'
-import { io } from 'socket.io-client'
-import axios from 'axios'
 
 import Tile from './Tile'
 import TilePicker from './TilePicker'
@@ -76,13 +74,6 @@ export default {
     }
   },
   methods: {
-    loadState (href) {
-      axios.get(href)
-        .then((res) => {
-          console.log('Read:', res.data)
-          this.currentState.newState(res.data.state.gameState)
-        })
-    },
     updateScore (player) {
       const dScore = parseInt(prompt('Enter score to add', 0))
       if (dScore) {
@@ -286,9 +277,7 @@ export default {
       return this.gameState.config().get('startingMeeple') - meeplePlaced
     },
     updateState (newGameState) {
-      axios.post('/api/game/' + this.gameId + '/state/', {
-        gameState: newGameState.toJS()
-      })
+      this.currentState.newState(newGameState)
     },
     appHeight () {
       const doc = document.documentElement
@@ -297,18 +286,6 @@ export default {
   },
   created () {
     console.log('Game Id: ' + this.gameId)
-    axios.get('/api/game/' + this.gameId + '/state/')
-      .then((res) => {
-        const href = res.data.latest
-        this.loadState(href)
-      })
-      .catch(() => {
-        this.updateState(new GameState())
-      })
-    io().on('newState' + this.gameId, (href) => {
-      this.loadState(href)
-    })
-    this.updatePick()
     window.addEventListener('resize', this.appHeight)
     this.appHeight()
   },
