@@ -44,6 +44,22 @@ app.post('/api/game/:gid/state/', (req, res) => {
   }
 })
 
+app.put('/api/game/:gid/state/:sid', (req, res) => {
+  const data = JSON.stringify(req.body)
+  if (data) {
+    const gsid = req.params.gid + ':' + req.params.sid
+    const href = path.normalize(req.baseUrl + req.path + '/' + req.params.sid)
+    console.log('Store in ' + gsid + ': ' + data)
+    redis.hset('gameState', gsid, data, (err, val) => {
+      io.emit('newState' + req.params.gid, href)
+      res.status(201)
+      res.send({
+        href: href
+      })
+    })
+  }
+})
+
 app.get('/api/game/:gid/state/:sid', (req, res) => {
   const gsid = req.params.gid + ':' + req.params.sid
   redis.hget('gameState', gsid, (err, val) => {
